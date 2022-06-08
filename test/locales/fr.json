@@ -1,0 +1,10 @@
+{
+  "good_morning": "Bonjour",
+  "text": "Voici un exemple.",
+  "current_lang": "Langage actuelle",
+  "all_lang": "Toutes les langues dispo.",
+  "nested": {
+    "one": "Il y a un singe sur l'arbre.",
+    "more": "Il y a {0} singes sur l'arbre."
+  }
+}
