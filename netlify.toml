@@ -16,13 +16,13 @@
 # REDIRECTS COMMANDS
 ###########################
 [[redirects]]
-  from = "/*"
-  to = "/?ref=404"
-  status = 301
-  force = false
-
-[[redirects]]
   from = "/index.js"
   to = "/i18n.js"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/?ref=404"
+  status = 301
+  force = false
