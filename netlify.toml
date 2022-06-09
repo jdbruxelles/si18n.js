@@ -22,7 +22,7 @@
   force = false
 
 [[redirects]]
-  from = "/demo.js"
+  from = "/index.js"
   to = "/i18n.js"
   status = 200
   force = true
