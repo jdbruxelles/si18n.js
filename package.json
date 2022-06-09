@@ -1,0 +1,48 @@
+{
+  "name": "si18n",
+  "version": "1.0.0",
+  "description": "A simple package to integrate internationalization on a small web site project.",
+  "main": "./index.js",
+  "directories": {
+    "src": "src",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "minify": "terser ./index.js --output ./docs/i18n.js --compress --mangle --module --ecma 2016"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdbruxelles/i18n.git"
+  },
+  "keywords": [
+    "i18n",
+    "translation",
+    "localisation",
+    "internationalization",
+    "website"
+  ],
+  "author": "José dBruxelles (https://github.com/jdbruxelles)",
+  "license": "MIT",
+  "funding": [
+    {
+      "type": "GitHub",
+      "url": "https://github.com/sponsors/jdbruxelles"
+    },
+    {
+      "type": "PayPal",
+      "url": "https://www.paypal.me/jdbruxelles"
+    },
+    {
+      "type": "individual",
+      "url": "https://jose.bruxelles.dev/soutien"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/jdbruxelles/i18n/issues"
+  },
+  "homepage": "https://github.com/jdbruxelles/i18n#readme",
+  "dependencies": {
+    "terser": "^5.14.0"
+  }
+}
