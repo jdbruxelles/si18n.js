@@ -6,3 +6,6 @@ package-lock.json
 .vscode
 
 docs/i18n.js
+
+# Local Netlify folder
+.netlify
