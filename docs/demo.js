@@ -1,4 +1,4 @@
-import i18n from "../index.js";
+import i18n from "/index.js";
 import en from "./locales/en.json" assert {type: "json"};
 import fr from "./locales/fr.json" assert {type: "json"};
 import ru from "./locales/ru.json" assert {type: "json"};
