@@ -1,5 +1,5 @@
 {
-  "name": "si18n",
+  "name": "si18n.js",
   "version": "1.0.0",
   "description": "A simple package to integrate internationalization on a small web site project.",
   "main": "./index.js",
