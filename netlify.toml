@@ -16,12 +16,6 @@
 # REDIRECTS COMMANDS
 ###########################
 [[redirects]]
-  from = "/si18n.js"
-  to = "/si18n.min.js"
-  status = 200
-  force = true
-
-[[redirects]]
   from = "/demo.js"
   to = "/demo.min.js"
   status = 200
