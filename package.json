@@ -1,19 +1,22 @@
 {
   "name": "si18n.js",
-  "version": "1.0.0",
-  "description": "A simple package to integrate internationalization on a small web site project.",
-  "main": "./index.js",
+  "version": "1.0.1",
+  "description": "A simple way to integrate internationalization on a small web site project.",
+  "main": "./si18n.js",
   "directories": {
     "src": "src",
-    "test": "test"
+    "site": "website"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "minify": "terser ./index.js --output ./docs/i18n.js --compress --mangle --module --ecma 2016"
+    "minify-si18n-npm": "terser ./src/si18n.js --output ./si18n.js --compress --mangle --module --ecma 2016",
+    "minify-si18n-demo": "terser ./src/si18n.js --output ./website/si18n.js --compress --mangle --module --ecma 2016",
+    "minify-demo": "terser ./website/demo.js --output ./website/demo.min.js --compress --mangle --ecma 2016",
+    "build": "npm run minify-si18n-npm && npm run minify-si18n-demo && npm run minify-demo"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jdbruxelles/i18n.git"
+    "url": "git+https://github.com/jdbruxelles/si18n.git"
   },
   "keywords": [
     "i18n",
@@ -39,10 +42,10 @@
     }
   ],
   "bugs": {
-    "url": "https://github.com/jdbruxelles/i18n/issues"
+    "url": "https://github.com/jdbruxelles/si18n/issues"
   },
-  "homepage": "https://github.com/jdbruxelles/i18n#readme",
-  "dependencies": {
-    "terser": "^5.14.0"
+  "homepage": "https://github.com/jdbruxelles/si18n#readme",
+  "devDependencies": {
+    "terser": "^5.14.1"
   }
 }
