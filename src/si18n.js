@@ -1,8 +1,18 @@
+/*!
+ * @license si18n
+ * react.production.min.js
+ *
+ * Copyright (c) José dBruxelles.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 /**
  * Make translation management easier and more efficient.
  * @author José dBruxelles <jd.bruxelles.dev/c>
  */
-export default class i18n {
+export default class si18n {
   #noop() {} // Empty function to avoid undefined paramaters.
   #isInitialized = false;
   #options = {
@@ -17,8 +27,8 @@ export default class i18n {
   };
 
   /**
-   * Initializes the i18n object.
-   * @param {object} _options Options to initialize the i18n object.
+   * Initializes the si18n object.
+   * @param {object} _options Options to initialize the si18n object.
    * @param {object} _options.locales Object containing local translations.
    * @param {string} [_options.lang] Active language.
    * @param {string} _options.fallbackLang Fallback language.
@@ -27,7 +37,7 @@ export default class i18n {
    * @param {boolean} [_options.isTogglerSelect=false] Whether the toggler is a select or a button.
    * @param {function} _options.translate Function that translate the text manually.
    * @param {function} [_options.onChange] Function that handle after each language change.
-   * @returns {i18n} The i18n object.
+   * @returns {si18n} The si18n object.
    */
   init(_options = {}) {
     if (this.#isInitialized) return; // Initialize once.
@@ -157,8 +167,8 @@ export default class i18n {
   }
 
   /**
-   * Returns the options of the i18n object.
-   * @returns {object} The options of the i18n object.
+   * Returns the options of the si18n object.
+   * @returns {object} The options of the si18n object.
    */
   toJSON() {
     return this.#options;

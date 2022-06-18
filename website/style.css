@@ -3,3 +3,7 @@ body {
   background: #1b3a4b;
   background: radial-gradient(ellipse at center, #224c64 0, #111015 100%);
 }
+
+.logo {
+  font-family: "Rancho", cursive;
+}

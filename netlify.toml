@@ -2,22 +2,28 @@
 # BUILD COMMANDS
 ###########################
 [build]
-  command = "npm run minify"
+  command = "npm run build"
   # functions = "functions"
-  publish = "docs/"
+  publish = "website/"
 
 [dev]
   # command = "npm run minify" # Command to run when starting the dev server
   # port = 8888 # Port that the dev server will be accessible on
-  publish = "docs/" # Folder with the static content for _redirect file
+  publish = "website/" # Folder with the static content for _redirect file
   autoLaunch = true # Launches the local server address in your browser
 
 ###########################
 # REDIRECTS COMMANDS
 ###########################
 [[redirects]]
-  from = "/index.js"
-  to = "/i18n.js"
+  from = "/si18n.js"
+  to = "/si18n.min.js"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/demo.js"
+  to = "/demo.min.js"
   status = 200
   force = true
 
