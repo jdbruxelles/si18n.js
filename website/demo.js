@@ -12,6 +12,7 @@ const translate = (locObj) => {
   document.querySelector("#demo h1").innerText = locObj.t("good_morning");
   document.getElementById("text").setAttribute("title", locObj.t("good_morning"));
   document.getElementById("text").innerText = locObj.t("text");
+  document.getElementById("text-fallback").innerText = locObj.t("fallback_text");
 
   // TODO: Make nested path
   document.querySelector("#demo .text-one").innerText = locObj.t("nested.one");

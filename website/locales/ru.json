@@ -1,6 +1,7 @@
 {
   "good_morning": "Здравствуйте",
   "text": "Вот пример.",
+  "fallback_text": "",
   "current_lang": "Текущий язык",
   "all_lang": "Доступны все языки.",
   "nested": {
