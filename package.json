@@ -9,10 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "minify-si18n-npm": "terser ./src/si18n.js --output ./si18n.js --compress --mangle --module --ecma 2016",
-    "minify-si18n-demo": "terser ./src/si18n.js --output ./website/si18n.js --compress --mangle --module --ecma 2016",
-    "minify-demo": "terser ./website/demo.js --output ./website/demo.min.js --compress --mangle --ecma 2016",
-    "build": "npm run minify-si18n-npm && npm run minify-si18n-demo && npm run minify-demo"
+    "build": "gulp",
+    "watch": "gulp watch"
   },
   "repository": {
     "type": "git",
@@ -46,6 +44,11 @@
   },
   "homepage": "https://github.com/jdbruxelles/si18n.js#readme",
   "devDependencies": {
-    "terser": "^5.14.1"
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-watch": "^5.0.1"
   }
 }
