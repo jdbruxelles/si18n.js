@@ -4,8 +4,27 @@
   "fallback_text": "This text is not available in Russian.",
   "current_lang": "Current language",
   "all_lang": "All available languages",
+  "default_options": "Default Options",
+  "license": "MIT License",
   "nested": {
     "one": "There is one monkey in the tree.",
     "more": "There are {0} monkeys in the tree."
+  },
+  "options": {
+    "cols_title": {
+      "argument": "Argument",
+      "default_value": "Default value",
+      "description": "Description"
+    },
+    "locales": "Object containing local translations.",
+    "lang": "Active language to use.",
+    "fallbackLang": "Fallback language.",
+    "activeClass": "Class to add to the active language.",
+    "togglersSelector": "Selector to the togglers elements.",
+    "isTogglerSelect": "Whether the toggler is a select or a button.",
+    "saveLang": "Whether to save the language in localStorage.",
+    "saveAs": "Name of the key to save the language in localStorage.",
+    "translate": "Function that translate the text manually.",
+    "onChange": "Function that handle after each language change."
   }
 }

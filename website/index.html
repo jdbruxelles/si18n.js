@@ -41,8 +41,10 @@
         <h1></h1>
         <p id="text" title></p>
         <p id="text-fallback"></p>
-        <p class="jdb-hide text-one"></p>
-        <p class="jdb-hide text-plural"></p>
+        <p class="monkey">
+          <span class="one"></span><br>
+          <span class="more"></span>
+        </p>
         <hr class="jdb-hr">
         <p id="info">
           <span></span><br>
@@ -50,12 +52,64 @@
         </p>
       </div>
     </div>
-    <details class="jdb-container">
-      <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
-        Option de l'instance
-      </summary>
-      <div class="jdb-responsive">
-        <pre class="notranslate"></pre>
+    <details class="jdb-container" id="options" open>
+      <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer"></summary>
+      <div class="jdb-responsive jdb-margin-top">
+        <table class="jdb-table-all jdb-margin-auto jdb-bordered-all">
+          <thead><tr><th></th><th></th><th></th></tr></thead>
+          <tbody>
+            <tr class="locales">
+              <td><code>locales</code></td>
+              <td><code>{}</code></td>
+              <td></td>
+            </tr>
+            <tr class="lang">
+              <td><code>lang</code></td>
+              <td><code>''</code></td>
+              <td></td>
+            </tr>
+            <tr class="fallbackLang">
+              <td><code>fallbackLang</code></td>
+              <td><code>''</code></td>
+              <td></td>
+            </tr>
+            <tr class="activeClass">
+              <td><code>activeClass</code></td>
+              <td><code>''</code></td>
+              <td></td>
+            </tr>
+            <tr class="togglersSelector">
+              <td><code>togglersSelector</code></td>
+              <td><code>''</code></td>
+              <td></td>
+            </tr>
+            <tr class="isTogglerSelect">
+              <td><code>isTogglerSelect</code></td>
+              <td><code>false</code></td>
+              <td></td>
+            </tr>
+            <tr class="saveLang">
+              <td><code>saveLang</code></td>
+              <td><code>true</code></td>
+              <td></td>
+            </tr>
+            <tr class="saveAs">
+              <td><code>saveAs</code></td>
+              <td><code>'lang'</code></td>
+              <td></td>
+            </tr>
+            <tr class="translate">
+              <td><code>translate</code></td>
+              <td><code>function() {}</code></td>
+              <td></td>
+            </tr>
+            <tr class="onChange">
+              <td><code>onChange</code></td>
+              <td><code>function() {}</code></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </details>
   </main>

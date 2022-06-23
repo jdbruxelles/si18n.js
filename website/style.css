@@ -7,3 +7,23 @@ body {
 .logo {
   font-family: "Rancho", cursive;
 }
+
+#options table {
+  min-width: 800px;
+  width: 95%;
+}
+
+#options .jdb-table-all tr:nth-child(odd) { background-color: #172531; }
+#options .jdb-table-all tr:nth-child(even) { background-color: #192c3a; }
+#options .jdb-table-all { border: #1e3b4e; }
+
+#options .jdb-bordered tr,
+#options .jdb-table-all tr {
+  border-bottom: 1px solid #1e3b4e;
+}
+
+.jdb-border,
+#options .jdb-bordered-all tr td,
+#options .jdb-bordered-all tr th {
+  border: 1px solid #1d3b4e;
+}

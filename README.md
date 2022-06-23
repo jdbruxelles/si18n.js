@@ -31,6 +31,12 @@ then use the `si18n` class:
 import si18n from "si18n.js";
 ```
 
+### yarn
+
+```bash
+yarn add si18n.js
+```
+
 ### CDN
 
 ```html
