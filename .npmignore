@@ -4,6 +4,7 @@
 
 /.vscode
 /.netlify
+/.gitignore
 /netlify.toml
 /gulpfile.js
 
