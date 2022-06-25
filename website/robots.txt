@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /images/
+Disallow: /locales/
+
+Host: si18n.js.bruxelles.dev
