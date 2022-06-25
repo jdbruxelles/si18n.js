@@ -14,6 +14,8 @@ const locales = { en, fr, ru };
 
 const translate = (locObj) => {
   $("html").setAttribute("lang", locObj.getLocale());
+  $("meta[name='description']").setAttribute("content", locObj.t("site_description"));
+
   $("#demo h1").innerText = locObj.t("good_morning");
   $("#text").setAttribute("title", locObj.t("good_morning"));
   $("#text").innerText = locObj.t("text");

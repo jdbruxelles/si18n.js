@@ -1,4 +1,5 @@
 {
+  "site_description": "Une solution simple pour intégrer l'internationalisation sur un petit projet de site web.",
   "good_morning": "Bonjour",
   "text": "Voici un exemple.",
   "fallback_text": "Ce texte n'est pas disponible en russe.",
