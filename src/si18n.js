@@ -223,8 +223,7 @@ export default class si18n {
           value = value[pathItems[i]];
         }
       } catch (error) {
-        throw new Error(`The given path does not exist in the current language,
-          nor in the fallback language. JSON selector: ${JSONPath}`);
+        si18n.#triggerErrorPathNotFound(JSONPath);
       }
       return value || "";
     }
@@ -241,6 +240,13 @@ export default class si18n {
   /**
    * Returns the options of the si18n object.
    * @returns {object} The options of the si18n object.
+   * Throws an error for the not found translation.
+   * @param {string} JSONPath the object property selector.
+   */
+  static #triggerErrorPathNotFound(JSONPath) {
+    console.error(`The path "${JSONPath}" was not found in the current language, nor in the fallback language.`);
+  }
+
   /**
    * Returns the type of the given value.
    * @param {*} value the value to check.
