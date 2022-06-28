@@ -223,6 +223,7 @@ export default class si18n {
         for (let i = 0; i < pathItems.length; i++) {
           if (si18n.#isUndefined(value)) {
             value = this.#getFallbackObj();
+            i = 0;
           }
           value = value[pathItems[i]];
           if (i === pathItems.length - 1 && si18n.#isUndefined(value)) {
