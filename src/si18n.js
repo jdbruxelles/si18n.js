@@ -74,11 +74,11 @@ export default class si18n {
 
     const searchParam = new URLSearchParams(window.location.search);
     const langInURL = searchParam.get(this.#options.saveAs);
-    if (typeof _options.saveLang !== "undefined") {
+    if (!si18n.#isUndefined(_options.saveLang)) {
       this.#options.saveLang = _options.saveLang;
     }
 
-    if (langInURL !== null && typeof this.#options.locales[langInURL] !== "undefined") {
+    if (langInURL !== null && !si18n.#isUndefined(this.#options.locales[langInURL])) {
       this.#options.lang = langInURL;
     } else if (this.#options.saveLang) {
       this.#options.lang = localStorage.getItem(this.#options.saveAs) || _options.lang;
@@ -194,7 +194,7 @@ export default class si18n {
    */
   #translate(lang) {
     // Cannot translate to a language that doesn't exist.
-    if (lang && typeof this.#options.locales[lang] !== "undefined") {
+    if (lang && !si18n.#isUndefined(this.#options.locales[lang])) {
       this.#options.lang = lang;
     } else {
       // Set fallback language.
@@ -216,7 +216,7 @@ export default class si18n {
       try {
         const pathItems = JSONPath.split(".");
         for (let i = 0; i < pathItems.length; i++) {
-          if (typeof value === "undefined") {
+          if (si18n.#isUndefined(value)) {
             value = this.#getFallbackObj();
             i = 0;
           }
@@ -231,7 +231,7 @@ export default class si18n {
 
     // Process simple path selector
     const v = value && value[JSONPath];
-    if (typeof value === "undefined" || v === undefined || v === "") {
+    if (si18n.#isUndefined(value) || v === undefined || v === "") {
       // Use the fallback language when the selected is not available.
       value = this.#getFallbackObj();
     }
@@ -241,6 +241,15 @@ export default class si18n {
   /**
    * Returns the options of the si18n object.
    * @returns {object} The options of the si18n object.
+  /**
+   * Returns the type of the given value.
+   * @param {*} value the value to check.
+   * @returns {boolean} the type of the value.
+   */
+  static #isUndefined(value) {
+    return typeof value === "undefined";
+  }
+
    */
   toJSON() {
     return this.#options;
