@@ -65,7 +65,6 @@ export default class si18n {
       throw new Error(`No options provided. See docs ${docsLink}`);
     } else if (!(
       optionsKeys.includes("locales") ||
-      optionsKeys.includes("lang") ||
       optionsKeys.includes("translate"))
     ) {
       throw new Error(`Missing required options. See docs ${docsLink}`);
