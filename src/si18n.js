@@ -12,15 +12,15 @@ export default class si18n {
   #noop() {} // Empty function to avoid undefined paramaters.
   #isInitialized = false;
   #options = {
-    lang: "", // do not define the lang option if you want to use a language detector.
+    lang: "",
     fallbackLang: "",
-    locales: {},
+    locales: {}, // Required
     activeClass: "",
     togglersSelector: "",
     isTogglerSelect: false,
     saveLang: true,
     saveAs: "lang",
-    translate: this.#noop,
+    translate: this.#noop, // Required
     callback: this.#noop
   };
 
@@ -40,7 +40,13 @@ export default class si18n {
    * Initializes the si18n object.
    * @param {object} _options Options to initialize the si18n object.
    * @param {object} _options.locales Object containing local translations.
-   * @param {string} [_options.lang] Active language to use.
+   * @param {string} [_options.lang] Active language to use. Do not define the
+   * lang option if you want to use a language detector. Note: The lang option
+   * priority is :
+   *   1. URL param,
+   *   2. Local saved lang,
+   *   3. Hard coded lang,
+   *   4. Navigator lang.
    * @param {string} [_options.fallbackLang=_options.lang] Fallback language.
    * @param {string} [_options.activeClass] Class to add to the active language.
    * @param {string} _options.togglersSelector Selector to the togglers elements.
@@ -62,7 +68,7 @@ export default class si18n {
       optionsKeys.includes("lang") ||
       optionsKeys.includes("translate"))
     ) {
-      throw new Error(`Missing mandatory options. See docs ${docsLink}`);
+      throw new Error(`Missing required options. See docs ${docsLink}`);
     }
 
     if (this.#isInitialized) return; // Initialize once.
@@ -151,7 +157,7 @@ export default class si18n {
   }
 
   /**
-   * Sets the given language and translates.
+   * Sets the given language and applies the change.
    * @param {string} lang the language to set.
    */
   setLocale(lang) {
@@ -170,7 +176,7 @@ export default class si18n {
   }
 
   /**
-   * Returns the list of available languages.
+   * Returns the list of all available languages.
    * @returns {object[]} The list of available languages.
    */
   getLocales() {
@@ -204,7 +210,7 @@ export default class si18n {
   }
 
   /**
-   * Returns the translation at the given key.
+   * Returns the translation string at the given key.
    * @param {string} JSONPath the object property selector.
    * @returns {string|object} The translation at the given key.
    */
@@ -243,8 +249,6 @@ export default class si18n {
   }
 
   /**
-   * Returns the options of the si18n object.
-   * @returns {object} The options of the si18n object.
    * Throws an error for the not found translation.
    * @param {string} JSONPath the object property selector.
    */
@@ -261,6 +265,9 @@ export default class si18n {
     return typeof value === "undefined";
   }
 
+  /**
+   * Returns the options of the instance.
+   * @returns {object} The options of the instance.
    */
   toJSON() {
     return this.#options;
