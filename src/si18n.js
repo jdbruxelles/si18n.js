@@ -227,11 +227,11 @@ export default class si18n {
           }
           value = value[pathItems[i]];
           if (i === pathItems.length - 1 && si18n.#isUndefined(value)) {
-            si18n.#triggerErrorPathNotFound(JSONPath);
+            this.#triggerErrorPathNotFound(JSONPath);
           }
         }
       } catch (error) {
-        si18n.#triggerErrorPathNotFound(JSONPath);
+        this.#triggerErrorPathNotFound(JSONPath);
       }
 
       // If no string is found on the current language and the fallback language,
@@ -252,8 +252,10 @@ export default class si18n {
    * Throws an error for the not found translation.
    * @param {string} JSONPath the object property selector.
    */
-  static #triggerErrorPathNotFound(JSONPath) {
-    console.error(`The path "${JSONPath}" was not found in the current language, nor in the fallback language.`);
+  #triggerErrorPathNotFound(JSONPath) {
+    console.error('The path "' + JSONPath + '" was not found in the current language (' +
+      this.#options.lang + '), nor in the fallback language (' +
+      this.#options.fallbackLang + ').');
   }
 
   /**
