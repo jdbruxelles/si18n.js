@@ -8,6 +8,16 @@ body {
   font-family: "Rancho", cursive;
 }
 
+.github-octo-corner svg {
+  fill: #09161d;
+  color: #607d8b;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border: 0px;
+  transform: rotate(270deg);
+}
+
 #options table {
   min-width: 800px;
   width: 95%;
