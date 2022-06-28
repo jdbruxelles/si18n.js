@@ -8,6 +8,13 @@ const babelOptions = {
   comments: false,
   compact: true,
   shouldPrintComment: (val) => /@license/.test(val),
+  presets: [
+    ["minify", {
+      mangle: {
+        keepClassName: true
+      }
+    }]
+  ],
   plugins: [
     "@babel/plugin-syntax-import-assertions"
   ]
