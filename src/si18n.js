@@ -98,7 +98,7 @@ export default class si18n {
     if (_options.fallbackLang) this.#options.fallbackLang = _options.fallbackLang;
     else this.#options.fallbackLang = this.#options.lang;
 
-    this.#options.translate();
+    this.#translate();
     this.#options.callback();
     this.#isInitialized = true;
 
@@ -205,6 +205,40 @@ export default class si18n {
       // Set fallback language.
       this.#options.lang = this.#options.fallbackLang;
     }
+
+    document.querySelector("html").setAttribute("lang", this.getLocale());
+
+    // Auto translate using the given JSONPath in data-si18n attribute.
+    // When using this option, no need to write the script manually
+    // except if you want use the string for other purposes
+    // (e.g.: title, aria-label attributes, etc.).
+    const htmlTags = document.querySelectorAll("[data-si18n]");
+    if (htmlTags.length > 0) {
+      htmlTags.forEach((element) => {
+        const JSONPath = element.dataset.si18n;
+        const text = this.t(JSONPath);
+        if (element.dataset.si18nDefault !== "false") {
+          if (element.dataset.si18nHtml === "true") {
+            element.innerHTML = text;
+          } else {
+            element.textContent = text;
+          }
+        }
+
+        if (!si18n.#isUndefined(element.dataset.si18nTitle)) {
+          element.setAttribute("title", text);
+        }
+
+        if (!si18n.#isUndefined(element.dataset.si18nLabel)) {
+          element.setAttribute("aria-label", text);
+        }
+
+        if (!si18n.#isUndefined(element.dataset.si18nValue)) {
+          element.setAttribute("value", text);
+        }
+      });
+    }
+
     this.#options.translate();
   }
 
