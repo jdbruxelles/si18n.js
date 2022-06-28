@@ -12,6 +12,10 @@ This project is a simple package to integrate internationalization on a small we
 
 The "s" in **si18n** stands for simple.
 
+| Fast | Lightweight | No dependencies | Easy to use |
+|:----:|:-----------:|:---------------:|:-----------:|
+| Yes  | Yes         | Yes             | Yes         |
+
 ## Demo and Documentation
 
 You can get started on the [demo site](https://si18n.js.bruxelles.dev/).
@@ -26,7 +30,6 @@ npm i si18n.js
 ```
 
 then use the `si18n` class:
-
 ```js
 import si18n from "si18n.js";
 ```
@@ -40,13 +43,27 @@ yarn add si18n.js
 ### CDN
 
 ```html
-<script src="https://unpkg.com/si18n.js"></script>
+<script type="module" src="https://unpkg.com/si18n.js"></script>
 ```
 
 ## Usage
 
 For detailed usage information,
 [visit the docs](https://si18n.js.bruxelles.dev).
+
+## Run locally
+
+Gulp Tasks:
+
+  - The default build task (run once)
+  ```bash
+  gulp
+  ```
+
+  - Rerun the build task when a script file changes
+  ```bash
+  gulp watch
+  ```
 
 ## Contributing
 
