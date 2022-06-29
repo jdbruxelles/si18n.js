@@ -13,6 +13,15 @@
   autoLaunch = true # Launches the local server address in your browser
 
 ###########################
+# HEADERS
+###########################
+[[headers]]
+  for = "/*"
+    [headers.values]
+      Access-Control-Allow-Origin = "*"
+      Access-Control-Allow-Headers = "Content-Type"
+
+###########################
 # REDIRECTS COMMANDS
 ###########################
 [[redirects]]
