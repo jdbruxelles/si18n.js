@@ -5,22 +5,55 @@ import fr from "./locales/fr.json" assert {type: "json"};
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
-$("#license").innerHTML = `© ${(new Date().getFullYear())} — <span></span>`;
+const scrollTo = (element, top = 16) => {
+  let distance = element.getBoundingClientRect();
+  window.scrollTo({
+    behavior: "smooth",
+    top: distance.top + window.pageYOffset - top,
+    left: 0
+  });
+};
+
+(function(){
+  const copyBtn = document.createElement("span");
+  copyBtn.setAttribute("role", "button");
+  copyBtn.setAttribute("data-si18n", "utils.copy");
+  copyBtn.setAttribute("data-si18n-default", "false");
+  copyBtn.setAttribute("data-si18n-title", "true");
+  copyBtn.classList.add("jdb-right", "jdb-ripple", "copy-btn");
+
+  $$(".code-block .code-header:not(.no-copy)").forEach(function(item) {
+    const copyBtn_ = copyBtn.cloneNode();
+    copyBtn_.addEventListener("click", function() {
+      const code = this.parentNode.parentNode.querySelector("pre code").innerText;
+      navigator.clipboard.writeText(code);
+    });
+    item.querySelector(".code-title").after(copyBtn_);
+  });
+
+  $$("pre.hl code").forEach((codeElement) => {
+    const highlightedCode = hljs.highlight(
+      codeElement.innerText,
+      { language: codeElement.parentNode.dataset?.mode || "plaintext" }
+    ).value;
+    codeElement.innerHTML = highlightedCode;
+  });
+
+  $$("#options table tr td:nth-child(2) code").forEach((codeElement) => {
+    hljs.highlightElement(codeElement);
+  });
+
+  $("#license").innerHTML = "© " + (new Date().getFullYear()) +
+    " — <a href='https://github.com/jdbruxelles/si18n.js/blob/main/LICENSE' " +
+    " target='_blank' class='jdb-text-decoration-0' data-si18n='license'></a>";
+})();
 
 const loc = new si18n(); // Initialize the i18n object.
 const loc2 = new si18n(); // Initialize the si18n object.
 const locales = { en, fr };
 
 const translate = (locObj) => {
-  $("html").setAttribute("lang", locObj.getLocale());
   $("meta[name='description']").setAttribute("content", locObj.t("site_description"));
-
-  $("#demo h1").innerText = locObj.t("good_morning");
-  $("#text").setAttribute("title", locObj.t("good_morning"));
-  $("#text").innerText = locObj.t("text");
-  $("#text-fallback").innerText = locObj.t("fallback_text");
-
-  $(".monkey .one").innerText = locObj.t("nested.one");
   $(".monkey .more").innerText = locObj.t("nested.more").replace("{0}", 12);
 
   // Show locales infos
@@ -28,50 +61,37 @@ const translate = (locObj) => {
   infos[0].innerText = `${locObj.t("current_lang")} : ${locObj.getLocale()}`;
   infos[1].innerText = `${locObj.t("all_lang")} : ${locObj.getLocales().join(", ")}`;
 
-  $("#options summary").innerText =
-    `${locObj.t("default_options")} (${Object.keys(locObj.toJSON()).length})`;
+  $("#options summary").innerHTML = "<a href='#options'>#</a> " +
+    locObj.t("options.cols_title.default_options") + " (" +
+    Object.keys(locObj.toJSON()).length + ")";
 
-  const props = [
+  const params = [
     "locales", "lang", "fallbackLang", "activeClass", "togglersSelector",
     "isTogglerSelect", "saveLang", "saveAs", "translate", "onChange"
-  ];
-  const optTable = $("#options table");
-  optTable.querySelector("tr > th:nth-child(1)").innerText = locObj.t("options.cols_title.argument");
-  optTable.querySelector("tr > th:nth-child(2)").innerText = locObj.t("options.cols_title.default_value");
-  optTable.querySelector("tr > th:nth-child(3)").innerText = locObj.t("options.cols_title.description");
-
-  props.forEach((prop) => {
-    optTable.querySelector(`.${prop} td:last-child`).innerText = locObj.t(`options.${prop}`);
+  ], optTable = $("#options table");
+  params.forEach((prop) => {
+    optTable.querySelector(`.${prop} td:last-child`).innerHTML = locObj.t(`options.params.${prop}`);
   });
-
-  $("#license span").innerText = loc.t("license");
 };
 
 // For <button>s
 loc.init({
   locales,
   lang: "fr",
-  fallbackLang: "fr",
+  fallbackLang: "en",
   activeClass: "jdb-dark-gray",
   togglersSelector: ".i18n-container button",
-  translate: () => {
-    translate(loc);
-  },
-  onChange() {
-    // console.log("Ok");
-  }
+  translate() { translate(loc); }
 });
 
 // For <select>
 loc2.init({
   locales,
   lang: "fr",
-  fallbackLang: "fr",
+  fallbackLang: "en",
   togglersSelector: ".i18n-container .lang-select",
   isTogglerSelect: true,
-  translate: () => {
-    translate(loc2);
-  }
+  translate() { translate(loc2); }
 });
 
 $$(".i18n-container button").forEach((item) => {
@@ -93,4 +113,22 @@ $(".i18n-container .lang-select").addEventListener("change", function() {
     $(".i18n-container button.jdb-dark-gray").classList.remove("jdb-dark-gray");
     $(`.i18n-container button[data-lang="${value}"]`).classList.add("jdb-dark-gray");
   }, 100);
+});
+
+$$("#summary a, summary a[href^='#']").forEach((item) => {
+  item.addEventListener("click", function(event) {
+    event.preventDefault();
+    const hash = this.href.split("/").at(-1);
+    scrollTo($(hash), 8);
+    setTimeout(() => {
+      location.hash = hash;
+    }, 25);
+  });
+});
+
+$$("[data-goto]").forEach((elem) => {
+  elem.addEventListener("click", () => {
+    const id = elem.dataset.goto;
+    scrollTo($(`#${id}`), 8);
+  });
 });

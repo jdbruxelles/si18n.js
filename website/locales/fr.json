@@ -1,11 +1,10 @@
 {
-  "site_description": "Une solution simple pour intégrer l'internationalisation sur un petit projet de site web.",
+  "site_description": "Une solution simple et légère pour intégrer l'internationalisation sur un petit projet de site web.",
   "good_morning": "Bonjour",
   "text": "Voici un exemple.",
-  "fallback_text": "Ce texte n'est pas disponible en russe.",
+  "fallback_text": "Ce texte n'est pas disponible en anglais.",
   "current_lang": "Langage actuelle",
   "all_lang": "Toutes les langues dispo.",
-  "default_options": "Options par défaut ",
   "license": "Licence MIT",
   "nested": {
     "one": "Il y a un singe sur l'arbre.",
@@ -13,19 +12,71 @@
   },
   "options": {
     "cols_title": {
+      "method": "Méthode",
+      "methods": "Méthodes",
+      "tableOfContent": "Sommaire",
       "argument": "Argument",
       "default_value": "Valeur par défaut",
-      "description": "Description"
+      "description": "Description",
+      "default_options": "Options par défaut"
     },
-    "locales": "Objet contenant les traductions des langues.",
-    "lang": "Un langage actif à utiliser.",
-    "fallbackLang": "Langue de secours.",
-    "activeClass": "Classe à ajouter à la langue active.",
-    "togglersSelector": "Sélecteur pour les éléments de sélection.",
-    "isTogglerSelect": "Si le basculeur est un &lt;select&gt; ou un &lt;button&gt;.",
-    "saveLang": "Indique si la langue doit être enregistrée dans le LocalStorage.",
-    "saveAs": "Nom de la clé permettant d'enregistrer la langue dans localStorage.",
-    "translate": "Fonction qui traduit le texte manuellement.",
-    "onChange": "Fonction qui s'exécute après chaque changement de langue."
+    "paramss": {
+      "locales": "Objet contenant les traductions des langues.",
+      "lang": "Un langage actif à utiliser.",
+      "fallbackLang": "Langue de secours.",
+      "activeClass": "Classe à ajouter à la langue active.",
+      "togglersSelector": "Sélecteur pour les éléments de sélection.",
+      "isTogglerSelect": "Si le basculeur est un &lt;select&gt; ou un &lt;button&gt;.",
+      "saveLang": "Indique si la langue doit être enregistrée dans le LocalStorage.",
+      "saveAs": "Nom de la clé permettant d'enregistrer la langue dans localStorage.",
+      "translate": "Fonction qui traduit le texte manuellement.",
+      "onChange": "Fonction qui s'exécute après chaque changement de langue."
+    },
+    "params": {
+      "locales": "<b class='jdb-text-red'>(obligatoire)</b> -  Objet contenant vos traductions des langues.",
+      "lang": "Langage actif à utiliser. Ne l'utilisez pas si vous souhaitez utiliser le détecteur de langue. Si cette option n'est pas définie, l'option <code>fallback</code> devient obligatoire.",
+      "fallbackLang": "Langage de secours. La langue à utiliser lorsque la langue demandée ou une chaîne demandée dans une langue non entièrement traduite est manquante. S'il n'est pas défini, la langue de secours sera la langue actuelle.",
+      "activeClass": "Classe à ajouter au bouton actif pour la langue actuelle.",
+      "togglersSelector": "Sélecteur CSS pour les éléments basculeurs. si18n.js ajoutera un événement click aux éléments sélectionnés. Ne pas définir si vous utilisez la méthode <code>setLocale(lang)</code>.",
+      "isTogglerSelect": "Si le basculeur est un élément <code>select</code> ou <code>button</code>.",
+      "saveLang": "S'il faut enregistrer la langue dans localStorage.",
+      "saveAs": "Nom de la clé pour enregistrer la langue dans localStorage.",
+      "translate": "<b class='jdb-text-red'>(obligatoire)</b> - Fonction qui traduit le texte manuellement. Réservé uniquement à la traduction.<br><b>Note:</b> La balise <code>html</code> a automatiquement un attribut <code>lang</code> avec la langue actuelle, pas besoin de la coder manuellement.",
+      "onChange": "Fonction de rappel déclenchée lorsque la langue change. Tout ce que vous voulez faire."
+    },
+    "methods": {
+      "constructor": "Fait la même chose que la méthode <code>init</code> suivante.",
+      "init": "<code class='jdb-text-green'>Recommandé</code> - Initialise l'objet si18n avec les <a href='#options'>options</a> données.",
+      "setLocale": "Définit la langue donnée et applique le changement en appelant la méthode d'option <code>translate</code>. N'utilisez pas cette méthode si vous avez configuré l'option <code>togglersSelector</code>.",
+      "getLocale": "Renvoie le code de la langue actuelle (ex : 'en').",
+      "getLocales": "Renvoie la liste de toutes les langues disponibles (e.g.: <code>['fr', 'en', 'it']</code>).",
+      "t": "Renvoie la chaîne de traduction à la clé donnée (e.g.: <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).",
+      "toJSON": "Renvoie les options de l'instance."
+    }
+  },
+  "main": {
+    "bugReport": "Bugs ou suggestions d'amélioration ? Créez un problème ${0}."
+  },
+  "autoDetect": {
+    "autoDetection": "Détection automatique",
+    "autoDetectionDesc": "Cela permettra à si18n.js de détecter et de mettre à jour automatiquement le texte de l'élément.",
+    "noContent": "Pas pour le contenu des balises",
+    "noContentDesc": "Lorsqu'il y a l'attribut <code>data-si18n-default</code>, le texte ne sera pas défini comme contenu de la balise. Vous devez utiliser cette option uniquement pour le contenu des attributs.",
+    "attrDescTitle": "Tous les attributs sont :",
+    "attrDesc": "<li><code>data-si18n-default</code></li><li><code>data-si18n-html</code>: si défini sur <code>true</code>, le contenu sera ajouté sous forme de code HTML. Défaut: <code>false</code></li><li><code>data-si18n-value</code> pour l'attribut <code>value</code> d'une balise comme <code>option</code> et <code>input</code>.</li><li><code>data-si18n-title</code> pour l'attribut <code>title</code> de la balise.</li><li><code>data-si18n-label</code> pour l'attribut <code>aria-label</code>.</li>"
+  },
+  "utils": {
+    "start": "Commencer",
+    "demo": "Démo",
+    "installation": "Installation",
+    "usage": "Utilisation",
+    "viewOnGithub": "Voir la source sur GitHub",
+    "basicExample": "Exemple de base",
+    "copy": "Copier"
+  },
+  "language": {
+    "fr": "Français",
+    "en": "Anglais",
+    "it": "Italien"
   }
 }

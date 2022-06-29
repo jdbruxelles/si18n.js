@@ -1,11 +1,10 @@
 {
-  "site_description": "A simple way to integrate internationalization on a small web site project.",
+  "site_description": "A simple and lightweight way to integrate internationalization on a small web site project.",
   "good_morning": "Good morning",
   "text": "This is an example.",
-  "fallback_text": "This text is not available in Russian.",
+  "fallback_text": "",
   "current_lang": "Current language",
   "all_lang": "All available languages",
-  "default_options": "Default Options",
   "license": "MIT License",
   "nested": {
     "one": "There is one monkey in the tree.",
@@ -13,19 +12,59 @@
   },
   "options": {
     "cols_title": {
+      "method": "Method",
+      "methods": "Methods",
+      "tableOfContent": "Table of content",
       "argument": "Argument",
       "default_value": "Default value",
-      "description": "Description"
+      "description": "Description",
+      "default_options": "Default options"
     },
-    "locales": "Object containing local translations.",
-    "lang": "Active language to use.",
-    "fallbackLang": "Fallback language.",
-    "activeClass": "Class to add to the active language.",
-    "togglersSelector": "Selector to the togglers elements.",
-    "isTogglerSelect": "Whether the toggler is a select or a button.",
-    "saveLang": "Whether to save the language in localStorage.",
-    "saveAs": "Name of the key to save the language in localStorage.",
-    "translate": "Function that translate the text manually.",
-    "onChange": "Function that handle after each language change."
+    "params": {
+      "locales": "<b class='jdb-text-red'>(required)</b> - Object containing your local translations.",
+      "lang": "Active language to use. Don't use it if you want to use the language detector. If not set, the <code>fallback</code> option become required.",
+      "fallbackLang": "Fallback language. The language to use when the requested language or a requested string in a non-fully translated language is missing. If not set, the fallback language will be the current one.",
+      "activeClass": "Class to add to the active button for the current language.",
+      "togglersSelector": "CSS selector to the togglers elements. si18n.js will add a click event to the selected elements. Do not set if you use the <code>setLocale(lang)</code> method.",
+      "isTogglerSelect": "Whether the toggler is a <code>select</code> or <code>button</code> element.",
+      "saveLang": "Whether to save the language in localStorage.",
+      "saveAs": "Name of the key to save the language in localStorage.",
+      "translate": "<b class='jdb-text-red'>(required)</b> - Function that translate the text manually. Reserved only for translation.<br><b>Note:</b> The html tag automatically got a lang attribute with the current language, no need to code it manually.",
+      "onChange": "Callback function triggered when the language change. Whathever you want to do."
+    },
+    "methods": {
+      "constructor": "Does the same thing as the following <code>init</code> method.",
+      "init": "<code class='jdb-text-green'>Recommanded</code> - Initializes the si18n object with the given <a href='#options'>options</a>.",
+      "setLocale": "Sets the given language and applies the change by calling the <code>translate</code> option method. Don't use this method if have configured the <code>togglersSelector</code> option.",
+      "getLocale": "Returns the current language code (e.g.: 'en').",
+      "getLocales": "Returns the list of all available languages (e.g.: <code>['fr', 'en', 'it']</code>).",
+      "t": "Returns the translation string at the given key (e.g.: <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).",
+      "toJSON": "Returns the options of the instance."
+    }
+  },
+  "main": {
+    "bugReport": "Bugs or suggestions for improvements? Create an issue ${0}."
+  },
+  "autoDetect": {
+    "autoDetection": "Automatic detection",
+    "autoDetectionDesc": "This will make si18n.js automatically detect and update the text for the element.",
+    "noContent": "Not for tag content",
+    "noContentDesc": "When there is the <code>data-si18n-default</code> attribute, the text will not be set as the content of the tag. You must use this option for only attributes content.",
+    "attrDescTitle": "All attributes are:",
+    "attrDesc": "<li><code>data-si18n-default</code></li><li><code>data-si18n-html</code>: if set to <code>true</code>, the content will be added as HTML code. Default: <code>false</code></li><li><code>data-si18n-value</code> for the <code>value</code> attribute of a tag like <code>option</code> and <code>input</code>.</li><li><code>data-si18n-title</code> for the <code>title</code> attribute of the tag.</li><li><code>data-si18n-label</code> for the <code>aria-label</code> attribute.</li>"
+  },
+  "utils": {
+    "start": "Get started",
+    "demo": "Demo",
+    "installation": "Installation",
+    "usage": "Usage",
+    "viewOnGithub": "View source on GitHub",
+    "basicExample": "Basic example",
+    "copy": "Copy"
+  },
+  "language": {
+    "fr": "French",
+    "en": "English",
+    "it": "Italian"
   }
 }

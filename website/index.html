@@ -12,28 +12,51 @@
   <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png">
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#1b3a4b">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rancho&text=si18n.js&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap">
   <link rel="stylesheet" href="https://css.bruxelles.dev/jdb?v=latest&c=all">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQa9/Jd4cQaNkItIUj6Z4nvW1dqK0SKXLbn9h4KwZTNtAyw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 <body>
-  <header class="jdb-content jdb-center jdb-padding-32">
+  <header class="jdb-content jdb-center jdb-padding-24">
     <h1 class="jdb-jumbo jdb-bold jdb-text-shadow jdb-unselectable logo">
       si18n.js
     </h1>
-    <a href="https://github.com/jdbruxelles/si18n.js" target="_blank" class="github-octo-corner jdb-hide-tiny" aria-label="View source on GitHub" title="View source on GitHub">
+    <p data-si18n="site_description" class="site-desc jdb-text-light-gray jdb-margin-auto"></p>
+    <div class="jdb-bar jdb-margin-top">
+      <button class="jdb-button jdb-round-xxl jdb-border jdb-border-w2
+        jdb-opacity-min jdb-hover-opacity-off jdb-indigo btn-start"
+        data-goto="start" data-si18n="utils.start"></button>
+      <button class="jdb-button jdb-round-xxl jdb-border jdb-border-w2
+        jdb-opacity-min jdb-hover-opacity-off jdb-teal btn-demo"
+        data-goto="demo" data-si18n="utils.demo"></button>
+    </div>
+    <a href="https://github.com/jdbruxelles/si18n.js" target="_blank" class="github-octo-corner jdb-hide-tiny" data-si18n="utils.viewOnGithub" data-si18n-default="false" data-si18n-title="true" data-si18n-label="true">
       <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" class="octo-arm" style="transform-origin: 130px 106px;"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor"></path></svg>
     </a>
   </header>
+
   <main class="jdb-content">
+    <noscript class="jdb-container">
+      <div class="jdb-panel jdb-pale-red jdb-border jdb-border-w2
+        jdb-border-red jdb-text-red jdb-round-lg jdb-center">
+        <p>This need Javascript to work properly.</p>
+        <p>Cela nécessite Javascript pour fonctionner correctement.</p>
+      </div>
+    </noscript>
     <div id="demo" class="jdb-card-4 jdb-padding jdb-margin jdb-border jdb-border-w2 jdb-round-xxl">
       <div class="i18n-container jdb-center">
         <div class="jdb-bar">
-          <button class="jdb-button jdb-round-xl" data-lang="fr">fr</button>
-          <button class="jdb-button jdb-round-xl" data-lang="en">en</button>
-          <button class="jdb-button jdb-round-xl" data-lang="it">it</button><!-- will not work -->
+          <button class="jdb-button jdb-round-xl" data-si18n="language.fr"
+            data-si18n-default="false" data-si18n-title="true" data-lang="fr">fr</button>
+          <button class="jdb-button jdb-round-xl" data-si18n="language.en"
+            data-si18n-default="false" data-si18n-title="true" data-lang="en">en</button>
+          <button class="jdb-button jdb-round-xl" data-si18n="language.it"
+            data-si18n-default="false" data-si18n-title="true" data-lang="it">it</button><!-- will not work -->
         </div>
         <select class="jdb-select-all jdb-margin-top jdb-margin-auto jdb-center jdb-round-xl jdb-border jdb-border-w1 lang-select" translate="false" style="max-width:100px">
           <option value="fr">fr</option>
@@ -43,11 +66,11 @@
       </div>
       <hr class="jdb-hr">
       <div class="jdb-center">
-        <h1></h1>
-        <p id="text" title></p>
-        <p id="text-fallback"></p>
+        <h1 data-si18n="good_morning"></h1>
+        <p id="text" data-si18n="text" data-si18n-title="true"></p>
+        <p data-si18n="fallback_text"></p>
         <p class="monkey">
-          <span class="one"></span><br>
+          <span class="one" data-si18n="nested.one"></span><br>
           <span class="more"></span>
         </p>
         <hr class="jdb-hr">
@@ -57,72 +80,244 @@
         </p>
       </div>
     </div>
-    <details class="jdb-container" id="options" open>
-      <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer"></summary>
-      <div class="jdb-responsive jdb-margin-top">
-        <table class="jdb-table-all jdb-margin-auto jdb-bordered-all">
-          <thead><tr><th></th><th></th><th></th></tr></thead>
-          <tbody>
-            <tr class="locales">
-              <td><code>locales</code></td>
-              <td><code>{}</code></td>
-              <td></td>
-            </tr>
-            <tr class="lang">
-              <td><code>lang</code></td>
-              <td><code>''</code></td>
-              <td></td>
-            </tr>
-            <tr class="fallbackLang">
-              <td><code>fallbackLang</code></td>
-              <td><code>''</code></td>
-              <td></td>
-            </tr>
-            <tr class="activeClass">
-              <td><code>activeClass</code></td>
-              <td><code>''</code></td>
-              <td></td>
-            </tr>
-            <tr class="togglersSelector">
-              <td><code>togglersSelector</code></td>
-              <td><code>''</code></td>
-              <td></td>
-            </tr>
-            <tr class="isTogglerSelect">
-              <td><code>isTogglerSelect</code></td>
-              <td><code>false</code></td>
-              <td></td>
-            </tr>
-            <tr class="saveLang">
-              <td><code>saveLang</code></td>
-              <td><code>true</code></td>
-              <td></td>
-            </tr>
-            <tr class="saveAs">
-              <td><code>saveAs</code></td>
-              <td><code>'lang'</code></td>
-              <td></td>
-            </tr>
-            <tr class="translate">
-              <td><code>translate</code></td>
-              <td><code>function() {}</code></td>
-              <td></td>
-            </tr>
-            <tr class="onChange">
-              <td><code>onChange</code></td>
-              <td><code>function() {}</code></td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </details>
+
+    <hr class="jdb-hr">
+
+    <div id="summary" class="jdb-section">
+      <details class="jdb-container" open>
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
+          <a href="#summary">#</a> <span data-si18n="options.cols_title.tableOfContent"></span>
+        </summary>
+        <ul class="jdb-lg jdb-italic jdb-text-decoration-all-0">
+          <li><a href="#installation" data-si18n="utils.installation"></a></li>
+          <li><a href="#usage" data-si18n="utils.usage"></a></li>
+          <li><a href="#methods" data-si18n="options.cols_title.methods"></a></li>
+          <li><a href="#options" data-si18n="options.cols_title.default_options"></a></li>
+        </ul>
+      </details>
+    </div>
+
+    <div id="start" class="jdb-section">
+      <details class="jdb-container" id="installation" open>
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
+          <a href="#installation">#</a> <span data-si18n="utils.installation"></span>
+        </summary>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-title">NPM</span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive" data-mode="plaintext"><code>npm i si18n.js</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-title">Yarn</span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive" data-mode="plaintext"><code>yarn add si18n.js</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-title">CDN ES6 Modules</span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="html"><code>&lt;!-- si18n.js --&gt;
+&lt;script type="module" src="https://si18n.js.bruxelles.dev/si18n.js"&gt;&lt;/script&gt;
+
+&lt;!-- UNPKG --&gt;
+&lt;script type="module" src="https://unpkg.com/si18n.js@1.0.1/si18n.js"&gt;&lt;/script&gt;
+
+&lt;!-- jsDelivr --&gt;
+&lt;script type="module" src="https://cdn.jsdelivr.net/npm/si18n.js@1.0.1/si18n.js"&gt;&lt;/script&gt;
+
+&lt;!-- UNPKG --&gt;
+&lt;script type="module"&gt;
+  import si18n from 'https://cdn.jsdelivr.net/npm/si18n.js@1.0.1/si18n.js';
+  // ...
+&lt;/script&gt;</code></pre>
+        </div>
+      </details>
+
+      <details class="jdb-container jdb-margin-top" id="usage" open>
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
+          <a href="#usage">#</a> <span data-si18n="utils.usage"></span>
+        </summary>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-title">NPM</span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>import si18n from "si18n";</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-title" data-si18n="utils.basicExample"></span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>let loc = new si18n();
+loc.init({
+  locales: {}, // { "en": {...}, "fr": {...}}
+  lang: "fr",
+  fallbackLang: "en"
+  translate() {
+    document.querySelector(".lang").innerText = loc.getLocale();
+    document.querySelector(".title").innerText = loc.t("nested.title");
+    // ...
+  },
+  onChange() {
+    // ...
+  }
+});</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-title" data-si18n="autoDetect.autoDetection"></span>
+            <div class="code-description" data-si18n="autoDetect.autoDetectionDesc"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="html"><code>&lt;div data-si18n="site.title"&gt;&lt;/div&gt;</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-title" data-si18n="autoDetect.noContent"></span>
+            <div class="code-description" data-si18n="autoDetect.noContentDesc" data-si18n-html="true"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="html"><code>&lt;div data-si18n="site.title" data-si18n-default="true" data-si18n-title="true"&gt;&lt;/div&gt;</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-header no-copy">
+            <span class="code-title" data-si18n="autoDetect.attrDescTitle"></span>
+            <div class="code-description">
+              <ul class="jdb-stretch" data-si18n="autoDetect.attrDesc" data-si18n-html="true"></ul>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="jdb-container jdb-margin-top" id="methods">
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
+          <a href="#methods">#</a> <span data-si18n="options.cols_title.methods"></span>
+        </summary>
+        <div class="jdb-responsive jdb-margin-top">
+          <table class="jdb-table-all jdb-margin-auto jdb-bordered-all">
+            <thead>
+              <tr>
+                <th data-si18n="options.cols_title.method"></th>
+                <th data-si18n="options.cols_title.argument"></th>
+                <th data-si18n="options.cols_title.description"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>constructor</code></td>
+                <td><code>options</code></td>
+                <td data-si18n="options.methods.constructor" data-si18n-html="true"></td>
+              </tr>
+              <tr>
+                <td><code>init</code></td>
+                <td><code>options</code></td>
+                <td data-si18n="options.methods.init" data-si18n-html="true"></td>
+              </tr>
+              <tr>
+                <td><code>setLocale</code></td>
+                <td><code>lang</code></td>
+                <td data-si18n="options.methods.setLocale" data-si18n-html="true"></td>
+              </tr>
+              <tr>
+                <td><code>getLocale</code></td>
+                <td><code>void</code></td>
+                <td data-si18n="options.methods.getLocale"></td>
+              </tr>
+              <tr>
+                <td><code>getLocales</code></td>
+                <td><code>void</code></td>
+                <td data-si18n="options.methods.getLocales" data-si18n-html="true"></td>
+              </tr>
+              <tr>
+                <td><code>t</code></td>
+                <td><code>JSONPath</code></td>
+                <td data-si18n="options.methods.t" data-si18n-html="true"></td>
+              </tr>
+              <tr>
+                <td><code>toJSON</code></td>
+                <td><code>void</code></td>
+                <td data-si18n="options.methods.toJSON"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details class="jdb-container jdb-margin-top" id="options">
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer"></summary>
+        <div class="jdb-responsive jdb-margin-top">
+          <table class="jdb-table-all jdb-margin-auto jdb-bordered-all">
+            <thead>
+              <tr>
+                <th data-si18n="options.cols_title.argument"></th>
+                <th data-si18n="options.cols_title.default_value"></th>
+                <th data-si18n="options.cols_title.description"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="locales">
+                <td><code>locales</code></td>
+                <td><code>{}</code></td>
+                <td></td>
+              </tr>
+              <tr class="lang">
+                <td><code>lang</code></td>
+                <td><code>''</code></td>
+                <td></td>
+              </tr>
+              <tr class="fallbackLang">
+                <td><code>fallbackLang</code></td>
+                <td><code>''</code></td>
+                <td></td>
+              </tr>
+              <tr class="activeClass">
+                <td><code>activeClass</code></td>
+                <td><code>''</code></td>
+                <td></td>
+              </tr>
+              <tr class="togglersSelector">
+                <td><code>togglersSelector</code></td>
+                <td><code>''</code></td>
+                <td></td>
+              </tr>
+              <tr class="isTogglerSelect">
+                <td><code>isTogglerSelect</code></td>
+                <td><code>false</code></td>
+                <td></td>
+              </tr>
+              <tr class="saveLang">
+                <td><code>saveLang</code></td>
+                <td><code>true</code></td>
+                <td></td>
+              </tr>
+              <tr class="saveAs">
+                <td><code>saveAs</code></td>
+                <td><code>'lang'</code></td>
+                <td></td>
+              </tr>
+              <tr class="translate">
+                <td><code>translate</code></td>
+                <td><code>function() {}</code></td>
+                <td></td>
+              </tr>
+              <tr class="onChange">
+                <td><code>onChange</code></td>
+                <td><code>function() {}</code></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
   </main>
+
   <footer class="jdb-content jdb-section jdb-container">
     <div class="jdb-padding jdb-center jdb-round-xxl jdb-black jdb-card-4">
       <p id="license"></p>
     </div>
   </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js" integrity="sha512-yUUc0qWm2rhM7X0EFe82LNnv2moqArj5nro/w1bi05A09hRVeIZbN6jlMoyu0+4I/Bu4Ck/85JQIU82T82M28w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer type="module" src="demo.js"></script>
 </body>
 </html>
