@@ -1,7 +1,6 @@
 import si18n from "./si18n.js";
 import en from "./locales/en.json" assert {type: "json"};
 import fr from "./locales/fr.json" assert {type: "json"};
-import ru from "./locales/ru.json" assert {type: "json"};
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
@@ -10,7 +9,7 @@ $("#license").innerHTML = `© ${(new Date().getFullYear())} — <span></span>`;
 
 const loc = new si18n(); // Initialize the i18n object.
 const loc2 = new si18n(); // Initialize the si18n object.
-const locales = { en, fr, ru };
+const locales = { en, fr };
 
 const translate = (locObj) => {
   $("html").setAttribute("lang", locObj.getLocale());
