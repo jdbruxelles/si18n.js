@@ -1,5 +1,5 @@
 /*!
- * @license si18n.js - v1.1.1
+ * @license si18n.js - v1.1.0
  * Copyright (c) José dBruxelles <jd.bruxelles.dev/c>.
  *
  * This source code is licensed under the MIT license found in the
@@ -58,6 +58,8 @@ export default class si18n {
    * @returns {si18n} The si18n object.
    */
   init(_options = {}) {
+    if (this.#isInitialized) return; // Initialize once.
+
     const docsLink = "https://si18n.js.bruxelles.dev/#options";
     const optionsKeys = Object.keys(_options);
 
@@ -70,7 +72,14 @@ export default class si18n {
       throw new Error(`Missing required options. See docs ${docsLink}`);
     }
 
-    if (this.#isInitialized) return; // Initialize once.
+    if (_options.fallbackLang) {
+      this.#options.fallbackLang = _options.fallbackLang;
+    } else {
+      if (_options.lang) this.#options.fallbackLang = _options.lang;
+      else throw new Error(`The fallback option is required when no lang option is set. See docs ${docsLink}`);
+    }
+
+    if (_options.translate) this.#options.translate = _options.translate;
     if (_options.locales) this.#options.locales = _options.locales;
     if (_options.saveAs) this.#options.saveAs = _options.saveAs;
     if (typeof _options.onChange === "function") {
@@ -93,10 +102,6 @@ export default class si18n {
       // Use the default language of the navigator.
       this.#options.lang = navigator.language.substring(0, 2);
     }
-
-    if (_options.translate) this.#options.translate = _options.translate;
-    if (_options.fallbackLang) this.#options.fallbackLang = _options.fallbackLang;
-    else this.#options.fallbackLang = this.#options.lang;
 
     this.#translate();
     this.#options.callback();
@@ -194,10 +199,10 @@ export default class si18n {
   /**
    * Sets the given language as the current and call
    * the translate method option to make the translation.
-   * @param {string} lang the language to set.
+   * @param {string} [lang] the language to set.
    * @private
    */
-  #translate(lang) {
+  #translate(lang = this.#options.lang) {
     // Cannot translate to a language that doesn't exist.
     if (lang && !si18n.#isUndefined(this.#options.locales[lang])) {
       this.#options.lang = lang;
