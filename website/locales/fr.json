@@ -59,7 +59,7 @@
   },
   "autoDetect": {
     "autoDetection": "Détection automatique",
-    "autoDetectionDesc": "Cela permettra à si18n.js de détecter et de mettre à jour automatiquement le texte de l'élément.",
+    "autoDetectionDesc": "Ceci permet à si18n.js de détecter et de mettre à jour automatiquement le texte de l'élément :",
     "noContent": "Pas pour le contenu des balises",
     "noContentDesc": "Lorsqu'il y a l'attribut <code>data-si18n-default</code>, le texte ne sera pas défini comme contenu de la balise. Vous devez utiliser cette option uniquement pour le contenu des attributs.",
     "attrDescTitle": "Tous les attributs sont :",

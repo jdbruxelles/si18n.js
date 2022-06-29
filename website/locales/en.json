@@ -47,7 +47,7 @@
   },
   "autoDetect": {
     "autoDetection": "Automatic detection",
-    "autoDetectionDesc": "This will make si18n.js automatically detect and update the text for the element.",
+    "autoDetectionDesc": "This allows si18n.js to automatically detect and update the text for the element:",
     "noContent": "Not for tag content",
     "noContentDesc": "When there is the <code>data-si18n-default</code> attribute, the text will not be set as the content of the tag. You must use this option for only attributes content.",
     "attrDescTitle": "All attributes are:",
