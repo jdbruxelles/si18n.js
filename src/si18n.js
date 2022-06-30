@@ -230,17 +230,14 @@ export default class si18n {
           }
         }
 
-        if (!si18n.#isUndefined(element.dataset.si18nTitle)) {
+        if (!si18n.#isUndefined(element.dataset.si18nTitle))
           element.setAttribute("title", text);
-        }
 
-        if (!si18n.#isUndefined(element.dataset.si18nLabel)) {
+        if (!si18n.#isUndefined(element.dataset.si18nLabel))
           element.setAttribute("aria-label", text);
-        }
 
-        if (!si18n.#isUndefined(element.dataset.si18nValue)) {
+        if (!si18n.#isUndefined(element.dataset.si18nValue))
           element.setAttribute("value", text);
-        }
       });
     }
 
@@ -253,38 +250,30 @@ export default class si18n {
    * @returns {string|object} The translation at the given key.
    */
   t(JSONPath) {
+    let fallbackLangChecked = false;
     let value = this.#options.locales[this.#options.lang];
 
-    // Process nested path selector.
-    if (JSONPath.includes(".")) {
-      try {
-        const pathItems = JSONPath.split(".");
-        for (let i = 0; i < pathItems.length; i++) {
-          if (si18n.#isUndefined(value)) {
+    // To process nested path selector.
+    const pathItems = JSONPath.split(".");
+
+    try {
+      for (let i = 0; i < pathItems.length; i++) {
+        value = value[pathItems[i]];
+        if (si18n.#isUndefined(value) || value === "") {
+          if (!fallbackLangChecked) {
             value = this.#getFallbackObj();
-            i = 0;
-          }
-          value = value[pathItems[i]];
-          if (i === pathItems.length - 1 && si18n.#isUndefined(value)) {
-            this.#triggerErrorPathNotFound(JSONPath);
+            fallbackLangChecked = true;
+            for (const p of pathItems) value = value[p];
+            if (si18n.#isUndefined(value) || value === "")
+              this.#triggerErrorPathNotFound(JSONPath);
           }
         }
-      } catch (error) {
-        this.#triggerErrorPathNotFound(JSONPath);
       }
-
-      // If no string is found on the current language and the fallback language,
-      // return an empty string.
-      return value || "";
+    } catch (error) {
+      this.#triggerErrorPathNotFound(JSONPath);
     }
 
-    // Process simple path selector
-    const v = value && value[JSONPath];
-    if (si18n.#isUndefined(value) || v === undefined || v === "") {
-      // Use the fallback language when the selected is not available.
-      value = this.#getFallbackObj();
-    }
-    return value[JSONPath];
+    return value;
   }
 
   /**
