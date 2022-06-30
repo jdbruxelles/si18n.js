@@ -1,9 +1,16 @@
 import si18n from "./si18n.js";
-import en from "./locales/en.json" assert {type: "json"};
-import fr from "./locales/fr.json" assert {type: "json"};
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
+
+const getJSON = async (url) => {
+  try {
+    const response = await fetch(url);
+    return await response.json();
+  } catch (error) {
+    return console.error();(error);
+  }
+};
 
 const scrollTo = (element, top = 16) => {
   let distance = element.getBoundingClientRect();
@@ -50,7 +57,10 @@ const scrollTo = (element, top = 16) => {
 
 const loc = new si18n(); // Initialize the i18n object.
 const loc2 = new si18n(); // Initialize the si18n object.
-const locales = { en, fr };
+const locales = {
+  fr: await getJSON("./locales/fr.json"),
+  en: await getJSON("./locales/en.json")
+};
 
 const translate = (locObj) => {
   $("meta[name='description']").setAttribute("content", locObj.t("site_description"));
