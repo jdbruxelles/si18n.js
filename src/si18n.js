@@ -1,5 +1,5 @@
 /*!
- * @license si18n.js - v1.1.0
+ * @license si18n.js - v1.1.1
  * Copyright (c) José dBruxelles <jd.bruxelles.dev/c>.
  *
  * This source code is licensed under the MIT license found in the
