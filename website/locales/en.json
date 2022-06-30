@@ -7,7 +7,6 @@
   "all_lang": "All available languages",
   "license": "MIT License",
   "nested": {
-    "one": "There is one monkey in the tree.",
     "more": "There are {0} monkeys in the tree."
   },
   "options": {
@@ -27,8 +26,8 @@
       "activeClass": "Class to add to the active button for the current language.",
       "togglersSelector": "CSS selector to the togglers elements. si18n.js will add a click event to the selected elements. Do not set if you use the <code>setLocale(lang)</code> method.",
       "isTogglerSelect": "Whether the toggler is a <code>select</code> or <code>button</code> element.",
-      "saveLang": "Whether to save the language in localStorage.",
-      "saveAs": "Name of the key to save the language in localStorage.",
+      "saveLang": "Whether to save the language in the localStorage.",
+      "saveAs": "Name of the key to save the language in the localStorage. If set, the value will be used as key to retrieve the language from the URL parameter (Default: <code>lang</code>).",
       "translate": "<b class='jdb-text-red'>(required)</b> - Function that translate the text manually. Reserved only for translation.<br><b>Note:</b> The html tag automatically got a lang attribute with the current language, no need to code it manually.",
       "onChange": "Callback function triggered when the language change. Whathever you want to do."
     },

@@ -88,7 +88,7 @@ const translate = (locObj) => {
 loc.init({
   locales,
   lang: "fr",
-  fallbackLang: "en",
+  fallbackLang: "fr",
   activeClass: "jdb-dark-gray",
   togglersSelector: ".i18n-container button",
   translate() { translate(loc); }
@@ -98,7 +98,7 @@ loc.init({
 loc2.init({
   locales,
   lang: "fr",
-  fallbackLang: "en",
+  fallbackLang: "fr",
   togglersSelector: ".i18n-container .lang-select",
   isTogglerSelect: true,
   translate() { translate(loc2); }

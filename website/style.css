@@ -74,7 +74,7 @@ table tr td:nth-child(1) code {
 table tr td:nth-child(3) code {
   border: 1px solid #1d3b4e;
   border-radius: 4px;
-  padding: 2px 6px;
+  padding: 0 6px;
   line-height: 1.5;
 }
 
@@ -115,9 +115,12 @@ table tr td:nth-child(3) code {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAfElEQVRIie2Uyw2AMAxDHcQYXQixRwen3cNcQAJU2sogQIBPOSR++UgBXiOSPclIUXu+tgAEAE5t0Mwsm1DqRFVztmE14MBNAskuZbha0ZSoaqgBSDfZ1t13gx/wAz4EaOeg+G5FXTdBQhGAU/4RgDAHuQn8BFHMvVD3UI2rt/EJm0HvRQAAAABJRU5ErkJggg==");
   background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
   width: 18px;
   height: 18px;
-  background-size: cover;
+  top: 3px;
+  left: 4px;
+  position: relative;
   display: inline-block;
   cursor: pointer;
 }
