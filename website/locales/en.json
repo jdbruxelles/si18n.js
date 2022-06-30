@@ -7,6 +7,7 @@
   "all_lang": "All available languages",
   "license": "MIT License",
   "nested": {
+    "one": "There is one monkey in the tree.",
     "more": "There are {0} monkeys in the tree."
   },
   "options": {
