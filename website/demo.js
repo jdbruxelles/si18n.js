@@ -12,13 +12,18 @@ const getJSON = async (url) => {
   }
 };
 
-const scrollTo = (element, top = 16) => {
+const scrollTo = (element, top = 8) => {
   let distance = element.getBoundingClientRect();
   window.scrollTo({
     behavior: "smooth",
     top: distance.top + window.pageYOffset - top,
     left: 0
   });
+};
+
+const openSummary = (elem) => {
+  if (!elem.attributes.open)
+    elem.setAttribute("open", "true");
 };
 
 (function(){
@@ -129,7 +134,9 @@ $$("#summary a, summary a[href^='#']").forEach((item) => {
   item.addEventListener("click", function(event) {
     event.preventDefault();
     const hash = this.href.split("/").at(-1);
-    scrollTo($(hash), 8);
+    const elem = $(hash);
+    openSummary(elem);
+    scrollTo(elem);
     setTimeout(() => {
       location.hash = hash;
     }, 25);
@@ -138,7 +145,14 @@ $$("#summary a, summary a[href^='#']").forEach((item) => {
 
 $$("[data-goto]").forEach((elem) => {
   elem.addEventListener("click", () => {
-    const id = elem.dataset.goto;
-    scrollTo($(`#${id}`), 8);
+    scrollTo($(`#${elem.dataset.goto}`));
   });
 });
+
+if (window.location.hash) {
+  const elem = $(window.location.hash);
+  if (elem) {
+    openSummary(elem);
+    scrollTo(elem);
+  }
+}
