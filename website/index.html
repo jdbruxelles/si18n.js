@@ -27,15 +27,15 @@
       si18n.js
     </h1>
     <p data-si18n="site_description" class="site-desc jdb-text-light-gray jdb-margin-auto"></p>
-    <div class="jdb-bar jdb-margin-top">
+    <div class="jdb-margin-top jdb-focusable-buttons">
       <button class="jdb-button jdb-round-xxl jdb-border jdb-border-w2
         jdb-opacity-min jdb-hover-opacity-off jdb-indigo btn-start"
-        data-goto="start" data-si18n="utils.start"></button>
+        data-goto="start" data-si18n="utils.start" data-si18n-label="true"></button>
       <button class="jdb-button jdb-round-xxl jdb-border jdb-border-w2
         jdb-opacity-min jdb-hover-opacity-off jdb-teal btn-demo"
-        data-goto="demo" data-si18n="utils.demo"></button>
+        data-goto="demo" data-si18n="utils.demo" data-si18n-label="true"></button>
     </div>
-    <a href="https://github.com/jdbruxelles/si18n.js" target="_blank" class="github-octo-corner jdb-hide-tiny" data-si18n="utils.viewOnGithub" data-si18n-default="false" data-si18n-title="true" data-si18n-label="true">
+    <a href="https://github.com/jdbruxelles/si18n.js" target="_blank" class="github-octo-corner jdb-hide-tiny" data-si18n="utils.viewOnGithub" data-si18n-default="false" data-si18n-title="true" data-si18n-label="true" tabindex="-1">
       <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" class="octo-arm" style="transform-origin: 130px 106px;"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor"></path></svg>
     </a>
   </header>
@@ -50,15 +50,18 @@
     </noscript>
     <div id="demo" class="jdb-card-4 jdb-padding jdb-margin jdb-border jdb-border-w2 jdb-round-xxl">
       <div class="i18n-container jdb-center">
-        <div class="jdb-bar">
+        <div class="jdb-margin-16 jdb-focusable-buttons">
           <button class="jdb-button jdb-round-xl" data-si18n="language.fr"
-            data-si18n-default="false" data-si18n-title="true" data-lang="fr">fr</button>
+            data-si18n-default="false" data-si18n-title="true"
+            data-si18n-label="true" data-lang="fr">fr</button>
           <button class="jdb-button jdb-round-xl" data-si18n="language.en"
-            data-si18n-default="false" data-si18n-title="true" data-lang="en">en</button>
+            data-si18n-default="false" data-si18n-title="true"
+            data-si18n-label="true" data-lang="en">en</button>
           <button class="jdb-button jdb-round-xl" data-si18n="language.it"
-            data-si18n-default="false" data-si18n-title="true" data-lang="it">it</button><!-- will not work -->
+            data-si18n-default="false" data-si18n-title="true"
+            data-si18n-label="true" data-lang="it">it</button><!-- will not work -->
         </div>
-        <select class="jdb-select-all jdb-margin-top jdb-margin-auto jdb-center jdb-round-xl jdb-border jdb-border-w1 lang-select" translate="false" style="max-width:100px">
+        <select class="jdb-select-all jdb-margin-top jdb-margin-auto jdb-center jdb-round-xl jdb-border jdb-border-w1 lang-select jdb-focusable" translate="false" style="max-width:100px">
           <option value="fr">fr</option>
           <option value="en">en</option>
           <option value="it">it</option><!-- will be disabled automatically -->
@@ -85,7 +88,7 @@
 
     <div id="summary" class="jdb-section">
       <details class="jdb-container" open>
-        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable">
           <a href="#summary">#</a> <span data-si18n="options.cols_title.tableOfContent"></span>
         </summary>
         <ul class="jdb-lg jdb-italic jdb-text-decoration-all-0">
@@ -99,7 +102,7 @@
 
     <div id="start" class="jdb-section">
       <details class="jdb-container" id="installation" open>
-        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable">
           <a href="#installation">#</a> <span data-si18n="utils.installation"></span>
         </summary>
         <div class="code-block">
@@ -136,7 +139,7 @@
       </details>
 
       <details class="jdb-container jdb-margin-top" id="usage" open>
-        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable">
           <a href="#usage">#</a> <span data-si18n="utils.usage"></span>
         </summary>
         <div class="code-block">
@@ -189,7 +192,7 @@ loc.init({
       </details>
 
       <details class="jdb-container jdb-margin-top" id="methods">
-        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer">
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable">
           <a href="#methods">#</a> <span data-si18n="options.cols_title.methods"></span>
         </summary>
         <div class="jdb-responsive jdb-margin-top">
@@ -243,7 +246,7 @@ loc.init({
       </details>
 
       <details class="jdb-container jdb-margin-top" id="options">
-        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer"></summary>
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable"></summary>
         <div class="jdb-responsive jdb-margin-top">
           <table class="jdb-table-all jdb-margin-auto jdb-bordered-all">
             <thead>
