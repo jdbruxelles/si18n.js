@@ -1,4 +1,4 @@
-import si18n from "./si18n.js";
+import si18n from "./si18n.min.js";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);

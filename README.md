@@ -40,6 +40,8 @@ yarn add si18n.js
 
 ```html
 <script type="module" src="https://unpkg.com/si18n.js"></script>
+<!-- or -->
+<script type="module" src="https://unpkg.com/si18n.min.js"></script>
 ```
 
 ## Usage

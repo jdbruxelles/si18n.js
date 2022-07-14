@@ -6,5 +6,5 @@
 /.netlify
 
 /website/demo.min.js
-/website/si18n.js
-/si18n.js
+/website/si18n*.js
+/si18n*.js

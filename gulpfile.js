@@ -22,9 +22,12 @@ const babelOptions = {
 
 function si18n() {
   return src("./src/si18n.js")
-    .pipe(babel(babelOptions))
     .pipe(dest("./"))
-    .pipe(dest("./website/"));
+    .pipe(dest("./website/"))
+    .pipe(babel(babelOptions))
+    .pipe(rename({ extname: ".min.js" }))
+    .pipe(dest("./website/"))
+    .pipe(dest("./"));
 }
 
 function demoScript() {
