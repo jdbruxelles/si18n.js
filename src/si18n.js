@@ -8,7 +8,7 @@
  *
  * Make translation management easier and more efficient.
  */
-export default class si18n {
+export default class Si18n {
   #noop() {} // Empty function to avoid undefined paramaters.
   #isInitialized = false;
   #options = {
@@ -55,7 +55,7 @@ export default class si18n {
    * @param {string} [_options.saveAs="lang"] Name of the key to save the language in localStorage.
    * @param {function(string):string=} _options.translate Function that translate the text manually.
    * @param {function} [_options.onChange] Function that handle after each language change.
-   * @returns {si18n} The si18n object.
+   * @returns {Si18n} The si18n object.
    */
   init(_options = {}) {
     if (this.#isInitialized) return; // Initialize once.
@@ -88,11 +88,11 @@ export default class si18n {
 
     const searchParam = new URLSearchParams(window.location.search);
     const langInURL = searchParam.get(this.#options.saveAs);
-    if (!si18n.#isUndefined(_options.saveLang)) {
+    if (!Si18n.#isUndefined(_options.saveLang)) {
       this.#options.saveLang = _options.saveLang;
     }
 
-    if (langInURL !== null && !si18n.#isUndefined(this.#options.locales[langInURL])) {
+    if (langInURL !== null && !Si18n.#isUndefined(this.#options.locales[langInURL])) {
       this.#options.lang = langInURL;
     } else if (this.#options.saveLang) {
       this.#options.lang = localStorage.getItem(this.#options.saveAs) || _options.lang;
@@ -204,7 +204,7 @@ export default class si18n {
    */
   #translate(lang = this.#options.lang) {
     // Cannot translate to a language that doesn't exist.
-    if (lang && !si18n.#isUndefined(this.#options.locales[lang])) {
+    if (lang && !Si18n.#isUndefined(this.#options.locales[lang])) {
       this.#options.lang = lang;
     } else {
       // Set fallback language.
@@ -230,13 +230,13 @@ export default class si18n {
           }
         }
 
-        if (!si18n.#isUndefined(element.dataset.si18nTitle))
+        if (!Si18n.#isUndefined(element.dataset.si18nTitle))
           element.setAttribute("title", text);
 
-        if (!si18n.#isUndefined(element.dataset.si18nLabel))
+        if (!Si18n.#isUndefined(element.dataset.si18nLabel))
           element.setAttribute("aria-label", text);
 
-        if (!si18n.#isUndefined(element.dataset.si18nValue))
+        if (!Si18n.#isUndefined(element.dataset.si18nValue))
           element.setAttribute("value", text);
       });
     }
@@ -259,12 +259,12 @@ export default class si18n {
     try {
       for (let i = 0; i < pathItems.length; i++) {
         value = value[pathItems[i]];
-        if (si18n.#isUndefined(value) || value === "") {
+        if (Si18n.#isUndefined(value) || value === "") {
           if (!fallbackLangChecked) {
             value = this.#getFallbackObj();
             fallbackLangChecked = true;
             for (const p of pathItems) value = value[p];
-            if (si18n.#isUndefined(value) || value === "")
+            if (Si18n.#isUndefined(value) || value === "")
               this.#triggerErrorPathNotFound(JSONPath);
           }
         }

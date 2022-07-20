@@ -1,4 +1,4 @@
-import si18n from "./si18n.min.js";
+import Si18n from "./si18n.min.js";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
@@ -60,8 +60,8 @@ const openSummary = (elem) => {
     " target='_blank' class='jdb-text-decoration-0' data-si18n='license'></a>";
 })();
 
-const loc = new si18n(); // Initialize the i18n object.
-const loc2 = new si18n(); // Initialize the si18n object.
+const loc = new Si18n(); // Initialize the i18n object.
+const loc2 = new Si18n(); // Initialize the si18n object.
 const locales = {
   fr: await getJSON("./locales/fr.json"),
   en: await getJSON("./locales/en.json")
