@@ -279,6 +279,7 @@ export default class Si18n {
   /**
    * Throws an error for the not found translation.
    * @param {string} JSONPath the object property selector.
+   * @private
    */
   #triggerErrorPathNotFound(JSONPath) {
     console.error('The path "' + JSONPath + '" was not found in the current language (' +
@@ -290,6 +291,7 @@ export default class Si18n {
    * Returns the type of the given value.
    * @param {*} value the value to check.
    * @returns {boolean} the type of the value.
+   * @private
    */
   static #isUndefined(value) {
     return typeof value === "undefined";
