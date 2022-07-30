@@ -8,7 +8,7 @@
   "license": "Licence MIT",
   "nested": {
     "one": "Il y a un singe sur l'arbre.",
-    "more": "Il y a {0} singes sur l'arbre."
+    "more": "Il y a %{0} singes sur l'arbre."
   },
   "options": {
     "cols_title": {
@@ -19,18 +19,6 @@
       "default_value": "Valeur par défaut",
       "description": "Description",
       "default_options": "Options par défaut"
-    },
-    "paramss": {
-      "locales": "Objet contenant les traductions des langues.",
-      "lang": "Un langage actif à utiliser.",
-      "fallbackLang": "Langue de secours.",
-      "activeClass": "Classe à ajouter à la langue active.",
-      "togglersSelector": "Sélecteur pour les éléments de sélection.",
-      "isTogglerSelect": "Si le basculeur est un &lt;select&gt; ou un &lt;button&gt;.",
-      "saveLang": "Indique si la langue doit être enregistrée dans le LocalStorage.",
-      "saveAs": "Nom de la clé permettant d'enregistrer la langue dans localStorage.",
-      "translate": "Fonction qui traduit le texte manuellement.",
-      "onChange": "Fonction qui s'exécute après chaque changement de langue."
     },
     "params": {
       "locales": "<b class='jdb-text-red'>(obligatoire)</b> -  Objet contenant vos traductions des langues.",
@@ -50,8 +38,12 @@
       "setLocale": "Définit la langue donnée et applique le changement en appelant la méthode d'option <code>translate</code>. N'utilisez pas cette méthode si vous avez configuré l'option <code>togglersSelector</code>.",
       "getLocale": "Renvoie le code de la langue actuelle (ex : 'en').",
       "getLocales": "Renvoie la liste de toutes les langues disponibles (e.g.: <code>['fr', 'en', 'it']</code>).",
-      "t": "Renvoie la chaîne de traduction à la clé donnée (e.g.: <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).",
+      "t": "Renvoie la chaîne de traduction à la clé donnée (e.g.: <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).<br>L'argument <code>valeurs</code> est facultatif. S'il est fourni, il doit contenir les clés-valeurs à remplacer. Voir l'<a href='#values-replacement'>exemple</a> ci-dessous.",
       "toJSON": "Renvoie les options de l'instance."
+    },
+    "others": {
+      "valuesReplacement": "Remplacement des valeurs",
+      "valuesReplacementDesc": "En plus de faire des simple remplacement de textes, si18n.js peut aussi insérer des valeurs dans des espaces réservés à ce but. Il suffit de définir une clé-valeur dans l'argument <code>valeurs</code> (deuxième argument) de la méthode <a href='#fn-t'><code>t</code></a>. Et dans vos textes, il suffira de réserver les espaces par un <code>%{X}</code> où X est la clé (numéro ou nom de propriété) de la valeur à insérer. Exemple :"
     }
   },
   "main": {
@@ -60,6 +52,7 @@
   "autoDetect": {
     "autoDetection": "Détection automatique",
     "autoDetectionDesc": "Ceci permet à si18n.js de détecter et de mettre à jour automatiquement le texte de l'élément :",
+    "autoSetLangAndDir": "L'attribut <code>lang</code> et <code>dir</code> de la balise <code>html</code> sont définis automatiquement. La seule chose que vous pouvez faire pour l'attribut <code>dir</code>, c'est de le définir manuellement pour toutes les langues ou seulement pour les langues en <code>rtl</code>. Par défaut : <code>ltr</code>.",
     "noContent": "Pas pour le contenu des balises",
     "noContentDesc": "Lorsqu'il y a l'attribut <code>data-si18n-default</code>, le texte ne sera pas défini comme contenu de la balise. Vous devez utiliser cette option uniquement pour le contenu des attributs.",
     "attrDescTitle": "Tous les attributs sont :",
@@ -72,7 +65,9 @@
     "usage": "Utilisation",
     "viewOnGithub": "Voir la source sur GitHub",
     "basicExample": "Exemple de base",
-    "copy": "Copier"
+    "copy": "Copier",
+    "values": "valeurs",
+    "or": "ou"
   },
   "language": {
     "fr": "Français",

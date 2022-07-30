@@ -92,8 +92,21 @@
           <a href="#summary">#</a> <span data-si18n="options.cols_title.tableOfContent"></span>
         </summary>
         <ul class="jdb-lg jdb-italic jdb-text-decoration-all-0">
-          <li><a href="#installation" data-si18n="utils.installation"></a></li>
-          <li><a href="#usage" data-si18n="utils.usage"></a></li>
+          <li><a href="#installation" data-si18n="utils.installation"></a>
+            <ul>
+              <li><a href="#npm">NPM</a></li>
+              <li><a href="#yarn">Yarn</a></li>
+              <li><a href="#cdn">CDN</a></li>
+            </ul>
+          </li>
+          <li><a href="#usage" data-si18n="utils.usage"></a>
+            <ul>
+              <li><a href="#use-with-npm">NPM</a></li>
+              <li><a href="#basic-example" data-si18n="utils.basicExample"></a></li>
+              <li><a href="#auto-detect" data-si18n="autoDetect.autoDetection"></a></li>
+              <li><a href="#values-replacement" data-si18n="options.others.valuesReplacement"></a></li>
+            </ul>
+          </li>
           <li><a href="#methods" data-si18n="options.cols_title.methods"></a></li>
           <li><a href="#options" data-si18n="options.cols_title.default_options"></a></li>
         </ul>
@@ -105,23 +118,23 @@
         <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable">
           <a href="#installation">#</a> <span data-si18n="utils.installation"></span>
         </summary>
-        <div class="code-block">
+        <div class="code-block" id="npm">
           <div class="code-header">
             <span class="code-title">NPM</span>
           </div>
-          <pre class="jdb-code notranslate jdb-responsive" data-mode="plaintext"><code>npm i si18n.js</code></pre>
+          <pre class="jdb-code notranslate jdb-responsive" data-mode="shell"><code>npm i si18n.js</code></pre>
         </div>
-        <div class="code-block">
+        <div class="code-block" id="yarn">
           <div class="code-header">
             <span class="code-title">Yarn</span>
           </div>
-          <pre class="jdb-code notranslate jdb-responsive" data-mode="plaintext"><code>yarn add si18n.js</code></pre>
+          <pre class="jdb-code notranslate jdb-responsive" data-mode="shell"><code>yarn add si18n.js</code></pre>
         </div>
-        <div class="code-block">
-          <div class="code-header">
+        <div class="code-block" id="cdn">
+          <div class="code-header no-copy">
             <span class="code-title">CDN ES6 Modules</span>
           </div>
-          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="html"><code>&lt;!-- si18n.js --&gt;
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="html"><code>&lt;!-- si18n.js @latest --&gt;
 &lt;script type="module" src="https://si18n.js.bruxelles.dev/si18n.js"&gt;&lt;/script&gt;
 &lt;script type="module" src="https://si18n.js.bruxelles.dev/si18n.min.js"&gt;&lt;/script&gt;
 
@@ -135,7 +148,7 @@
 
 &lt;!-- UNPKG --&gt;
 &lt;script type="module"&gt;
-  import si18n from 'https://cdn.jsdelivr.net/npm/si18n.js@1.1.2/si18n.js';
+  import Si18n from 'https://cdn.jsdelivr.net/npm/si18n.js@1.1.2/si18n.min.js';
   // ...
 &lt;/script&gt;</code></pre>
         </div>
@@ -145,21 +158,21 @@
         <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable">
           <a href="#usage">#</a> <span data-si18n="utils.usage"></span>
         </summary>
-        <div class="code-block">
+        <div class="code-block" id="use-with-npm">
           <div class="code-header">
             <span class="code-title">NPM</span>
           </div>
-          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>import si18n from "si18n";</code></pre>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>import Si18n from "si18n";</code></pre>
         </div>
-        <div class="code-block">
+        <div class="code-block" id="basic-example">
           <div class="code-header">
             <span class="code-title" data-si18n="utils.basicExample"></span>
           </div>
-          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>let loc = new si18n();
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>let loc = new Si18n();
 loc.init({
   locales: {}, // { "en": {...}, "fr": {...}}
   lang: "fr",
-  fallbackLang: "en"
+  fallbackLang: "en",
   translate() {
     document.querySelector(".lang").innerText = loc.getLocale();
     document.querySelector(".title").innerText = loc.t("nested.title");
@@ -170,7 +183,7 @@ loc.init({
   }
 });</code></pre>
         </div>
-        <div class="code-block">
+        <div class="code-block" id="auto-detect">
           <div class="code-header">
             <span class="code-title" data-si18n="autoDetect.autoDetection"></span>
             <div class="code-description" data-si18n="autoDetect.autoDetectionDesc"></div>
@@ -189,8 +202,54 @@ loc.init({
             <span class="code-title" data-si18n="autoDetect.attrDescTitle"></span>
             <div class="code-description">
               <ul class="jdb-stretch" data-si18n="autoDetect.attrDesc" data-si18n-html="true"></ul>
+              <div class="code-description jdb-stretch jdb-border-left jdb-border-w2 jdb-container"
+                data-si18n="autoDetect.autoSetLangAndDir" data-si18n-html="true"></div>
             </div>
           </div>
+        </div>
+        <div class="code-block" id="values-replacement">
+          <div class="code-header no-copy">
+            <span class="code-title" data-si18n="options.others.valuesReplacement"></span>
+            <div class="code-description" data-si18n-html="true"
+              data-si18n="options.others.valuesReplacementDesc"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="html"><code>&lt;!-- 1. HTML --&gt;
+&lt;p id="intro"&gt;&lt;/p&gt;</code></pre>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>// 2. JAVASCRIPT
+// 2.1.
+let data = {
+  "fr": { "intro": "%{name} a eu %{age} ans cette année." },
+  "en": { "intro": "%{name} turned %{age} this year." }
+};
+
+loc.init({
+  // ...
+  translate() {
+    document.querySelector("#intro").innerText = loc.t("intro", {
+      age: (new Date().getFullYear()) - birthYear,
+      name: "John Doe"
+    });
+    // ...
+  }
+});</code></pre>
+          <p data-si18n="utils.or"></p>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>
+// 2.2.
+let data = {
+  "fr": { "intro": "Mon ami s'appelle %{0} et travaille chez %{1}." },
+  "en": { "intro": "My friend's name is %{0} and he works at %{1}." }
+};
+
+loc.init({
+  // ...
+  translate() {
+    document.querySelector("#intro").innerText = loc.t("intro", {
+      0: "Georges",
+      1: "CRFEV"
+    });
+    // ...
+  }
+});</code></pre>
         </div>
       </details>
 
@@ -208,37 +267,40 @@ loc.init({
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr id="fn-constructor">
                 <td><code>constructor</code></td>
-                <td><code>options</code></td>
+                <td><code><b>options</b></code>:<code>object</code></td>
                 <td data-si18n="options.methods.constructor" data-si18n-html="true"></td>
               </tr>
-              <tr>
+              <tr id="fn-init">
                 <td><code>init</code></td>
-                <td><code>options</code></td>
+                <td><code><b>options</b></code>:<code>object</code></td>
                 <td data-si18n="options.methods.init" data-si18n-html="true"></td>
               </tr>
-              <tr>
+              <tr id="fn-setLocale">
                 <td><code>setLocale</code></td>
-                <td><code>lang</code></td>
+                <td><code><b>lang</b></code>:<code>string</code></td>
                 <td data-si18n="options.methods.setLocale" data-si18n-html="true"></td>
               </tr>
-              <tr>
+              <tr id="fn-getLocale">
                 <td><code>getLocale</code></td>
                 <td><code>void</code></td>
                 <td data-si18n="options.methods.getLocale"></td>
               </tr>
-              <tr>
+              <tr id="fn-getLocales">
                 <td><code>getLocales</code></td>
                 <td><code>void</code></td>
                 <td data-si18n="options.methods.getLocales" data-si18n-html="true"></td>
               </tr>
-              <tr>
+              <tr id="fn-t">
                 <td><code>t</code></td>
-                <td><code>JSONPath</code></td>
+                <td>
+                  <code><b>JSONPath</b></code>:<code>string</code>,<br>
+                  <code><b data-si18n="utils.values"></b></code>:<code>object</code>
+                </td>
                 <td data-si18n="options.methods.t" data-si18n-html="true"></td>
               </tr>
-              <tr>
+              <tr id="fn-toJSON">
                 <td><code>toJSON</code></td>
                 <td><code>void</code></td>
                 <td data-si18n="options.methods.toJSON"></td>
@@ -260,52 +322,52 @@ loc.init({
               </tr>
             </thead>
             <tbody>
-              <tr class="locales">
+              <tr id="prop-locales">
                 <td><code>locales</code></td>
                 <td><code>{}</code></td>
                 <td></td>
               </tr>
-              <tr class="lang">
+              <tr id="prop-lang">
                 <td><code>lang</code></td>
                 <td><code>''</code></td>
                 <td></td>
               </tr>
-              <tr class="fallbackLang">
+              <tr id="prop-fallbackLang">
                 <td><code>fallbackLang</code></td>
                 <td><code>''</code></td>
                 <td></td>
               </tr>
-              <tr class="activeClass">
+              <tr id="prop-activeClass">
                 <td><code>activeClass</code></td>
                 <td><code>''</code></td>
                 <td></td>
               </tr>
-              <tr class="togglersSelector">
+              <tr id="prop-togglersSelector">
                 <td><code>togglersSelector</code></td>
                 <td><code>''</code></td>
                 <td></td>
               </tr>
-              <tr class="isTogglerSelect">
+              <tr id="prop-isTogglerSelect">
                 <td><code>isTogglerSelect</code></td>
                 <td><code>false</code></td>
                 <td></td>
               </tr>
-              <tr class="saveLang">
+              <tr id="prop-saveLang">
                 <td><code>saveLang</code></td>
                 <td><code>true</code></td>
                 <td></td>
               </tr>
-              <tr class="saveAs">
+              <tr id="prop-saveAs">
                 <td><code>saveAs</code></td>
                 <td><code>'lang'</code></td>
                 <td></td>
               </tr>
-              <tr class="translate">
+              <tr id="prop-translate">
                 <td><code>translate</code></td>
                 <td><code>function() {}</code></td>
                 <td></td>
               </tr>
-              <tr class="onChange">
+              <tr id="prop-onChange">
                 <td><code>onChange</code></td>
                 <td><code>function() {}</code></td>
                 <td></td>

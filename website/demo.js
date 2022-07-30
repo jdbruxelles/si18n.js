@@ -69,7 +69,7 @@ const locales = {
 
 const translate = (locObj) => {
   $("meta[name='description']").setAttribute("content", locObj.t("site_description"));
-  $(".monkey .more").innerText = locObj.t("nested.more").replace("{0}", 12);
+  $(".monkey .more").innerText = locObj.t("nested.more", { 0: 12 });
 
   // Show locales infos
   const infos = $$("#demo #info span");
@@ -85,7 +85,7 @@ const translate = (locObj) => {
     "isTogglerSelect", "saveLang", "saveAs", "translate", "onChange"
   ], optTable = $("#options table");
   params.forEach((prop) => {
-    optTable.querySelector(`.${prop} td:last-child`).innerHTML = locObj.t(`options.params.${prop}`);
+    optTable.querySelector(`#prop-${prop} td:last-child`).innerHTML = locObj.t(`options.params.${prop}`);
   });
 };
 
