@@ -211,7 +211,9 @@ export default class Si18n {
       this.#options.lang = this.#options.fallbackLang;
     }
 
-    document.querySelector("html").setAttribute("lang", this.getLocale());
+    let _rtl = this.#options.locales[this.#options.lang].rtl;
+    document.documentElement.lang = this.getLocale();
+    document.documentElement.dir = _rtl === "true" ? "rtl" : "ltr";
 
     // Auto translate using the given JSONPath in data-si18n attribute.
     // When using this option, no need to write the script manually
