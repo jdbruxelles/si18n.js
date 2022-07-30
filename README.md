@@ -14,7 +14,8 @@ The "s" in **si18n** stands for simple.
 
 ## Demo and Documentation
 
-You can get started on the [demo site](https://si18n.js.bruxelles.dev/).
+- You can get started on the [demo site](https://si18n.js.bruxelles.dev/).
+- And read the changelog on [GitHub](https://github.com/jdbruxelles/si18n.js/releases).
 
 ## Installation
 
