@@ -249,9 +249,10 @@ export default class Si18n {
   /**
    * Returns the translation string at the given key.
    * @param {string} JSONPath the object property selector.
+   * @param {object} replacements the object containing replacement values.
    * @returns {string|object} The translation at the given key.
    */
-  t(JSONPath) {
+  t(JSONPath, replacements) {
     let fallbackLangChecked = false;
     let value = this.#options.locales[this.#options.lang];
 
@@ -273,6 +274,11 @@ export default class Si18n {
       }
     } catch (error) {
       this.#triggerErrorPathNotFound(JSONPath);
+    }
+
+    if (replacements && typeof replacements === "object") {
+      for (const key in replacements)
+        value = value.replace(new RegExp(`\\%{${key}\\}`, "g"), replacements[key]);
     }
 
     return value;
