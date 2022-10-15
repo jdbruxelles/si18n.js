@@ -2,7 +2,7 @@
   "site_description": "A simple and lightweight way to integrate internationalization on a small web site project.",
   "good_morning": "Good morning",
   "text": "This is an example.",
-  "fallback_text": "",
+  "fallback_text": "Cette phrase n'est pas disponible en anglais.",
   "current_lang": "Current language",
   "all_lang": "All available languages",
   "license": "MIT License",
