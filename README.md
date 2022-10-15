@@ -1,4 +1,6 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/8265ca9c-3d2f-434a-94b8-0b5f3ff7af45/deploy-status)](https://app.netlify.com/sites/si18n/deploys) [![wakatime](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/7b08fe76-98cb-44e3-bcab-294aad0fda0a.svg)](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/7b08fe76-98cb-44e3-bcab-294aad0fda0a)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8265ca9c-3d2f-434a-94b8-0b5f3ff7af45/deploy-status)](https://app.netlify.com/sites/si18n/deploys)
+[![wakatime](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/7b08fe76-98cb-44e3-bcab-294aad0fda0a.svg)](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/7b08fe76-98cb-44e3-bcab-294aad0fda0a)
+[![Crowdin](https://badges.crowdin.net/si18njs/localized.svg)](https://crowdin.com/project/si18njs)
 
 <div align="center">
   <h1>si18n.js</h1>
@@ -67,6 +69,14 @@ Gulp Tasks:
 ## Contributing
 
 Contributions are always welcome! For major changes, please [open an issue](https://github.com/jdbruxelles/si18n/issues/new) first to discuss what you would like to change.
+
+## Traduction
+
+You can help translate the application by using [Crowdin](https://crwd.in/si18njs).
+
+All translations are stored in the `/locales` directory. Under no circumstances
+should you edit the files in this directory, except for the `index.js` and
+`fr.json` files which are the source language for the translations.
 
 ## Licence
 
