@@ -61,7 +61,6 @@ const openSummary = (elem) => {
 })();
 
 const loc = new Si18n(); // Initialize the i18n object.
-const loc2 = new Si18n(); // Initialize the si18n object.
 const locales = {
   fr: await getJSON("./locales/fr.json"),
   en: await getJSON("./locales/en.json")
@@ -99,36 +98,6 @@ loc.init({
   translate() { translate(loc); }
 });
 
-// For <select>
-loc2.init({
-  locales,
-  lang: "fr",
-  fallbackLang: "fr",
-  togglersSelector: ".i18n-container .lang-select",
-  isTogglerSelect: true,
-  translate() { translate(loc2); }
-});
-
-$$(".i18n-container button").forEach((item) => {
-  item.addEventListener("click", function() {
-    setTimeout(() => {
-      if (this.classList.contains("jdb-dark-gray")) {
-        const select = $(".i18n-container .lang-select");
-        select.querySelector("option:checked").removeAttribute("selected");
-        select.querySelector(`option[value="${this.dataset.lang}"]`)
-          .setAttribute("selected", true);
-      }
-    }, 100);
-  });
-});
-
-$(".i18n-container .lang-select").addEventListener("change", function() {
-  const value = this.querySelector("option:checked").value;
-  setTimeout(() => {
-    $(".i18n-container button.jdb-dark-gray").classList.remove("jdb-dark-gray");
-    $(`.i18n-container button[data-lang="${value}"]`).classList.add("jdb-dark-gray");
-  }, 100);
-});
 
 $$("#summary a, summary a[href^='#']").forEach((item) => {
   item.addEventListener("click", function(event) {
