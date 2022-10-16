@@ -27,6 +27,7 @@ export default class Si18n {
   /**
    * Exactly the same as the init method. When you use the constructor,
    * don't use the init method. Note that the init method is faster.
+   * See the init method for the documentation.
    */
   constructor(_options) {
     if (typeof _options === "object") {
@@ -42,7 +43,7 @@ export default class Si18n {
    * @param {object} _options.locales Object containing local translations.
    * @param {string} [_options.lang] Active language to use. Do not define the
    * lang option if you want to use a language detector. Note: The lang option
-   * priority is :
+   * priority is:
    *   1. URL param,
    *   2. Local saved lang,
    *   3. Hard coded lang,
@@ -107,7 +108,7 @@ export default class Si18n {
     this.#options.callback();
     this.#isInitialized = true;
 
-    // Configure buttons which will switch the language.
+    // Configure buttons which will switch languages.
     if (typeof _options.togglersSelector === "string") {
       if (_options.isTogglerSelect) {
         const selectEl = document.querySelector(_options.togglersSelector);
@@ -249,7 +250,7 @@ export default class Si18n {
   /**
    * Returns the translation string at the given key.
    * @param {string} JSONPath the object property selector.
-   * @param {object} replacements the object containing replacement values.
+   * @param {object} [replacements] the object containing replacement values.
    * @returns {string|object} The translation at the given key.
    */
   t(JSONPath, replacements) {
