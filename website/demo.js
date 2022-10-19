@@ -2,16 +2,6 @@ import Si18n from "./si18n.min.js";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
-
-const getJSON = async (url) => {
-  try {
-    const response = await fetch(url);
-    return await response.json();
-  } catch (error) {
-    return console.error(error);
-  }
-};
-
 const scrollTo = (element, top = 8) => {
   let distance = element.getBoundingClientRect();
   window.scrollTo({
@@ -61,10 +51,6 @@ const openSummary = (elem) => {
 })();
 
 const loc = new Si18n(); // Initialize the i18n object.
-const locales = {
-  fr: await getJSON("./locales/fr.json"),
-  en: await getJSON("./locales/en.json")
-};
 
 const translate = (locObj) => {
   $("meta[name='description']").setAttribute("content", locObj.t("site_description"));
@@ -90,7 +76,6 @@ const translate = (locObj) => {
 
 // For <button>s
 loc.init({
-  locales,
   lang: "fr",
   fallbackLang: "fr",
   activeClass: "jdb-dark-gray",
