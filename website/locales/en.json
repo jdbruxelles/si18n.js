@@ -46,7 +46,7 @@
     },
     "others": {
       "valuesReplacement": "Replacement of values",
-      "valuesReplacementDesc": "En plus de faire des simples remplacements de textes, si18n.js peut aussi insérer des valeurs dans des espaces réservés à ce but. Il suffit de définir une clé-valeur dans l'argument <code>valeurs</code> (deuxième argument) de la méthode <a href='#fn-t'><code>t</code></a>. Et dans vos textes, il suffira de réserver les espaces par un <code>%{X}</code> où X est la clé (numéro ou nom de propriété) de la valeur à insérer. Exemple :"
+      "valuesReplacementDesc": "Besides doing simple text replacements, si18n.js can also insert values into placeholders for that purpose. Just define a key-value in the argument <code>values</code> (second argument) of the method <a href='#fn-t'><code>t</code></a>. And in your texts, all you have to do is reserve the spaces with a <code>%{X}</code> where X is the key (number or property name) of the value to insert. Example:"
     }
   },
   "main": {
