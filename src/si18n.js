@@ -21,17 +21,17 @@ export default class Si18n {
     saveLang: true,
     saveAs: "lang",
     translate: this.#noop, // Required
-    callback: this.#noop
+    callback: this.#noop // used as onLocaleChanged method
   };
 
   /**
-   * Exactly the same as the init method. When you use the constructor,
-   * don't use the init method. Note that the init method is faster.
-   * See the init method for the documentation.
+   * Exactly the same as the `init` method. When you use the `constructor`,
+   * don't use the `init` method, please. Note that the `init` method is faster.
+   * See the `init` method for the documentation.
    */
   constructor(_options) {
     if (typeof _options === "object") {
-      setTimeout(() => { // Wait for the init method to be ready.
+      setTimeout(() => { // Wait for the `init` method to be ready.
         this.init(_options);
       }, 50);
     }
@@ -40,10 +40,10 @@ export default class Si18n {
   /**
    * Initializes the si18n object.
    * @param {object} _options Options to initialize the si18n object.
-   * @param {object} _options.locales Object containing local translations.
+   * @param {object} _options.locales Object containing locale translations.
    * @param {string} [_options.lang] Active language to use. Do not define the
-   * lang option if you want to use a language detector. Note: The lang option
-   * priority is:
+   * `lang` option if you want to use a language detector. Note: The `lang`
+   * option priority is:
    *   1. URL param,
    *   2. Local saved lang,
    *   3. Hard coded lang,
@@ -54,9 +54,8 @@ export default class Si18n {
    * @param {boolean} [_options.isTogglerSelect=false] Whether the toggler is a select or a button.
    * @param {boolean} [_options.saveLang=true] Whether to save the language in localStorage.
    * @param {string} [_options.saveAs="lang"] Name of the key to save the language in localStorage.
-   * @param {function(string):string=} _options.translate Function that translate the text manually.
-   * @param {function} [_options.onChange] Function that handle after each language change.
-   * @returns {Si18n} The si18n object.
+   * @param {function(string=):string=} _options.translate Function that translate the text manually.
+   * @param {function():void} [_options.onLocaleChanged] Function that handle after each language change.
    */
   init(_options = {}) {
     if (this.#isInitialized) return; // Initialize once.
@@ -162,7 +161,10 @@ export default class Si18n {
   }
 
   /**
-   * Sets the given language and applies the change.
+   * Sets the given language, applies the change and saves the language as the
+   * current. If the given language is not available, the fallback language
+   * will be used, and if it's not loaded, it will be loaded before applying
+   * the change.
    * @param {string} lang the language to set.
    */
   setLocale(lang) {
@@ -189,8 +191,8 @@ export default class Si18n {
   }
 
   /**
-   * Returns the texts object for the fallback language.
-   * @returns {string} The fallback language object.
+   * Returns the texts object of the fallback language.
+   * @returns {object} The fallback language texts object.
    * @private
    */
   #getFallbackObj() {
@@ -198,9 +200,16 @@ export default class Si18n {
   }
 
   /**
-   * Sets the given language as the current and call
-   * the translate method option to make the translation.
-   * @param {string} [lang] the language to set.
+   * Fetches and returns as JSON the data from the given URL.
+   * @param {string} url The URL to fetch.
+   * @param {function(object=):void} [callback] The callback function to
+   * execute when the data is fetched.
+
+  /**
+   * Loads the locale file of the given language.
+   * @param {string} lang The language to load.
+   * @param {function(object=):void} [cb] The callback to execute after
+   * the locale is loaded.
    * @private
    */
   #translate(lang = this.#options.lang) {
@@ -213,12 +222,18 @@ export default class Si18n {
     }
 
     let _rtl = this.#options.locales[this.#options.lang].rtl;
+  /**
+   * Translates the page content by setting/replacing values to/of the elements
+   * with the `data-i18n` attribute and call the `translate` callback
+   * method option.
+   * @private
+   */
     document.documentElement.lang = this.getLocale();
     document.documentElement.dir = _rtl === "true" ? "rtl" : "ltr";
 
-    // Auto translate using the given JSONPath in data-si18n attribute.
-    // When using this option, no need to write the script manually
-    // except if you want use the string for other purposes
+    // Auto translate using the given JSONPath in the data-si18n attribute.
+    // When using this option, no need to write the script manually except
+    // if you want use the string for other purposes
     // (e.g.: title, aria-label attributes, etc.).
     const htmlTags = document.querySelectorAll("[data-si18n]");
     if (htmlTags.length > 0) {
@@ -248,7 +263,8 @@ export default class Si18n {
   }
 
   /**
-   * Returns the translation string at the given key.
+   * Returns the translation string at the given key of the current language
+   * or the fallback language if the key is not found in the current language.
    * @param {string} JSONPath the object property selector.
    * @param {object} [replacements] the object containing replacement values.
    * @returns {string|object} The translation at the given key.
