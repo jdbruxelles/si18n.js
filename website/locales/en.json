@@ -22,7 +22,7 @@
     },
     "params": {
       "locales": "Object containing your language translations. <b class='required'>Required only if </b><a href='#prop-path'><code>path</code></a> is not defined.",
-      "path": "Absolute access path to the directory containing your translation files. Priority on <a href='#prop-locales'><code>locales</code></a>. <b class='required'>Required only if </b><a href='#prop-locales'><code>locales</code></a> is not defined. e.g: <code>./locales</code>",
+      "path": "Absolute access path to the directory containing your translation files. The files will be loaded automatically according to the active language (the fallback language will always be loaded). Priority on <a href='#prop-locales'><code>locales</code></a>. <b class='required'>Required only if </b><a href='#prop-locales'><code>locales</code></a> is not defined. e.g: <code>./locales</code>",
       "availableLocales": "List containing the names of available languages as defined in the translation files. <b class='required'>Required only if </b><a href='#prop-path'><code>path</code></a> is defined.",
       "lang": "Active language to use. Don't use it if you want to let the browser's language detector provide the language. If this option is not set, the <code>fallbackLang</code> option becomes required.",
       "fallbackLang": "Fallback language. The language to use when the requested language or a requested string in a non-fully translated language is missing. If not set, the fallback language will be the current one.",
