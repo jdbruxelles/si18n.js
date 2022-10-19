@@ -9,6 +9,7 @@
  * Make translation management easier and more efficient.
  */
 export default class Si18n {
+  static version = "1.3.0";
   #noop() {} // Empty function to avoid undefined paramaters.
   #isInitialized = false;
   #options = {
