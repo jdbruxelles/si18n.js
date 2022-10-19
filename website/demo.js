@@ -71,7 +71,8 @@ const translate = (locObj) => {
 
   const params = [
     "locales", "lang", "fallbackLang", "activeClass", "togglersSelector",
-    "isTogglerSelect", "saveLang", "saveAs", "translate", "onChange"
+    "isTogglerSelect", "saveLang", "saveAs", "translate", "onChange",
+    "path", "availableLocales"
   ], optTable = $("#options table");
   params.forEach((prop) => {
     optTable.querySelector(`#prop-${prop} td:last-child`).innerHTML = locObj.t(`options.params.${prop}`);
@@ -81,6 +82,8 @@ const translate = (locObj) => {
 loc.init({
   lang: "fr",
   fallbackLang: "fr",
+  path: "./locales",
+  availableLocales: ["fr", "en"],
   activeClass: "jdb-dark-gray",
   togglersSelector: ".i18n-container button",
   translate() { translate(loc); }
