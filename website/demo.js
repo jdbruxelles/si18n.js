@@ -24,6 +24,10 @@ const openSummary = (elem) => {
   copyBtn.setAttribute("data-si18n-title", "true");
   copyBtn.classList.add("jdb-right", "jdb-ripple", "copy-btn");
 
+  $("header .app-version").innerText = Si18n.version;
+  $("pre.app-version code").innerText = $("pre.app-version")
+    .innerText.replace(/@latest\//g, `@${Si18n.version}/`);
+
   $$(".code-block .code-header:not(.no-copy)").forEach(function(item) {
     const copyBtn_ = copyBtn.cloneNode();
     copyBtn_.addEventListener("click", function() {
