@@ -21,29 +21,32 @@
       "default_options": "Default options"
     },
     "params": {
-      "locales": "<b class='jdb-text-red'>(required)</b> - Object containing your local translations.",
-      "lang": "Active language to use. Don't use it if you want to use the language detector. If not set, the <code>fallback</code> option become required.",
-      "fallbackLang": "Fallback language. The language to use when the requested language or a requested string in a non-fully translated language is missing. If not set, the fallback language will be the current one.",
+      "locales": "Objet contenant vos traductions des langues. <b class='required'>Obligatoire seulement si</b> <a href='#prop-path'><code>path</code></a> n'est pas définie.",
+      "path": "Chemin d'accès absolu vers le dossier contenant vos fichiers de traduction. Prioritaire sur <a href='#prop-locales'><code>locales</code></a>. <b class='required'>Obligatoire seulement si</b> <a href='#prop-locales'><code>locales</code></a> n'est pas définie.",
+      "availableLocales": "Liste contenant les noms des langues disponibles tel que défini dans les fichiers de traduction. <b class='required'>Obligatoire seulement si</b> <a href='#prop-path'><code>path</code></a> est définie.",
+      "lang": "Langue active à utiliser. Ne l'utilisez pas si vous souhaitez laisser le détecteur de langue du navigateur fournir la langue. Si cette option n'est pas définie, l'option <code>fallbackLang</code> devient obligatoire.",
+      "fallbackLang": "Langue de secours. La langue à utiliser lorsque la langue demandée ou une chaîne demandée dans une langue non entièrement traduite est manquante. Si elle n'est pas défini, la langue de secours sera la langue actuelle.",
       "activeClass": "Class to add to the active button for the current language. Use only if <a href='#prop-togglersSelector'><code>togglersSelector</code></a> is used.",
-      "togglersSelector": "CSS selector to the togglers elements. si18n.js will add a click event to the selected elements. Do not set if you use the <code>setLocale(lang)</code> method. These elements <strong>must</strong> have the attribute <code>data-lang=\"XX\"</code> where XX is the language code of the button (toggle element) to be detected.",
-      "isTogglerSelect": "Whether the toggler is a <code>select</code> or <code>button</code> element.",
+      "togglersSelector": "Sélecteur CSS pour les éléments basculeurs. si18n.js ajoutera un événement click aux éléments sélectionnés. Ne pas définir si vous utilisez la méthode <code>setLocale(lang)</code>. Ces éléments doivent <b class='required'>obligatoirement</b> avoir l'attribut <code>data-lang=\"XX\"</code> où XX correspond au code de la langue du bouton (élément basculeur) pour être détectés.",
+      "isTogglerSelect": "Si le basculeur est un élément <code>select</code> ou <code>button</code> (autre).",
       "saveLang": "Whether to save the language in the localStorage.",
       "saveAs": "Name of the key to save the language in the localStorage. If set, the value will be used as key to retrieve the language from the URL parameter (Default: <code>lang</code>).",
-      "translate": "<b class='jdb-text-red'>(required)</b> - Function that translate the text manually. Reserved only for translation.<br><b>Note:</b> The html tag automatically got a lang attribute with the current language, no need to code it manually.",
-      "onChange": "Callback function triggered when the language change. Whathever you want to do."
+      "translate": "<b class='required'>(obligatoire)</b> - Fonction qui traduit le texte manuellement. Réservé uniquement à la traduction.<br><b>Note:</b> La balise <code>html</code> a automatiquement un attribut <code>lang</code> avec la langue actuelle, pas besoin de la coder manuellement.",
+      "onChange": "Fonction de rappel déclenchée lorsque la langue change. Tout ce que vous voulez faire d'autre parce que la langue a changé, faites-le ici."
     },
     "methods": {
       "constructor": "Does the same thing as the following <code>init</code> method.",
-      "init": "<code class='jdb-text-green'>Recommanded</code> - Initializes the si18n object with the given <a href='#options'>options</a>.",
+      "init": "<code class='recommanded'>Recommandé</code> - Initialise l'objet si18n avec les <a href='#options'>options</a> données.",
       "setLocale": "Sets the given language and applies the change by calling the <code>translate</code> option method. Don't use this method if have configured the <code>togglersSelector</code> option.",
       "getLocale": "Returns the current language code (e.g.: 'en').",
-      "getLocales": "Returns the list of all available languages (e.g.: <code>['fr', 'en', 'it']</code>).",
-      "t": "Returns the translation string at the given key (e.g.: <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).<br>The <code>values</code> argument is optional. If provided, it must contain the key-values to be replaced. See the <a href='#values-replacement'>example</a> below.",
+      "getLocales": "Renvoie la liste de toutes les langues disponibles (ex : <code>['fr', 'en', 'it']</code>).",
+      "t": "Renvoie la chaîne de traduction à la clé donnée (ex : <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).<br>L'argument <code>valeurs</code> est facultatif. S'il est fourni, il doit contenir les clés-valeurs à remplacer. Voir l'<a href='#values-replacement'>exemple</a> ci-dessous.",
+      "getJSON": "Récupère et renvoie au format JSON les données de l'URL fournie.",
       "toJSON": "Returns the options of the instance."
     },
     "others": {
       "valuesReplacement": "Replacement of values",
-      "valuesReplacementDesc": "In addition to doing simple text replacement, si18n.js can also insert values in spaces reserved for this purpose. Just define a key-value in the argument <code>values</code> (second argument) of the method <a href='#fn-t'><code>t</code></a>. And in your texts, it will suffice to reserve the spaces with a <code>%{X}</code> where X is the key (number or property name) of the value to insert. Example:"
+      "valuesReplacementDesc": "En plus de faire des simples remplacements de textes, si18n.js peut aussi insérer des valeurs dans des espaces réservés à ce but. Il suffit de définir une clé-valeur dans l'argument <code>valeurs</code> (deuxième argument) de la méthode <a href='#fn-t'><code>t</code></a>. Et dans vos textes, il suffira de réserver les espaces par un <code>%{X}</code> où X est la clé (numéro ou nom de propriété) de la valeur à insérer. Exemple :"
     }
   },
   "main": {
@@ -52,11 +55,11 @@
   "autoDetect": {
     "autoDetection": "Automatic detection",
     "autoDetectionDesc": "This allows si18n.js to automatically detect and update the text for the element:",
-    "autoSetLangAndDir": "The <code>lang</code> and <code>dir</code> attribute of the <code>html</code> tag are set automatically. The only thing you can do for the <code>dir</code> attribute is to set it manually for all languages or only for <code>rtl</code> languages. Default : <code>ltr</code>.",
+    "autoSetLangAndDir": "Les attributs <code>lang</code> et <code>dir</code> de la balise <code>html</code> sont définis automatiquement. La seule chose que vous pouvez faire pour l'attribut <code>dir</code>, c'est de le définir manuellement pour toutes les langues ou seulement pour les langues en <code>rtl</code> (string). Par défaut : <code>ltr</code>. Exemple : <code>\"rtl\": true</code>.",
     "noContent": "Not for tag content",
-    "noContentDesc": "When there is the <code>data-si18n-default</code> attribute, the text will not be set as the content of the tag. You must use this option for only attributes content.",
+    "noContentDesc": "Lorsqu'il y a l'attribut <code>data-si18n-default</code> et que c'est défini à <code>false</code>, le texte ne sera pas défini comme contenu de la balise. Vous devez utiliser cette option uniquement pour le contenu des attributs.",
     "attrDescTitle": "All attributes are:",
-    "attrDesc": "<li><code>data-si18n-default</code></li><li><code>data-si18n-html</code>: if set to <code>true</code>, the content will be added as HTML code. Default: <code>false</code></li><li><code>data-si18n-value</code> for the <code>value</code> attribute of a tag like <code>option</code> and <code>input</code>.</li><li><code>data-si18n-title</code> for the <code>title</code> attribute of the tag.</li><li><code>data-si18n-label</code> for the <code>aria-label</code> attribute.</li>"
+    "attrDesc": "<li><code>data-si18n-default</code> : si défini sur <code>false</code>, le texte ne sera pas placé dans la balise. (Réservé pour les attributs.)</li><li><code>data-si18n-html</code> : si défini sur <code>true</code>, le texte sera ajouté sous forme de code HTML. Défaut : <code>false</code>.</li><li><code>data-si18n-value</code> pour l'attribut <code>value</code> d'une balise comme <code>option</code> et <code>input</code>.</li><li><code>data-si18n-title</code> pour l'attribut <code>title</code> de la balise.</li><li><code>data-si18n-label</code> pour l'attribut <code>label</code> d'une balise comme <code>optgroup</code>.</li><li><code>data-si18n-aria-label</code> pour l'attribut <code>aria-label</code> de la balise.</li><li><code>data-si18n-placeholder</code> pour l'attribut <code>placeholder</code> de la balise <code>input</code>.</li><li><code>data-si18n-content</code> pour l'attribut <code>content</code> d'une balise comme <code>meta</code> pour la description du site, par exemple (utile si vous utilisez la technologie <code>Prerendering</code>.</li>"
   },
   "utils": {
     "start": "Get started",
@@ -67,11 +70,8 @@
     "basicExample": "Basic example",
     "copy": "Copy",
     "values": "values",
-    "or": "or"
-  },
-  "language": {
-    "fr": "French",
-    "en": "English",
-    "it": "Italian"
+    "or": "or",
+    "changelog": "Journal des modifications (fr)",
+    "itLangNotAvailable": "Italien : Non disponible"
   }
 }
