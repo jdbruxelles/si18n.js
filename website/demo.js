@@ -74,7 +74,6 @@ const translate = (locObj) => {
   });
 };
 
-// For <button>s
 loc.init({
   lang: "fr",
   fallbackLang: "fr",
@@ -82,7 +81,6 @@ loc.init({
   togglersSelector: ".i18n-container button",
   translate() { translate(loc); }
 });
-
 
 $$("#summary a, summary a[href^='#']").forEach((item) => {
   item.addEventListener("click", function(event) {
