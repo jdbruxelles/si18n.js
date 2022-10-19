@@ -306,14 +306,26 @@ export default class Si18n {
           }
         }
 
+        // Supported attributes in which the text can be automatically set:
+        // `title`, `label`, `aria-label`, `value`, `content`, and `placeholder`.
+
         if (!Si18n.#isUndefined(element.dataset.si18nTitle))
           element.setAttribute("title", text);
 
         if (!Si18n.#isUndefined(element.dataset.si18nLabel))
+          element.setAttribute("label", text); // e.g: for <optgroup>
+
+        if (!Si18n.#isUndefined(element.dataset.si18nAriaLabel))
           element.setAttribute("aria-label", text);
 
         if (!Si18n.#isUndefined(element.dataset.si18nValue))
-          element.setAttribute("value", text);
+          element.setAttribute("value", text); // e.g: for <input>, <option>, etc.
+
+        if (!Si18n.#isUndefined(element.dataset.si18nContent))
+          element.setAttribute("content", text); // e.g: for <meta>
+
+        if (!Si18n.#isUndefined(element.dataset.si18nPlaceholder))
+          element.setAttribute("placeholder", text); // e.g: for <input>
       });
     }
 
