@@ -6,6 +6,20 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
+## 1.3.0 (latest - Octobre 19, 2022)
+
+- Introduce CHANGELOG.
+- feat: Allow automatic loading of the translations files using the new `path`
+  and `availableLocales` options. **Now, just give a path and it's done!**
+- feat: Improve errors triggers and robustness.
+- The `translate` option is no longer required.
+- The `onChange` option is renamed to `onLocaleChanged` for better clarity.
+- Add [Crowdin](https://crowdin.com/) support to manage documentation
+  translations with ease.
+- doc: Remove the `select` demo from the demo page.
+- doc: Updated the documentation.
+- Fix some typos in the code documentation
+
 ## 1.2.0 (July 31, 2022)
 
 - feat: Allow replacements in strings.
