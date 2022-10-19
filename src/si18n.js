@@ -75,9 +75,7 @@ export default class Si18n {
 
     if (optionsKeys.length === 0) {
       throw new Error(`No options provided. See docs ${docsLink}`);
-    } else if (!autoLoad && !optionsKeys.includes("locales") ||
-      !optionsKeys.includes("translate")
-    ) {
+    } else if (!autoLoad && !optionsKeys.includes("locales")) {
       throw new Error(`Missing required options. See docs ${docsLink}`);
     }
 
