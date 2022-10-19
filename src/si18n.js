@@ -75,24 +75,32 @@ export default class Si18n {
 
     if (optionsKeys.length === 0) {
       throw new Error(`No options provided. See docs ${docsLink}`);
-    } else if (!(
-      optionsKeys.includes("locales") ||
-      optionsKeys.includes("translate"))
+    } else if (!autoLoad && !optionsKeys.includes("locales") ||
+      !optionsKeys.includes("translate")
     ) {
       throw new Error(`Missing required options. See docs ${docsLink}`);
     }
 
     if (_options.fallbackLang) {
+      if (typeof _options.fallbackLang !== "string") {
+        throw new Error(`The fallbackLang option must be a string. See docs ${docsLink}`);
+      }
       this.#options.fallbackLang = _options.fallbackLang;
     } else {
       if (_options.lang) this.#options.fallbackLang = _options.lang;
-      else throw new Error(`The fallback option is required when no lang option is set. See docs ${docsLink}`);
+      else throw new Error(`The lang option is required when no fallbackLang option is set. See docs ${docsLink}`);
+    }
+
+    if (_options.locales) {
+      if (!autoLoad && typeof _options.locales !== "object") {
+        throw new Error(`The locales option must be an object. See docs ${docsLink}`);
+      }
+      this.#options.locales = _options.locales;
     }
 
     this.#options.availableLocales = _options.availableLocales || this.getLocales();
 
     if (_options.translate) this.#options.translate = _options.translate;
-    if (_options.locales) this.#options.locales = _options.locales;
     if (_options.saveAs) this.#options.saveAs = _options.saveAs;
     if (typeof _options.onLocaleChanged === "function") {
       this.#options.callback = _options.onLocaleChanged;
@@ -148,6 +156,8 @@ export default class Si18n {
     if (typeof _options.togglersSelector === "string") {
       if (_options.isTogglerSelect) {
         const selectEl = document.querySelector(_options.togglersSelector);
+        if (!selectEl) throwInvalidSelector();
+
         const optionSelector = `option[value="${this.#options.lang}"]`;
         const activeOption = selectEl.querySelector(optionSelector);
         activeOption.setAttribute("selected", true);
@@ -172,6 +182,7 @@ export default class Si18n {
         const buttons = document.querySelectorAll(_options.togglersSelector);
         const hasActiveClass = typeof _options.activeClass === "string";
 
+        if (!buttons.length) throwInvalidSelector();
         if (hasActiveClass) {
           for (const button of buttons.values()) {
             if (button.dataset.lang === this.#options.lang) {
