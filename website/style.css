@@ -130,6 +130,14 @@ table tr td:nth-child(3) code {
   margin-bottom: 16px;
 }
 
+.recommanded {
+  color: #4CAF50;
+}
+
+.required {
+  color: #f44336;
+}
+
 .jdb-monospace, code, kbd, pre, samp, .jdb-code, .jdb-codespan {
   font-family: 'Source Code Pro', Consolas, "Courier new", monospace;
 }
