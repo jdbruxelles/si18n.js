@@ -22,7 +22,7 @@
     },
     "params": {
       "locales": "Objet contenant vos traductions des langues. <b class='required'>Obligatoire seulement si</b> <a href='#prop-path'><code>path</code></a> n'est pas définie.",
-      "path": "Chemin d'accès absolu vers le dossier contenant vos fichiers de traduction. Prioritaire sur <a href='#prop-locales'><code>locales</code></a>. <b class='required'>Obligatoire seulement si</b> <a href='#prop-locales'><code>locales</code></a> n'est pas définie.",
+      "path": "Chemin d'accès absolu vers le dossier contenant vos fichiers de traduction. Les fichiers vont être chargés automatiquement selon la langue active (la langue de secours sera toujours chargé). Prioritaire sur <a href='#prop-locales'><code>locales</code></a>. <b class='required'>Obligatoire seulement si</b> <a href='#prop-locales'><code>locales</code></a> n'est pas définie.",
       "availableLocales": "Liste contenant les noms des langues disponibles tel que défini dans les fichiers de traduction. <b class='required'>Obligatoire seulement si</b> <a href='#prop-path'><code>path</code></a> est définie.",
       "lang": "Langue active à utiliser. Ne l'utilisez pas si vous souhaitez laisser le détecteur de langue du navigateur fournir la langue. Si cette option n'est pas définie, l'option <code>fallbackLang</code> devient obligatoire.",
       "fallbackLang": "Langue de secours. La langue à utiliser lorsque la langue demandée ou une chaîne demandée dans une langue non entièrement traduite est manquante. Si elle n'est pas défini, la langue de secours sera la langue actuelle.",
