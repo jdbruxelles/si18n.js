@@ -6,7 +6,8 @@
   <h1>si18n.js</h1>
 </div>
 
-This project is a simple package to integrate internationalization on a small web site project.
+This project is a simple package to integrate internationalization on a small
+web site project.
 
 The "s" in **si18n** stands for simple.
 
@@ -16,8 +17,10 @@ The "s" in **si18n** stands for simple.
 
 ## Demo and Documentation
 
-- You can get started on the [demo site](https://si18n.js.bruxelles.dev/).
-- And read the changelog on [GitHub](https://github.com/jdbruxelles/si18n.js/releases).
+You can :
+- get started on the [demo site](https://si18n.js.bruxelles.dev/),
+- See releases on [GitHub](https://github.com/jdbruxelles/si18n.js/releases),
+- and see [changelog](CHANGELOG.md).
 
 ## Installation
 
@@ -54,21 +57,51 @@ For detailed usage information,
 
 ## Run locally
 
-Gulp Tasks:
+The following instructions will get you a copy of the project up and running
+on your local machine for development and testing purposes.
 
-  - The default build task (run once)
-  ```bash
-  gulp
-  ```
+### Requirements
 
-  - Rerun the build task when a script file changes
-  ```bash
-  gulp watch
-  ```
+- [Node.js](https://nodejs.org/en/download/)
+- [Git](https://git-scm.com/downloads)
+
+### Clone the repo
+
+```bash
+git clone git@github.com:jdbruxelles/si18n.js.git
+```
+
+### Install the dependencies
+
+```bash
+npm install
+```
+
+### Gulp Tasks
+
+- The default build task (run once)
+```bash
+gulp
+```
+
+- Automatically rerun the build task when a script file changes
+```bash
+gulp watch
+```
+
+### Server
+
+For the server, you can use any server you want, but I recommend using
+[http-server](https://www.npmjs.com/package/http-server). It's a simple
+zero-configuration command-line http server. I personally use the server
+provided by [netlify-cli](https://www.npmjs.com/package/netlify-cli) to work
+locally.
 
 ## Contributing
 
-Contributions are always welcome! For major changes, please [open an issue](https://github.com/jdbruxelles/si18n/issues/new) first to discuss what you would like to change.
+Contributions are always welcome! For major changes, please
+[open an issue](https://github.com/jdbruxelles/si18n/issues/new) first to
+discuss what you would like to change.
 
 ## Traduction
 
@@ -77,6 +110,9 @@ You can help translate the application by using [Crowdin](https://crwd.in/si18nj
 All translations are stored in the `/locales` directory. Under no circumstances
 should you edit the files in this directory, except for the `index.js` and
 `fr.json` files which are the source language for the translations.
+
+Translations will be available on the app if they exceed a certain threshold
+of completion (currently 90%).
 
 ## Licence
 
