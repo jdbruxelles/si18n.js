@@ -6,7 +6,15 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
-## 1.3.0 (latest - Octobre 19, 2022)
+## 1.3.1 (October 25, 2022)
+
+- doc: Update `getJSON` documentation.
+- Fix the use of `getLocal` method regarding the `availableLocales` option.
+  Now this method returns the value of `availableLocales` instead making
+  `Object.keys(locales)`, wich doesn't give a correct result when `path`
+  option is used.
+
+## 1.3.0 (Octobre 19, 2022)
 
 - Introduce CHANGELOG.
 - feat: Allow automatic loading of the translations files using the new `path`
