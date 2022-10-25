@@ -277,8 +277,8 @@ export default class Si18n {
    * @private
    */
   #loadLocale({ lang, cb }) {
-      if (typeof cb === "function") cb();
     if (Object.keys(this.#options.locales).includes(lang)) {
+      if (typeof cb === "function") cb(this.#options.locales[lang]);
     } else {
       Si18n.getJSON(`${this.#options.path}/${lang}.json`, (locale) => {
         this.#options.locales[lang] = locale;
