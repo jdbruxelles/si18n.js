@@ -22,7 +22,7 @@
     },
     "params": {
       "locales": "Objet contenant vos traductions des langues. <b class='required'>Obligatoire seulement si</b> <a href='#prop-path'><code>path</code></a> n'est pas définie.",
-      "path": "Chemin d'accès absolu vers le dossier contenant vos fichiers de traduction. Les fichiers vont être chargés automatiquement selon la langue active (la langue de secours sera toujours chargé). Prioritaire sur l'option <a href='#prop-locales'><code>locales</code></a>. <b class='required'>Obligatoire seulement si</b> <a href='#prop-locales'><code>locales</code></a> n'est pas définie.",
+      "path": "Chemin d'accès absolu vers le dossier contenant vos fichiers de traduction. Les fichiers vont être chargés automatiquement selon la langue active (la langue de secours sera toujours chargé). Prioritaire sur l'option <a href='#prop-locales'><code>locales</code></a>. <b class='required'>Obligatoire seulement si</b> <a href='#prop-locales'><code>locales</code></a> n'est pas définie. Ex : <code>./locales</code>.",
       "availableLocales": "Liste contenant les noms des langues disponibles tel que défini dans les fichiers de traduction. <b class='required'>Obligatoire seulement si</b> <a href='#prop-path'><code>path</code></a> est définie.",
       "lang": "Langue active à utiliser. Ne l'utilisez pas si vous souhaitez laisser le détecteur de langue du navigateur fournir la langue. Si cette option n'est pas définie, l'option <code>fallbackLang</code> devient obligatoire.",
       "fallbackLang": "Langue de secours. La langue à utiliser lorsque la langue demandée ou une chaîne demandée dans une langue non entièrement traduite est manquante. Si elle n'est pas défini, la langue de secours sera la langue actuelle.",
@@ -38,7 +38,7 @@
       "constructor": "Fait la même chose que la méthode <code>init</code> suivante.",
       "init": "<code class='recommanded'>Recommandé</code> - Initialise l'objet si18n avec les <a href='#options'>options</a> données.",
       "setLocale": "Définit la langue donnée et applique le changement en appelant la méthode d'option <code>translate</code>. N'utilisez pas cette méthode si vous avez configuré l'option <code>togglersSelector</code>.",
-      "getLocale": "Renvoie le code de la langue actuelle (ex : 'en').",
+      "getLocale": "Renvoie le code de la langue actuelle (ex : 'en').",
       "getLocales": "Renvoie la liste de toutes les langues disponibles (ex : <code>['fr', 'en', 'it']</code>).",
       "t": "Renvoie la chaîne de traduction à la clé donnée (ex : <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).<br>L'argument <code>valeurs</code> est facultatif. S'il est fourni, il doit contenir les clés-valeurs à remplacer. Voir l'<a href='#values-replacement'>exemple</a> ci-dessous.",
       "getJSON": "Récupère et renvoie au format JSON dans le paramètre de la fonction callback les données de l'URL fournie.",
