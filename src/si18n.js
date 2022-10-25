@@ -252,7 +252,8 @@ export default class Si18n {
   }
 
   /**
-   * Fetches and returns as JSON the data from the given URL.
+   * Fetches and returns as JSON in the callback
+   * paramater the data from the given URL.
    * @param {string} url The URL to fetch.
    * @param {function(object=):void} [callback] The callback function to
    * execute when the data is fetched.

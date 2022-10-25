@@ -41,7 +41,7 @@
       "getLocale": "Renvoie le code de la langue actuelle (ex : 'en').",
       "getLocales": "Renvoie la liste de toutes les langues disponibles (ex : <code>['fr', 'en', 'it']</code>).",
       "t": "Renvoie la chaîne de traduction à la clé donnée (ex : <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).<br>L'argument <code>valeurs</code> est facultatif. S'il est fourni, il doit contenir les clés-valeurs à remplacer. Voir l'<a href='#values-replacement'>exemple</a> ci-dessous.",
-      "getJSON": "Récupère et renvoie au format JSON les données de l'URL fournie.",
+      "getJSON": "Récupère et renvoie au format JSON dans le paramètre de la fonction callback les données de l'URL fournie.",
       "toJSON": "Renvoie les options de l'instance."
     },
     "others": {
