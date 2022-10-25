@@ -97,7 +97,8 @@ export default class Si18n {
       this.#options.locales = _options.locales;
     }
 
-    this.#options.availableLocales = _options.availableLocales || this.getLocales();
+    this.#options.availableLocales = _options.availableLocales ||
+      Object.keys(this.#options.locales);
 
     if (_options.translate) this.#options.translate = _options.translate;
     if (_options.saveAs) this.#options.saveAs = _options.saveAs;
@@ -239,7 +240,7 @@ export default class Si18n {
    * @returns {object[]} The list of available languages.
    */
   getLocales() {
-    return Object.keys(this.#options.locales);
+    return this.#options.availableLocales;
   }
 
   /**
@@ -276,8 +277,8 @@ export default class Si18n {
    * @private
    */
   #loadLocale({ lang, cb }) {
-    if (this.getLocales().includes(lang)) {
       if (typeof cb === "function") cb();
+    if (Object.keys(this.#options.locales).includes(lang)) {
     } else {
       Si18n.getJSON(`${this.#options.path}/${lang}.json`, (locale) => {
         this.#options.locales[lang] = locale;
