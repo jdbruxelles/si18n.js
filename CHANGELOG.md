@@ -6,6 +6,13 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
+## 1.3.2 (October 26, 2022)
+
+- Fix a issue with the versioning of the package. The version juste replace the
+  previous one (`1.3.1`). The previous version was named mistakenly as `1.3.1`
+  and published while all commits was not created. The version `1.3.1` is not
+  available on npm registry.
+
 ## 1.3.1 (October 25, 2022)
 
 - doc: Update `getJSON` documentation.
