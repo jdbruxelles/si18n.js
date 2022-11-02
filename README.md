@@ -1,6 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/8265ca9c-3d2f-434a-94b8-0b5f3ff7af45/deploy-status)](https://app.netlify.com/sites/si18n/deploys)
 [![wakatime](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/7b08fe76-98cb-44e3-bcab-294aad0fda0a.svg)](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/7b08fe76-98cb-44e3-bcab-294aad0fda0a)
 [![Crowdin](https://badges.crowdin.net/si18njs/localized.svg)](https://crowdin.com/project/si18njs)
+[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/si18n.js/badge)](https://www.jsdelivr.com/package/npm/si18n.js)
 
 <div align="center">
   <h1>si18n.js</h1>
