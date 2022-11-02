@@ -26,7 +26,7 @@ const openSummary = (elem) => {
 
   $("header .app-version").innerText = Si18n.version;
   $("pre.app-version code").innerText = $("pre.app-version")
-    .innerText.replace(/@latest\//g, `@${Si18n.version}/`);
+    .innerText.replace(/@latest/g, `@${Si18n.version}`);
 
   $$(".code-block .code-header:not(.no-copy)").forEach(function(item) {
     const copyBtn_ = copyBtn.cloneNode();
