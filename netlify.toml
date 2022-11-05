@@ -31,6 +31,12 @@
   force = true
 
 [[redirects]]
+  from = "/favicon.ico"
+  to = "/images/icons/favicon-16x16.png"
+  status = 301
+  force = false
+
+[[redirects]]
   from = "/*"
   to = "/?ref=404"
   status = 301
