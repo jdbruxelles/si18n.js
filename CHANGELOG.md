@@ -6,6 +6,12 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
+## 1.4.0 (March 4, 2023)
+
+- Add a `reloadPage` option to reload the page when the language is changed.
+  `false` by default, this option may only be useful if the page structure is
+  complex and need the translations to be loaded on language chang, simply.
+
 ## 1.3.2 (October 26, 2022)
 
 - Fix a issue with the versioning of the package. The version juste replace the
