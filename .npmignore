@@ -7,5 +7,6 @@
 /.gitignore
 /netlify.toml
 /gulpfile.js
+/crowdin.yml
 
 /website
