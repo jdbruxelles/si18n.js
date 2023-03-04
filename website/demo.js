@@ -72,7 +72,7 @@ const translate = (locObj) => {
   const params = [
     "locales", "lang", "fallbackLang", "activeClass", "togglersSelector",
     "isTogglerSelect", "saveLang", "saveAs", "translate", "onChange",
-    "path", "availableLocales"
+    "path", "availableLocales", "reloadPage"
   ], optTable = $("#options table");
   params.forEach((prop) => {
     optTable.querySelector(`#prop-${prop} td:last-child`).innerHTML = locObj.t(`options.params.${prop}`);

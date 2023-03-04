@@ -24,6 +24,7 @@ export default class Si18n {
     saveLang: true,
     saveAs: "lang",
     translate: this.#noop, // Required
+    reloadPage: false, // Reload the page after each language change.
     callback: this.#noop // used as onLocaleChanged method
   };
 
@@ -57,6 +58,7 @@ export default class Si18n {
    * @param {string} [_options.activeClass] Class to add to the active language.
    * @param {string} _options.togglersSelector Selector to the togglers elements.
    * @param {boolean} [_options.isTogglerSelect=false] Whether the toggler is a select or a button.
+   * @param {boolean} [_options.reloadPage=false] Whether to reload the page after each language change.
    * @param {boolean} [_options.saveLang=true] Whether to save the language in localStorage.
    * @param {string} [_options.saveAs="lang"] Name of the key to save the language in localStorage.
    * @param {function(string=):string=} _options.translate Function that translate the text manually.
@@ -121,6 +123,10 @@ export default class Si18n {
     } else {
       // Use the default language of the navigator.
       this.#options.lang = navigator.language.substring(0, 2);
+    }
+
+    if (!Si18n.#isUndefined(_options.reloadPage)) {
+      this.#options.reloadPage = _options.reloadPage;
     }
 
     if (autoLoad) {
