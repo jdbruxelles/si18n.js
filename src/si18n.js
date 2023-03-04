@@ -216,15 +216,15 @@ export default class Si18n {
    * @param {string} lang the language to set.
    */
   setLocale(lang) {
+    const { saveLang, saveAs, reloadPage, callback } = this.#options;
+    if (saveLang) localStorage.setItem(saveAs, lang);
+    if (reloadPage) window.location.reload();
+
     this.#loadLocale({ lang, cb: () => {
       this.#options.lang = lang;
       this.#translate();
-      this.#options.callback();
+      callback();
     }});
-
-    if (this.#options.saveLang) {
-      localStorage.setItem(this.#options.saveAs, lang);
-    }
   }
 
   /**
@@ -308,36 +308,46 @@ export default class Si18n {
     const htmlTags = document.querySelectorAll("[data-si18n]");
     if (htmlTags.length > 0) {
       htmlTags.forEach((element) => {
+        const {
+          si18nDefault,
+          si18nTitle,
+          si18nLabel,
+          si18nHtml,
+          si18nValue,
+          si18nContent,
+          si18nAriaLabel,
+          si18nPlaceholder
+        } = element.dataset;
         const JSONPath = element.dataset.si18n;
         const text = this.t(JSONPath);
-        if (element.dataset.si18nDefault !== "false") {
-          if (element.dataset.si18nHtml === "true") {
-            element.innerHTML = text;
-          } else {
-            element.textContent = text;
-          }
+
+        if (si18nDefault !== "false") {
+          if (si18nHtml === "true") element.innerHTML = text;
+          else element.textContent = text;
         }
 
         // Supported attributes in which the text can be automatically set:
         // `title`, `label`, `aria-label`, `value`, `content`, and `placeholder`.
 
-        if (!Si18n.#isUndefined(element.dataset.si18nTitle))
+        if (!Si18n.#isUndefined(si18nTitle))
           element.setAttribute("title", text);
 
-        if (!Si18n.#isUndefined(element.dataset.si18nLabel))
+        if (!Si18n.#isUndefined(si18nLabel))
           element.setAttribute("label", text); // e.g: for <optgroup>
 
-        if (!Si18n.#isUndefined(element.dataset.si18nAriaLabel))
+        if (!Si18n.#isUndefined(si18nAriaLabel))
           element.setAttribute("aria-label", text);
 
-        if (!Si18n.#isUndefined(element.dataset.si18nValue))
-          element.setAttribute("value", text); // e.g: for <input>, <option>, etc.
+        if (!Si18n.#isUndefined(si18nValue))
+          // e.g: for <input>, <option> and <button>.
+          element.setAttribute("value", text);
 
-        if (!Si18n.#isUndefined(element.dataset.si18nContent))
+        if (!Si18n.#isUndefined(si18nContent))
           element.setAttribute("content", text); // e.g: for <meta>
 
-        if (!Si18n.#isUndefined(element.dataset.si18nPlaceholder))
-          element.setAttribute("placeholder", text); // e.g: for <input>
+        if (!Si18n.#isUndefined(si18nPlaceholder))
+          // e.g: for <input> and <textarea>
+          element.setAttribute("placeholder", text);
       });
     }
 
