@@ -25,9 +25,9 @@ You can :
 
 ## Installation
 
-### NPM
+### npm
 
-Installation using [NPM](https://www.npmjs.com/package/si18n.js)...
+Installation using [npm](https://www.npmjs.com/package/si18n.js)...
 ```bash
 npm i si18n.js
 ```
