@@ -19,7 +19,7 @@ const openSummary = (elem) => {
 (function(){
   const copyBtn = document.createElement("span");
   copyBtn.setAttribute("role", "button");
-  copyBtn.setAttribute("data-si18n", "utils.copy");
+  copyBtn.setAttribute("data-si18n", "utils.copyCode");
   copyBtn.setAttribute("data-si18n-default", "false");
   copyBtn.setAttribute("data-si18n-title", "true");
   copyBtn.classList.add("jdb-right", "jdb-ripple", "copy-btn");
