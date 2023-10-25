@@ -231,8 +231,14 @@ loc.init({
           <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>// 2. JAVASCRIPT
 // 2.1.
 let data = {
-  "fr": { "intro": "%{name} a eu %{age} ans cette année." },
-  "en": { "intro": "%{name} turned %{age} this year." }
+  "fr": {
+    "intro": "%{name} a eu %{age} ans cette année.",
+    "test": "Ceci est un test."
+  },
+  "en": {
+    "intro": "%{name} turned %{age} this year.",
+    "test": "This is a test."
+  }
 };
 
 loc.init({
@@ -242,10 +248,12 @@ loc.init({
       age: (new Date().getFullYear()) - birthYear,
       name: "John Doe"
     });
+
+    console.log(loc.t("test")) // "Ceci est un test."
     // ...
   }
 });</code></pre>
-          <p data-si18n="utils.or"></p>
+          <div class="jdb-separator" data-si18n="utils.or"></div>
           <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>
 // 2.2.
 let data = {
