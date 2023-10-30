@@ -426,6 +426,7 @@ export default class Si18n {
    * @returns {object} The options of the instance.
    */
   toJSON() {
-    return this.#options;
+    const { callback, translate, ...options } = this.#options;
+    return options;
   }
 }
