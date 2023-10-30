@@ -325,6 +325,7 @@ export default class Si18n {
           si18nPlaceholder
         } = element.dataset;
         const JSONPath = element.dataset.si18n;
+        if (!JSONPath) return; // If the data-si18n attribute is empty.
         const text = this.t(JSONPath);
 
         if (si18nDefault !== "false") {
