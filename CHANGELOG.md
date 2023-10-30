@@ -6,6 +6,12 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
+## 1.4.1 (October, 2023)
+
+- Ignore `data-si18n` attributes with no value.
+- Functions (`translate` and `callback`) are excluded from the result of the
+  `toJSON` method because they are not necessary.
+
 ## 1.4.0 (March 4, 2023)
 
 - Add a `reloadPage` option to reload the page when the language is changed.
