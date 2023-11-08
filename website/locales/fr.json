@@ -58,7 +58,7 @@
     "autoDetectionDesc": "Ceci permet à si18n.js de détecter et de mettre à jour automatiquement le texte de l'élément :",
     "autoSetLangAndDir": "Les attributs <code>lang</code> et <code>dir</code> de la balise <code>html</code> sont définis automatiquement. La seule chose que vous pouvez faire pour l'attribut <code>dir</code>, c'est de le définir manuellement pour toutes les langues ou seulement pour les langues en <code>rtl</code> (string). Par défaut : <code>ltr</code>. Exemple : <code>\"rtl\": true</code>.",
     "noContent": "Pas pour le contenu des balises",
-    "noContentDesc": "Lorsqu'il y a l'attribut <code>data-si18n-default</code> et que c'est défini à <code>false</code>, le texte ne sera pas défini comme contenu de la balise. Vous devez utiliser cette option uniquement pour le contenu des attributs.",
+    "noContentDesc": "Lorsqu'il y a l'attribut <code>data-si18n-default</code> et que c'est défini à <code>false</code>, le texte ne sera pas défini comme contenu de la balise. Vous devez utiliser cette option uniquement pour le contenu des attributs, sans oublier de mention de quel(s) attribut(s) il s'agit.",
     "cdnDesc": "Vous pouvez aussi utiliser si18n.js à partir d'un CDN. Il existe différentes versions de liens disponibles pour différentes plateformes CDN. Vous pouvez choisir et utiliser un seul lien à la fois.",
     "attrDescTitle": "Tous les attributs sont :",
     "attrDescType": "Les attributs suivants sont des booléens. Ils sont obligatoires selon les besoins. Les valeurs possibles sont <code>true</code> ou <code>false</code>.",

@@ -58,7 +58,7 @@
     "autoDetectionDesc": "This allows si18n.js to automatically detect and update the text for the element:",
     "autoSetLangAndDir": "The <code>lang</code> and <code>dir</code> attributes of the <code>html</code> tag are set automatically. The only thing you can do for the <code>dir</code> attribute is to set it manually for all languages or only for <code>rtl</code> (boolean) languages. Default: <code>ltr</code>. e.g.: <code>\"rtl\": true</code>.",
     "noContent": "Not for tag content",
-    "noContentDesc": "When there is the <code>data-si18n-default</code> attribute, and it is set to <code>false</code>, the text will not be set as the content of the tag. You should use this option only for attribute content.",
+    "noContentDesc": "When there is the <code>data-si18n-default</code> attribute, and it is set to <code>false</code>, the text will not be set as the content of the tag. You should only use this option for the content of the attributes, without forgetting to mention which attribute(s) they are.",
     "cdnDesc": "You can also use si18n.js from a CDN. There are different versions of links available for different CDN platforms. You can pick and use only one link at once.",
     "attrDescTitle": "All attributes are:",
     "attrDescType": "The following attributes are booleans. They are mandatory depending on the needs. Possible values are <code>true</code> or <code>false</code>.",
