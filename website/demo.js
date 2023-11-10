@@ -57,7 +57,10 @@ const openSummary = (elem) => {
 const loc = new Si18n(); // Initialize the i18n object.
 
 const translate = (locObj) => {
-  $("meta[name='description']").setAttribute("content", locObj.t("site_description"));
+  const siteDescription = locObj.t("site_description");
+  $("meta[name='description']").setAttribute("content", siteDescription);
+  $("meta[property='og:description'").setAttribute("content", siteDescription);
+  $("meta[property='twitter:description'").setAttribute("content", siteDescription);
   $(".monkey .more").innerText = locObj.t("nested.more", { 0: 12 });
 
   // Show locales infos
