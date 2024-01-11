@@ -123,8 +123,10 @@ export default class Si18n {
     } else if (_options.lang) {
       this.#options.lang = _options.lang;
     } else {
-      // Use the default language of the navigator.
-      this.#options.lang = navigator.language.substring(0, 2);
+      // Use the default language of the navigator, if it's available.
+      const browserLang = navigator.language.substring(0, 2);
+      this.#options.lang = this.#options.availableLocales.includes(browserLang) ?
+        browserLang : this.#options.fallbackLang;
     }
 
     if (!Si18n.#isUndefined(_options.reloadPage)) {
