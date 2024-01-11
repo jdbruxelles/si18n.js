@@ -4,9 +4,10 @@ const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 const scrollTo = (element, top = 8) => {
   let distance = element.getBoundingClientRect();
+  let y = window.scrollY ? window.scrollY : window.pageYOffset;
   window.scrollTo({
     behavior: "smooth",
-    top: distance.top + window.pageYOffset - top,
+    top: distance.top + y - top,
     left: 0
   });
 };
