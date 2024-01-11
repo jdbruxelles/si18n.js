@@ -110,13 +110,15 @@ export default class Si18n {
 
     const searchParam = new URLSearchParams(window.location.search);
     const langInURL = searchParam.get(this.#options.saveAs);
+    const savedLag = localStorage.getItem(this.#options.saveAs);
+
     if (!Si18n.#isUndefined(_options.saveLang)) {
       this.#options.saveLang = _options.saveLang;
     }
 
     if (langInURL !== null && this.#options.availableLocales.includes(langInURL)) {
       this.#options.lang = langInURL;
-    } else if (this.#options.saveLang) {
+    } else if (this.#options.saveLang && savedLag) {
       this.#options.lang = localStorage.getItem(this.#options.saveAs) || _options.lang;
     } else if (_options.lang) {
       this.#options.lang = _options.lang;
