@@ -135,11 +135,9 @@ export default class Si18n {
         throw new Error(`The path option must be a string. See docs ${docsLink}`);
       }
 
-      if ( // availableLocales option required on autoLoad mode.
-        !Array.isArray(_options.availableLocales) ||
-        (Array.isArray(_options.availableLocales) &&
-        _options.availableLocales.length === 0)
-      ) {
+      // availableLocales option required on autoLoad mode.
+      const hasLocalesList = Array.isArray(_options.availableLocales);
+      if (!hasLocalesList || (hasLocalesList && _options.availableLocales.length === 0)) {
         throw new Error(`The availableLocales option is required when using the path option. See docs ${docsLink}`);
       }
 
