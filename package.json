@@ -1,6 +1,6 @@
 {
   "name": "si18n.js",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A simple and lightweight way to integrate internationalization on a small web site project.",
   "main": "./si18n.js",
   "directories": {

@@ -6,6 +6,13 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
+## 1.4.2 (January 11, 2024)
+
+- Fix fallback language selection logic. Before, when the `lang` option wasn't provided to the constructor, and there was no URL parameter, and the user hadn't yet selected/clicked (saved) a language, everything crashed. Now, the fallback language will be used in this case.
+- Fix language selection logic about saved language.
+- Slight performance improvement.
+- Improve documentation and demo site.
+
 ## 1.4.1 (October, 2023)
 
 - Ignore `data-si18n` attributes with no value.
