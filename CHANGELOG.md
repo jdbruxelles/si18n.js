@@ -6,6 +6,10 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
+## 1.4.3 (January 13, 2024)
+
+- Fixed a bug where the name of the saved language (via `saveLang`, `saveAs`) would be corrupted on the user side and not available, causing the page to spit out.
+
 ## 1.4.2 (January 11, 2024)
 
 - Fix fallback language selection logic. Before, when the `lang` option wasn't provided to the constructor, and there was no URL parameter, and the user hadn't yet selected/clicked (saved) a language, everything crashed. Now, the fallback language will be used in this case.
