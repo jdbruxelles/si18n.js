@@ -75,6 +75,9 @@ export default class Si18n {
         " Or you may forget to add the selected HTML element(s). See docs " +
         docsLink);
     };
+    const isAvailableLocale = (lang) => {
+      return this.#options.availableLocales.includes(lang);
+    };
 
     if (optionsKeys.length === 0) {
       throw new Error(`No options provided. See docs ${docsLink}`);
@@ -116,7 +119,7 @@ export default class Si18n {
       this.#options.saveLang = _options.saveLang;
     }
 
-    if (langInURL !== null && this.#options.availableLocales.includes(langInURL)) {
+    if (langInURL !== null && isAvailableLocale(langInURL)) {
       this.#options.lang = langInURL;
     } else if (this.#options.saveLang && savedLag) {
       this.#options.lang = localStorage.getItem(this.#options.saveAs) || _options.lang;
@@ -125,7 +128,7 @@ export default class Si18n {
     } else {
       // Use the default language of the navigator, if it's available.
       const browserLang = navigator.language.substring(0, 2);
-      this.#options.lang = this.#options.availableLocales.includes(browserLang) ?
+      this.#options.lang = isAvailableLocale(browserLang) ?
         browserLang : this.#options.fallbackLang;
     }
 
@@ -200,7 +203,7 @@ export default class Si18n {
         }
 
         buttons.forEach((button) => {
-          if (this.#options.availableLocales.includes(button.dataset.lang)) {
+          if (isAvailableLocale(button.dataset.lang)) {
             button.addEventListener("click", () => {
               if (hasActiveClass) {
                 buttons.forEach((button_) => {
