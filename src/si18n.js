@@ -121,8 +121,8 @@ export default class Si18n {
 
     if (langInURL !== null && isAvailableLocale(langInURL)) {
       this.#options.lang = langInURL;
-    } else if (this.#options.saveLang && savedLag) {
-      this.#options.lang = localStorage.getItem(this.#options.saveAs) || _options.lang;
+    } else if (this.#options.saveLang && savedLag && isAvailableLocale(savedLag)) {
+      this.#options.lang = savedLag || _options.lang;
     } else if (_options.lang) {
       this.#options.lang = _options.lang;
     } else {
