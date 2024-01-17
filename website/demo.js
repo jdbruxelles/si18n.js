@@ -75,7 +75,7 @@ const translate = (locObj) => {
 
   const params = [
     "locales", "lang", "fallbackLang", "activeClass", "togglersSelector",
-    "isTogglerSelect", "saveLang", "saveAs", "translate", "onChange",
+    "isTogglerSelect", "saveLang", "saveAs", "translate", "onLocaleChanged",
     "path", "availableLocales", "reloadPage"
   ], optTable = $("#options table");
   params.forEach((prop) => {

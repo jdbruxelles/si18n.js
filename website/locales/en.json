@@ -33,7 +33,7 @@
       "saveAs": "Name of the key to save the language in the localStorage. If set, the value will be used as key to retrieve the language from the URL parameter (Default: <code>lang</code>).",
       "reloadPage": "If this option is set to <code>true</code>, the page will automatically refresh after changing the language. It may only be useful if you have a complex page structure and want the translations to be loaded every time you change the language, to keep it simple.",
       "translate": "<b class='required'>(required)</b> - Function that translates text manually. For translation use only.<br><b>Note:</b> The <code>html</code> tag automatically has a <code>lang</code> attribute with the current language, no need to encode it manually.",
-      "onChange": "Callback function triggered when the language changes. Everything you want to do else because the language has changed, do it here."
+      "onLocaleChanged": "Callback function triggered when the language changes. Everything you want to do else because the language has changed, do it here."
     },
     "methods": {
       "constructor": "Does the same thing as the following <code>init</code> method.",

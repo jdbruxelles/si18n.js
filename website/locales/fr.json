@@ -33,7 +33,7 @@
       "saveAs": "Nom de la clé pour enregistrer la langue dans le localStorage. Si elle est définie, la valeur sera utilisée comme clé pour récupérer la langue à partir du paramètre URL (Défaut : <code>lang</code>).",
       "reloadPage": "Si cette option est définie à <code>true</code>, la page sera automatiquement actualisée après avoir changé la langue. Elle peut être utile seulement si vous avez une structure de page complexe et que vous souhaitez que les traductions soient chargées à chaque changement de langue, pour faire simple.",
       "translate": "<b class='required'>(obligatoire)</b> - Fonction qui traduit le texte manuellement. Réservé uniquement à la traduction.<br><b>Note:</b> La balise <code>html</code> a automatiquement un attribut <code>lang</code> avec la langue actuelle, pas besoin de la coder manuellement.",
-      "onChange": "Fonction de rappel déclenchée lorsque la langue change. Tout ce que vous voulez faire d'autre parce que la langue a changé, faites-le ici."
+      "onLocaleChanged": "Fonction de rappel déclenchée lorsque la langue change. Tout ce que vous voulez faire d'autre parce que la langue a changé, faites-le ici."
     },
     "methods": {
       "constructor": "Fait la même chose que la méthode <code>init</code> suivante.",
