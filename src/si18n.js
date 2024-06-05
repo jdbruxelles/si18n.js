@@ -1,5 +1,5 @@
 /*!
- * @license si18n.js - v1.4.3
+ * @license si18n.js - v1.4.4
  * Copyright (c) José dBruxelles <jd.bruxelles.dev/c>.
  *
  * This source code is licensed under the MIT license found in the
@@ -9,7 +9,7 @@
  * Make translation management easier and more efficient.
  */
 export default class Si18n {
-  static version = "1.4.3";
+  static version = "1.4.4";
   #noop() {} // Empty function to avoid undefined paramaters.
   #isInitialized = false;
   #options = {
