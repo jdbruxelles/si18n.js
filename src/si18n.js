@@ -317,50 +317,37 @@ export default class Si18n {
     // if you want use the string for other purposes
     // (e.g.: title, aria-label attributes, etc.).
     const htmlTags = document.querySelectorAll("[data-si18n]");
-    if (htmlTags.length > 0) {
-      htmlTags.forEach((element) => {
-        const {
-          si18nDefault,
-          si18nTitle,
-          si18nLabel,
-          si18nHtml,
-          si18nValue,
-          si18nContent,
-          si18nAriaLabel,
-          si18nPlaceholder
-        } = element.dataset;
-        const JSONPath = element.dataset.si18n;
-        if (!JSONPath) return; // If the data-si18n attribute is empty.
-        const text = this.t(JSONPath);
+    const tagsLength = htmlTags.length;
 
-        if (si18nDefault !== "false") {
-          if (si18nHtml === "true") element.innerHTML = text;
+    if (tagsLength > 0) {
+      // Supported attributes in which the text can be automatically set:
+      const attributesMap = {
+        title: "si18nTitle",
+        label: "si18nLabel", // e.g: for <optgroup>
+        alt: "si18nAlt", // e.g: for <img alt>
+        "aria-label": "si18nAriaLabel",
+        value: "si18nValue", // e.g: for <input>, <option> and <button>.
+        content: "si18nContent", // e.g: for <meta>
+        placeholder: "si18nPlaceholder" // e.g: for <input> and <textarea>
+      };
+
+      for (let i = 0; i < tagsLength; i++) {
+        const element = htmlTags[i];
+        if (!element.dataset.si18n) continue; // JSON path is not set in data-si18n attribute.
+        const text = this.t(element.dataset.si18n);
+
+        // Set the text to the element.
+        if (element.dataset.si18nDefault !== "false") {
+          if (element.dataset.si18nHtml === "true") element.innerHTML = text;
           else element.textContent = text;
         }
 
-        // Supported attributes in which the text can be automatically set:
-        // `title`, `label`, `aria-label`, `value`, `content`, and `placeholder`.
-
-        if (!Si18n.#isUndefined(si18nTitle))
-          element.setAttribute("title", text);
-
-        if (!Si18n.#isUndefined(si18nLabel))
-          element.setAttribute("label", text); // e.g: for <optgroup>
-
-        if (!Si18n.#isUndefined(si18nAriaLabel))
-          element.setAttribute("aria-label", text);
-
-        if (!Si18n.#isUndefined(si18nValue))
-          // e.g: for <input>, <option> and <button>.
-          element.setAttribute("value", text);
-
-        if (!Si18n.#isUndefined(si18nContent))
-          element.setAttribute("content", text); // e.g: for <meta>
-
-        if (!Si18n.#isUndefined(si18nPlaceholder))
-          // e.g: for <input> and <textarea>
-          element.setAttribute("placeholder", text);
-      });
+        // Set the text to the supported attributes.
+        Object.keys(attributesMap).forEach((attr) => {
+          if (attributesMap[attr] in element.dataset)
+            element.setAttribute(attr, text);
+        });
+      }
     }
 
     this.#options.translate();

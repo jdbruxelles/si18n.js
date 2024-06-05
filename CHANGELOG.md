@@ -6,6 +6,11 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
+## 1.4.4 (June 5, 2024)
+
+- Add `alt` attribute support for auto translating using the `data-si18n-alt` attribute with value `true` in the element (e.g.: `<img>` tag).
+- Fix: Skip elements with `data-si18n` attribute not set, instead of breaking the whole localization process.
+
 ## 1.4.3 (January 13, 2024)
 
 - Fixed a bug where the name of the saved language (via `saveLang`, `saveAs`) would be corrupted on the user side and not available, causing the page to spit out.
@@ -17,7 +22,7 @@
 - Slight performance improvement.
 - Improve documentation and demo site.
 
-## 1.4.1 (October, 2023)
+## 1.4.1 (October 30, 2023)
 
 - Ignore `data-si18n` attributes with no value.
 - Functions (`translate` and `callback`) are excluded from the result of the
