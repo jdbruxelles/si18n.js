@@ -51,10 +51,68 @@ yarn add si18n.js
 <script type="module" src="https://unpkg.com/si18n.min.js"></script>
 ```
 
+### Node.js
+
+Installation using [npm](https://www.npmjs.com/package/si18n.js)...
+```bash
+npm i si18n.js
+```
+
+then use the `si18n` class:
+```js
+const si18n = require("si18n.js/node");
+```
+
+### TypeScript
+
+Installation using [npm](https://www.npmjs.com/package/si18n.js)...
+```bash
+npm i si18n.js
+```
+
+then use the `si18n` class:
+```ts
+import si18n from "si18n.js/node";
+```
+
 ## Usage
 
 For detailed usage information,
 [visit the docs](https://si18n.js.bruxelles.dev).
+
+### Node.js
+
+```js
+const Si18n = require("si18n.js/node");
+
+const loc = new Si18n({
+  locales: {
+    en: { greeting: "Hello" },
+    fr: { greeting: "Bonjour" }
+  },
+  lang: "en",
+  fallbackLang: "fr"
+});
+
+console.log(loc.t("greeting")); // Output: Hello
+```
+
+### TypeScript
+
+```ts
+import Si18n from "si18n.js/node";
+
+const loc = new Si18n({
+  locales: {
+    en: { greeting: "Hello" },
+    fr: { greeting: "Bonjour" }
+  },
+  lang: "en",
+  fallbackLang: "fr"
+});
+
+console.log(loc.t("greeting")); // Output: Hello
+```
 
 ## Run locally
 
@@ -88,6 +146,13 @@ gulp
 - Automatically rerun the build task when a script file changes
 ```bash
 gulp watch
+```
+
+### TypeScript Build
+
+- Build the TypeScript version for Node.js
+```bash
+npm run build:node
 ```
 
 ### Server
