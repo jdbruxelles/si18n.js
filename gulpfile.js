@@ -1,7 +1,7 @@
-const { dest, series, src, task } = require("gulp");
-const babel = require("gulp-babel");
-const watch = require("gulp-watch");
-const rename = require("gulp-rename");
+import gulp from "gulp";
+import babel from "gulp-babel";
+import watch from "gulp-watch";
+import rename from "gulp-rename";
 
 const babelOptions = {
   minified: true,
@@ -21,26 +21,26 @@ const babelOptions = {
 };
 
 function si18n() {
-  return src("./src/si18n.js")
-    .pipe(dest("./"))
-    .pipe(dest("./website/"))
+  return gulp.src("./src/si18n.js")
+    .pipe(gulp.dest("./"))
+    .pipe(gulp.dest("./website/"))
     .pipe(babel(babelOptions))
     .pipe(rename({ extname: ".min.js" }))
-    .pipe(dest("./website/"))
-    .pipe(dest("./"));
+    .pipe(gulp.dest("./website/"))
+    .pipe(gulp.dest("./"));
 }
 
 function demoScript() {
-  return src("./website/demo.js")
+  return gulp.src("./website/demo.js")
     .pipe(babel(babelOptions))
     .pipe(rename({ extname: ".min.js" }))
-    .pipe(dest("./website/"));
+    .pipe(gulp.dest("./website/"));
 }
 
-task("watch", () => {
+gulp.task("watch", () => {
   const options = { ignoreInitial: false };
   watch("./src/si18n.js", options, si18n);
   watch("./website/*.js", options, demoScript);
 });
 
-task("default", series(si18n, demoScript));
+gulp.task("default", gulp.series(si18n, demoScript));
