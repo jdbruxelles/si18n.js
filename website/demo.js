@@ -60,8 +60,8 @@ const loc = new Si18n(); // Initialize the i18n object.
 const translate = (locObj) => {
   const siteDescription = locObj.t("site_description");
   $("meta[name='description']").setAttribute("content", siteDescription);
-  $("meta[property='og:description'").setAttribute("content", siteDescription);
-  $("meta[property='twitter:description'").setAttribute("content", siteDescription);
+  $("meta[property='og:description']").setAttribute("content", siteDescription);
+  $("meta[property='twitter:description']").setAttribute("content", siteDescription);
   $(".monkey .more").innerText = locObj.t("nested.more", { 0: 12 });
 
   // Show locales infos
@@ -69,15 +69,17 @@ const translate = (locObj) => {
   infos[0].innerText = `${locObj.t("current_lang")} : ${locObj.getLocale()}`;
   infos[1].innerText = `${locObj.t("all_lang")} : ${locObj.getLocales().join(", ")}`;
 
-  $("#options summary").innerHTML = "<a href='#options'>#</a> " +
-    locObj.t("options.cols_title.default_options") + " (" +
-    Object.keys(locObj.toJSON()).length + ")";
-
   const params = [
     "locales", "lang", "fallbackLang", "activeClass", "togglersSelector",
     "isTogglerSelect", "saveLang", "saveAs", "translate", "onLocaleChanged",
-    "path", "availableLocales", "reloadPage"
-  ], optTable = $("#options table");
+    "path", "localeLoader", "availableLocales", "reloadPage"
+  ];
+
+  $("#options summary").innerHTML = "<a href='#options'>#</a> " +
+    locObj.t("options.cols_title.default_options") +
+    " (" + params.length + ")";
+
+  const optTable = $("#options table");
   params.forEach((prop) => {
     optTable.querySelector(`#prop-${prop} td:last-child`).innerHTML = locObj.t(`options.params.${prop}`);
   });
