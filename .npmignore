@@ -8,7 +8,6 @@
 /.gitignore
 /.github
 /netlify.toml
-/gulpfile.js
 /crowdin.yml
 
 # Source and Development
