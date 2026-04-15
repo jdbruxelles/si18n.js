@@ -2,22 +2,67 @@
   "name": "si18n.js",
   "version": "1.4.4",
   "description": "A simple and lightweight way to integrate internationalization on a small web site project.",
-  "main": "./si18n.js",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "si18n.js",
+    "si18n.min.js",
+    "si18n.es5.js",
+    "si18n.es5.min.js",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.mjs",
+      "require": "./dist/core/index.cjs"
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "import": "./dist/browser/index.mjs",
+      "require": "./dist/browser/index.cjs"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "import": "./dist/node/index.mjs",
+      "require": "./dist/node/index.cjs"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.mjs",
+      "require": "./dist/react/index.cjs"
+    },
+    "./react/server": {
+      "types": "./dist/react/server.d.ts",
+      "import": "./dist/react/server.mjs",
+      "require": "./dist/react/server.cjs"
+    },
+    "./package.json": "./package.json"
+  },
   "directories": {
     "src": "src",
-    "site": "website",
-    "node": "node"
+    "site": "website"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp",
-    "watch": "gulp watch",
-    "netlifyServer": "netlify dev --framework=\"#static\"",
-    "build:node": "tsc"
+    "test": "tsc --noEmit && node --test tests/*.test.cjs",
+    "build": "tsdown --config tsdown.config.mts && node ./scripts/build-browser-artifacts.mjs",
+    "watch": "tsdown --config tsdown.config.mts --watch",
+    "prepublishOnly": "npm run build && npm test",
+    "netlifyServer": "netlify dev --framework=\"#static\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jdbruxelles/si18n.git"
+    "url": "git+https://github.com/jdbruxelles/si18n.js.git"
   },
   "keywords": [
     "i18n",
@@ -46,14 +91,22 @@
     "url": "https://github.com/jdbruxelles/si18n.js/issues"
   },
   "homepage": "https://github.com/jdbruxelles/si18n.js#readme",
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
   "devDependencies": {
-    "@babel/core": "^7.18.5",
-    "@babel/preset-env": "^7.18.2",
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.2",
     "babel-preset-minify": "^0.5.2",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-watch": "^5.0.1",
-    "typescript": "^5.7.3"
+    "esbuild": "^0.25.11",
+    "tsdown": "^0.21.8",
+    "typescript": "^6.0.2"
   }
 }

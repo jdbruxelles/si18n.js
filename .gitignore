@@ -4,6 +4,7 @@
 
 /.netlify
 
+/dist
 /website/demo.min.js
 /website/si18n*.js
 /si18n*.js
