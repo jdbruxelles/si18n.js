@@ -113,11 +113,16 @@
           <li><a href="#usage" data-si18n="utils.usage"></a>
             <ul>
               <li><a href="#use-with-npm">NPM</a></li>
+              <li><a href="#use-node-js">Node.js</a></li>
+              <li><a href="#use-typescript">TypeScript</a></li>
+              <li><a href="#use-react-client">React (Client)</a></li>
+              <li><a href="#use-react-server">React (Server)</a></li>
               <li><a href="#basic-example" data-si18n="utils.basicExample"></a></li>
               <li><a href="#auto-detect" data-si18n="autoDetect.autoDetection"></a></li>
               <li><a href="#values-replacement" data-si18n="options.others.valuesReplacement"></a></li>
             </ul>
           </li>
+          <li><a href="#demos" data-si18n="demos.title"></a></li>
           <li><a href="#methods" data-si18n="options.cols_title.methods"></a></li>
           <li><a href="#options" data-si18n="options.cols_title.default_options"></a></li>
         </ul>
@@ -177,6 +182,27 @@
   // ...
 &lt;/script&gt;</code></pre>
         </div>
+        <div class="code-block" id="cdn-classic">
+          <div class="code-header">
+            <span class="code-title">CDN Classic Global Script</span>
+            <div class="code-description" data-si18n="autoDetect.cdnClassicDesc" data-si18n-html="true"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl app-version" data-mode="html"><code>&lt;!-- Load the global script (sets window.Si18n) --&gt;
+&lt;script src="https://unpkg.com/si18n.js@latest/si18n.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const loc = new window.Si18n();
+  // ...
+&lt;/script&gt;</code></pre>
+        </div>
+        <div class="code-block" id="cdn-es6">
+          <div class="code-header no-copy">
+            <span class="code-title">ES6 Source versions</span>
+            <div class="code-description" data-si18n="autoDetect.cdnEs6Desc" data-si18n-html="true"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl app-version" data-mode="html"><code>&lt;!-- Raw untranspiled ES6 Modules --&gt;
+&lt;script type="module" src="https://unpkg.com/si18n.js@latest/si18n.es6.js"&gt;&lt;/script&gt;
+&lt;script type="module" src="https://unpkg.com/si18n.js@latest/si18n.es6.min.js"&gt;&lt;/script&gt;</code></pre>
+        </div>
       </details>
 
       <details class="jdb-container jdb-margin-top" id="usage" open>
@@ -187,7 +213,91 @@
           <div class="code-header">
             <span class="code-title">NPM</span>
           </div>
-          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>import Si18n from "si18n";</code></pre>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>import Si18n from "si18n.js";</code></pre>
+        </div>
+        <div class="code-block" id="use-node-js">
+          <div class="code-header">
+            <span class="code-title">Node.js (CommonJS)</span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>const { Si18nNode: Si18n } = require("si18n.js/node");
+
+const loc = new Si18n({
+  locales: {
+    en: { greeting: "Hello" },
+    fr: { greeting: "Bonjour" }
+  },
+  lang: "en",
+  fallbackLang: "en"
+});
+
+console.log(loc.t("greeting"));</code></pre>
+        </div>
+        <div class="code-block" id="use-typescript">
+          <div class="code-header">
+            <span class="code-title">TypeScript</span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="ts"><code>import Si18nBrowser from "si18n.js/browser";
+import Si18nNode from "si18n.js/node";
+import { Si18nCore } from "si18n.js/core";</code></pre>
+        </div>
+        <div class="code-block" id="use-react-client">
+          <div class="code-header">
+            <span class="code-title">React (Client)</span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="tsx"><code>"use client";
+
+import Si18nBrowser from "si18n.js/browser";
+import { Si18nProvider, useTranslation } from "si18n.js/react";
+
+const i18n = new Si18nBrowser();
+
+function Content() {
+  const { t, locale, setLocale } = useTranslation();
+
+  return (
+    &lt;&gt;
+      &lt;h1&gt;{t("title")}&lt;/h1&gt;
+      &lt;button onClick={() =&gt; void setLocale(locale === "en" ? "fr" : "en")}&gt;
+        Switch
+      &lt;/button&gt;
+    &lt;/&gt;
+  );
+}
+
+export default function App() {
+  return (
+    &lt;Si18nProvider
+      i18n={i18n}
+      options={{
+        locales: {
+          en: { title: "Hello" },
+          fr: { title: "Bonjour" }
+        },
+        lang: "en",
+        fallbackLang: "en"
+      }}
+    &gt;
+      &lt;Content /&gt;
+    &lt;/Si18nProvider&gt;
+  );
+}</code></pre>
+        </div>
+        <div class="code-block" id="use-react-server">
+          <div class="code-header">
+            <span class="code-title">React (Server)</span>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="ts"><code>import { createServerTranslator } from "si18n.js/react/server";
+
+const { t } = await createServerTranslator({
+  locales: {
+    en: { title: "Hello" },
+    fr: { title: "Bonjour" }
+  },
+  lang: "en",
+  fallbackLang: "en"
+});
+
+console.log(t("title"));</code></pre>
         </div>
         <div class="code-block" id="basic-example">
           <div class="code-header">
@@ -286,10 +396,152 @@ loc.init({
         </div>
       </details>
 
+      <details class="jdb-container jdb-margin-top" id="demos" open>
+        <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable">
+          <a href="#demos">#</a> <span data-si18n="demos.title"></span>
+        </summary>
+
+        <div class="code-block" id="demo-nested-keys">
+          <div class="code-header">
+            <span class="code-title" data-si18n="demos.nestedKeys"></span>
+            <div class="code-description" data-si18n="demos.nestedKeysDesc"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>const loc = new Si18n();
+
+await loc.init({
+  locales: {
+    en: {
+      site: {
+        title: "My Website",
+        nav: { home: "Home", about: "About" }
+      }
+    }
+  },
+  lang: "en",
+  fallbackLang: "en"
+});
+
+console.log(loc.t("site.title"));    // "My Website"
+console.log(loc.t("site.nav.home")); // "Home"</code></pre>
+        </div>
+
+        <div class="code-block" id="demo-lazy-path">
+          <div class="code-header">
+            <span class="code-title" data-si18n="demos.lazyPath" data-si18n-html="true"></span>
+            <div class="code-description" data-si18n="demos.lazyPathDesc" data-si18n-html="true"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>// locales/en.json, locales/fr.json, locales/de.json ...
+const loc = new Si18n();
+
+await loc.init({
+  path: "./locales",
+  availableLocales: ["en", "fr", "de"],
+  lang: "en",
+  fallbackLang: "fr" // loaded
+});
+
+console.log(loc.t("greeting")); // value from en.json
+await loc.setLocale("fr");      // fetches fr.json on demand
+console.log(loc.t("greeting")); // value from fr.json</code></pre>
+        </div>
+
+        <div class="code-block" id="demo-locale-loader">
+          <div class="code-header">
+            <span class="code-title" data-si18n="demos.lazyLoader" data-si18n-html="true"></span>
+            <div class="code-description" data-si18n="demos.lazyLoaderDesc"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>const loc = new Si18n();
+
+await loc.init({
+  availableLocales: ["en", "fr"],
+  lang: "en",
+  fallbackLang: "en",
+  localeLoader: async (locale) =&gt; {
+    // Dynamic import — bundler will code-split automatically
+    const module = await import(`./locales/${locale}.js`);
+    return module.default;
+  }
+});</code></pre>
+        </div>
+
+        <div class="code-block" id="demo-subscribe">
+          <div class="code-header">
+            <span class="code-title" data-si18n="demos.subscribe"></span>
+            <div class="code-description" data-si18n="demos.subscribeDesc" data-si18n-html="true"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>// Subscribe — returns an unsubscribe function
+const unsubscribe = loc.subscribe((newLocale) =&gt; {
+  console.log("Locale changed to:", newLocale);
+  document.title = loc.t("pageTitle");
+});
+
+await loc.setLocale("fr"); // triggers the listener
+
+unsubscribe(); // stop listening</code></pre>
+        </div>
+
+        <div class="code-block" id="demo-rtl">
+          <div class="code-header">
+            <span class="code-title" data-si18n="demos.rtl"></span>
+            <div class="code-description" data-si18n="demos.rtlDesc" data-si18n-html="true"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>await loc.init({
+  locales: {
+    en: { greeting: "Hello" },
+    ar: { rtl: true, greeting: "\u0645\u0631\u062d\u0628\u0627" }
+  },
+  lang: "en",
+  fallbackLang: "en"
+});
+
+await loc.setLocale("ar");
+// &lt;html lang="ar" dir="rtl"&gt; is set automatically</code></pre>
+        </div>
+
+        <div class="code-block" id="demo-on-locale-changed">
+          <div class="code-header">
+            <span class="code-title" data-si18n="demos.onLocaleChanged" data-si18n-html="true"></span>
+            <div class="code-description" data-si18n="demos.onLocaleChangedDesc"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>await loc.init({
+  locales: {
+    en: { pageTitle: "My App" },
+    fr: { pageTitle: "Mon App" }
+  },
+  lang: "en",
+  fallbackLang: "en",
+  onLocaleChanged(newLocale, instance) {
+    document.title = instance.t("pageTitle");
+    console.log("Switched to:", newLocale);
+  }
+});</code></pre>
+        </div>
+
+        <div class="code-block" id="demo-nodejs">
+          <div class="code-header">
+            <span class="code-title" data-si18n="demos.nodeJs"></span>
+            <div class="code-description" data-si18n="demos.nodeJsDesc" data-si18n-html="true"></div>
+          </div>
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>const { Si18nNode: Si18n } = require("si18n.js/node");
+
+const loc = new Si18n({
+  locales: {
+    en: { greeting: "Hello" },
+    fr: { greeting: "Bonjour" }
+  },
+  lang: "en",
+  fallbackLang: "en"
+});
+
+console.log(loc.t("greeting")); // "Hello"</code></pre>
+        </div>
+
+      </details>
+
       <details class="jdb-container jdb-margin-top" id="methods">
         <summary class="jdb-padding jdb-border jdb-border-w2 jdb-round-xxl jdb-pointer jdb-focusable">
           <a href="#methods">#</a> <span data-si18n="options.cols_title.methods"></span>
-          <span> (7)</span>
+          <span> (10)</span>
         </summary>
         <div class="jdb-responsive jdb-margin-top">
           <table class="jdb-table-all jdb-margin-auto jdb-bordered-all">
@@ -334,6 +586,16 @@ loc.init({
                 </td>
                 <td data-si18n="options.methods.t" data-si18n-html="true"></td>
               </tr>
+              <tr id="fn-subscribe">
+                <td><code>subscribe</code></td>
+                <td><code><b>listener</b></code>:<code>function</code></td>
+                <td data-si18n="options.methods.subscribe" data-si18n-html="true"></td>
+              </tr>
+              <tr id="fn-isInitialized">
+                <td><code>isInitialized</code></td>
+                <td><code>void</code></td>
+                <td data-si18n="options.methods.isInitialized"></td>
+              </tr>
               <tr id="fn-getJSON">
                 <td><code>static async getJSON</code></td>
                 <td>
@@ -372,6 +634,11 @@ loc.init({
               <tr id="prop-path">
                 <td><code>path</code></td>
                 <td><code>null</code></td>
+                <td></td>
+              </tr>
+              <tr id="prop-localeLoader">
+                <td><code>localeLoader</code></td>
+                <td><code>undefined</code></td>
                 <td></td>
               </tr>
               <tr id="prop-availableLocales">

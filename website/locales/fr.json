@@ -23,17 +23,18 @@
     "params": {
       "locales": "Objet contenant vos traductions des langues. <b class='required'>Obligatoire seulement si</b> <a href='#prop-path'><code>path</code></a> n'est pas définie.",
       "path": "Chemin d'accès absolu vers le dossier contenant vos fichiers de traduction. Les fichiers vont être chargés automatiquement selon la langue active (la langue de secours sera toujours chargé). Prioritaire sur l'option <a href='#prop-locales'><code>locales</code></a>. <b class='required'>Obligatoire seulement si</b> <a href='#prop-locales'><code>locales</code></a> n'est pas définie. Ex : <code>./locales</code>.",
+      "localeLoader": "Fonction asynchrone personnalisée pour charger dynamiquement les traductions. Utile comme alternative à <a href='#prop-path'><code>path</code></a>, surtout en environnement Node.js/serveur.",
       "availableLocales": "Liste contenant les noms des langues disponibles tel que défini dans les fichiers de traduction. <b class='required'>Obligatoire seulement si</b> <a href='#prop-path'><code>path</code></a> est définie.",
       "lang": "Langue active à utiliser. Ne l'utilisez pas si vous souhaitez laisser le détecteur de langue du navigateur fournir la langue. Si cette option n'est pas définie, l'option <code>fallbackLang</code> devient obligatoire.",
-      "fallbackLang": "Langue de secours. La langue à utiliser lorsque la langue demandée ou une chaîne demandée dans une langue non entièrement traduite est manquante. Si elle n'est pas défini, la langue de secours sera la langue actuelle.",
+      "fallbackLang": "Langue de secours. La langue à utiliser lorsque la langue demandée ou une chaîne demandée dans une langue non entièrement traduite est manquante. Si elle n'est pas définie, la valeur de <code>lang</code> sera utilisée.",
       "activeClass": "Classe à ajouter au bouton actif pour la langue actuelle. À utiliser seulement si <a href='#prop-togglersSelector'><code>togglersSelector</code></a> est utilisé.",
       "togglersSelector": "Sélecteur CSS pour les éléments basculeurs. si18n.js ajoutera un événement click aux éléments sélectionnés. Ne pas définir si vous utilisez la méthode <code>setLocale(lang)</code>. Ces éléments doivent <b class='required'>obligatoirement</b> avoir l'attribut <code>data-lang=\"XX\"</code> où XX correspond au code de la langue du bouton (élément basculeur) pour être détectés.",
       "isTogglerSelect": "Si le basculeur est un élément <code>select</code> ou <code>button</code> (autre).",
       "saveLang": "S'il faut enregistrer la langue dans le localStorage.",
       "saveAs": "Nom de la clé pour enregistrer la langue dans le localStorage. Si elle est définie, la valeur sera utilisée comme clé pour récupérer la langue à partir du paramètre URL (Défaut : <code>lang</code>).",
       "reloadPage": "Si cette option est définie à <code>true</code>, la page sera automatiquement actualisée après avoir changé la langue. Elle peut être utile seulement si vous avez une structure de page complexe et que vous souhaitez que les traductions soient chargées à chaque changement de langue, pour faire simple.",
-      "translate": "<b class='required'>(obligatoire)</b> - Fonction qui traduit le texte manuellement. Réservé uniquement à la traduction.<br><b>Note:</b> La balise <code>html</code> a automatiquement un attribut <code>lang</code> avec la langue actuelle, pas besoin de la coder manuellement.",
-      "onLocaleChanged": "Fonction de rappel déclenchée lorsque la langue change. Tout ce que vous voulez faire d'autre parce que la langue a changé, faites-le ici."
+      "translate": "Fonction qui traduit le texte manuellement. Réservé uniquement à la traduction.<br><b>Note:</b> La balise <code>html</code> a automatiquement un attribut <code>lang</code> avec la langue actuelle, pas besoin de la coder manuellement.",
+      "onLocaleChanged": "Callback déclenché lors d'un changement de langue (à <code>init</code> et <code>setLocale</code>). Il se déclenche <b>avant</b> les abonnés <code>subscribe</code> et reçoit <code>(locale, instance)</code>, vous donnant un accès direct à l'instance i18n. Définissez-le une seule fois à la configuration pour vos effets secondaires <b>centraux</b> (ex. : mise à jour du titre de la page, rafraîchissement de contenu dynamique). Pour des écouteurs multiples ou amovibles, préférez <a href='#fn-subscribe'><code>subscribe()</code></a>."
     },
     "methods": {
       "constructor": "Fait la même chose que la méthode <code>init</code> suivante.",
@@ -42,7 +43,9 @@
       "getLocale": "Renvoie le code de la langue actuelle (ex : 'en').",
       "getLocales": "Renvoie la liste de toutes les langues disponibles (ex : <code>['fr', 'en', 'it']</code>).",
       "t": "Renvoie la chaîne de traduction à la clé donnée (ex : <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).<br>L'argument <code>valeurs</code> est facultatif. S'il est fourni, il doit contenir les clés-valeurs à remplacer. Voir l'<a href='#values-replacement'>exemple</a> ci-dessous.",
-      "getJSON": "Récupère et renvoie au format JSON dans le paramètre de la fonction callback les données de l'URL fournie.",
+      "subscribe": "S'abonne aux changements de langue et renvoie une fonction de désabonnement. Utilisez-le pour des écouteurs <b>faiblement couplés</b> pouvant être ajoutés ou supprimés dynamiquement (ex. : analytics, widgets tiers, cycles de vie de composants). Plusieurs écouteurs peuvent être enregistrés simultanement. Contrairement à <code>onLocaleChanged</code>, les abonnés ne reçoivent pas l'argument <code>instance</code> — capturez-le dans la closure si besoin.",
+      "isInitialized": "Renvoie si l'instance est déjà initialisée.",
+      "getJSON": "Récupère et renvoie au format JSON dans le callback les données de l'URL (navigateur) ou du chemin de fichier (Node.js).",
       "toJSON": "Renvoie les options de l'instance."
     },
     "others": {
@@ -56,10 +59,12 @@
   "autoDetect": {
     "autoDetection": "Détection automatique",
     "autoDetectionDesc": "Ceci permet à si18n.js de détecter et de mettre à jour automatiquement le texte de l'élément :",
-    "autoSetLangAndDir": "Les attributs <code>lang</code> et <code>dir</code> de la balise <code>html</code> sont définis automatiquement. La seule chose que vous pouvez faire pour l'attribut <code>dir</code>, c'est de le définir manuellement pour toutes les langues ou seulement pour les langues en <code>rtl</code> (string). Par défaut : <code>ltr</code>. Exemple : <code>\"rtl\": true</code>.",
+    "autoSetLangAndDir": "Les attributs<code>lang</code> et <code>dir</code> de la balise <code>html</code> sont définis automatiquement. La seule chose que vous pouvez faire pour l'attribut <code>dir</code>, c'est de le définir manuellement pour toutes les langues ou seulement pour les langues en <code>rtl</code> (string). Par défaut : <code>ltr</code>. Exemple : <code>\"rtl\": true</code>.",
     "noContent": "Pas pour le contenu des balises",
-    "noContentDesc": "Lorsqu'il y a l'attribut <code>data-si18n-default</code> et que c'est défini à <code>false</code>, le texte ne sera pas défini comme contenu de la balise. Vous devez utiliser cette option uniquement pour le contenu des attributs, sans oublier de mention de quel(s) attribut(s) il s'agit.",
+    "noContentDesc": "Lorsqu'il y a l'attribut <code>data-si18n-default</code> et que c'est défini à <code>false</code>, le texte ne sera pas défini comme contenu de la balise. Vous devez utiliser cette option uniquement pour le contenu des attributs, sans oublier de mentionner de quel(s) attribut(s) il s'agit.",
     "cdnDesc": "Vous pouvez aussi utiliser si18n.js à partir d'un CDN. Il existe différentes versions de liens disponibles pour différentes plateformes CDN. Vous pouvez choisir et utiliser un seul lien à la fois.",
+    "cdnClassicDesc": "Vous pouvez inclure si18n.js comme script global classique (non module) qui définit la classe globale <code>window.Si18n</code>.",
+    "cdnEs6Desc": "Les versions suffixées par <code>.es6.js</code> sont des modules source ES6 non transpilés. Utilisez-les si vous compilez votre propre code (\"bundler\") et souhaitez l'implémentation ES6 d'origine.",
     "attrDescTitle": "Tous les attributs sont :",
     "attrDescType": "Les attributs suivants sont des booléens. Ils sont obligatoires selon les besoins. Les valeurs possibles sont <code>true</code> ou <code>false</code>.",
     "attrDesc": "<li><code>data-si18n-default</code> : si défini sur <code>false</code>, le texte ne sera pas placé dans la balise. (Réservé pour les attributs.)</li><li><code>data-si18n-html</code> : si défini sur <code>true</code>, le texte sera ajouté sous forme de code HTML. Défaut : <code>false</code>.</li><li><code>data-si18n-value</code> pour l'attribut <code>value</code> d'une balise comme <code>option</code> et <code>input</code>.</li><li><code>data-si18n-alt</code> pour l'attribut <code>alt</code> de la balise <code>img</code> pour fournir une description textuelle de l'image.</li><li><code>data-si18n-title</code> pour l'attribut <code>title</code> de la balise.</li><li><code>data-si18n-label</code> pour l'attribut <code>label</code> d'une balise comme <code>optgroup</code>.</li><li><code>data-si18n-aria-label</code> pour l'attribut <code>aria-label</code> de la balise.</li><li><code>data-si18n-placeholder</code> pour l'attribut <code>placeholder</code> des balises <code>input</code> et <code>textarea</code>.</li><li><code>data-si18n-content</code> pour l'attribut <code>content</code> d'une balise comme <code>meta</code> pour la description du site, par exemple (utile si vous utilisez la technologie <code>Prerendering</code>.</li>"
@@ -76,6 +81,23 @@
     "values": "valeurs",
     "or": "ou",
     "changelog": "Journal des modifications (en)",
-    "itLangNotAvailable": "Italien : Non disponible"
+    "itLangNotAvailable": "Italien : Non disponible"
+  },
+  "demos": {
+    "title": "Plus de démos",
+    "nestedKeys": "Clés imbriquées (notation pointée)",
+    "nestedKeysDesc": "Les clés peuvent être imbriquées à n'importe quelle profondeur et accédées avec la notation pointée :",
+    "lazyPath": "Chargement différé via <code>path</code>",
+    "lazyPathDesc": "Placez vos fichiers JSON de traduction dans un dossier et si18n.js les récupérera à la demande. <b>Note :</b> Seules la langue de secours et la langue active sont chargées au démarrage.",
+    "lazyLoader": "Chargement différé via <code>localeLoader</code>",
+    "lazyLoaderDesc": "Utilisez une fonction asynchrone personnalisée — idéale pour le découpage de code (bundler) ou les chargeurs côté serveur :",
+    "subscribe": "S'abonner aux changements de langue",
+    "subscribeDesc": "<code>subscribe()</code> vous permet de réagir aux changements de langue n'importe où dans votre code :",
+    "rtl": "Support des langues RTL",
+    "rtlDesc": "Définissez <code>rtl: true</code> dans un objet de traduction. si18n.js définira automatiquement <code>dir=\"rtl\"</code> sur l'élément <code>&lt;html&gt;</code> lorsque cette langue est active :",
+    "onLocaleChanged": "Callback <code>onLocaleChanged</code>",
+    "onLocaleChangedDesc": "Exécutez des effets secondaires après un changement de langue (mettre à jour le titre de la page, rafraîchir du contenu dynamique, …) :",
+    "nodeJs": "Node.js",
+    "nodeJsDesc": "Utilisez la classe dédiée <code>Si18nNode</code> :"
   }
 }
