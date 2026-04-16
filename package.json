@@ -10,8 +10,8 @@
     "dist",
     "si18n.js",
     "si18n.min.js",
-    "si18n.es5.js",
-    "si18n.es5.min.js",
+    "si18n.es6.js",
+    "si18n.es6.min.js",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
@@ -100,11 +100,8 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
-    "@babel/preset-env": "^7.29.2",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.2",
-    "babel-preset-minify": "^0.5.2",
     "esbuild": "^0.25.11",
     "tsdown": "^0.21.8",
     "typescript": "^6.0.2"
