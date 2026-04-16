@@ -15,5 +15,6 @@
 /scripts
 /tests
 /src
+/dist/*.map
 /tsconfig.json
 /tsdown.config.mts

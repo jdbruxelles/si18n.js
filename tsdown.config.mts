@@ -13,9 +13,9 @@ export default defineConfig({
   dts: true,
   format: ["esm", "cjs"],
   outDir: "dist",
-  sourcemap: true,
+  sourcemap: false,
   target: "es2020",
-  minify: false,
+  minify: true,
   cjsDefault: true,
   outputOptions: (options, format) => {
     if (format === "cjs") {

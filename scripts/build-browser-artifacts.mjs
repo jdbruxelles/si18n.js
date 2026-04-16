@@ -39,7 +39,7 @@ const buildLegacyEs6File = async (minify, outputFile) => {
     format: "iife",
     platform: "browser",
     target: ["es2015"],
-    globalName: "Si18nBundle",
+    globalName: "Si18n",
     minify,
     banner: {
       js: banner
