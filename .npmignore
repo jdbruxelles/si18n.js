@@ -1,6 +1,7 @@
 # npm
 /node_modules
 /package-lock.json
+*.tgz
 
 # Configs
 /.vscode
@@ -15,6 +16,9 @@
 /scripts
 /tests
 /src
-/dist/*.map
 /tsconfig.json
 /tsdown.config.mts
+
+# Build artifacts
+*.map
+**/*.map
