@@ -11,7 +11,9 @@ import type {
   TranslationValue
 } from "./types";
 
-export const DOCS_LINK = "https://si18n.js.bruxelles.dev/#options";
+// Using `let` instead of `const` prevents esbuild from inlining this as a
+// compile-time literal, so the variable reference is preserved in bundles.
+export let DOCS_LINK = "https://si18n.js.bruxelles.dev/#options";
 
 interface InternalOptions {
   lang: string;
