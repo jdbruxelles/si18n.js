@@ -1,4 +1,4 @@
-export { Si18nCore } from "./Si18nCore";
+export { Si18nCore, DOCS_LINK } from "./Si18nCore";
 export { default } from "./Si18nCore";
 
 export type {

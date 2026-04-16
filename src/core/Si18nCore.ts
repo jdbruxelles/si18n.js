@@ -11,7 +11,7 @@ import type {
   TranslationValue
 } from "./types";
 
-const DOCS_LINK = "https://si18n.js.bruxelles.dev/#options";
+export const DOCS_LINK = "https://si18n.js.bruxelles.dev/#options";
 
 interface InternalOptions {
   lang: string;

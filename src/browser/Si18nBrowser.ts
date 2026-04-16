@@ -1,10 +1,9 @@
 import Si18nCore, {
   type LocaleMessages,
-  type Si18nCoreDependencies
+  type Si18nCoreDependencies,
+  DOCS_LINK
 } from "../core";
 import type { Si18nBrowserInitOptions } from "./types";
-
-const DOCS_LINK = "https://si18n.js.bruxelles.dev/#options";
 
 const SUPPORTED_AUTO_TRANSLATION_ATTRIBUTES: Record<string, keyof DOMStringMap> = {
   title: "si18nTitle",
