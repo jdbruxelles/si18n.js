@@ -8,8 +8,7 @@
   <h1>si18n.js</h1>
 </div>
 
-This project is a simple package to integrate internationalization on a small
-web site project.
+A simple and lightweight way to integrate internationalization on a small web site project.
 
 The "s" in **si18n** stands for simple.
 
@@ -19,23 +18,21 @@ The "s" in **si18n** stands for simple.
 
 ## Demo and Documentation
 
-You can :
-- get started on the [demo site](https://si18n.js.bruxelles.dev/),
-- See releases on [GitHub](https://github.com/jdbruxelles/si18n.js/releases),
-- and see [changelog](CHANGELOG.md).
+- Get started and read the docs on the [demo site](https://si18n.js.bruxelles.dev/)
+- See releases on [GitHub](https://github.com/jdbruxelles/si18n.js/releases)
+- See [changelog](CHANGELOG.md)
 
 ## Installation
 
 ### npm
 
-Installation using [npm](https://www.npmjs.com/package/si18n.js)...
 ```bash
 npm i si18n.js
 ```
 
-then use the `si18n` class:
+then use the browser-ready `Si18n` class:
 ```js
-import si18n from "si18n.js";
+import Si18n from "si18n.js";
 ```
 
 ### yarn
@@ -47,78 +44,107 @@ yarn add si18n.js
 ### CDN
 
 ```html
-<script type="module" src="https://unpkg.com/si18n.js"></script>
-<!-- or -->
-<script type="module" src="https://unpkg.com/si18n.min.js"></script>
+<!-- jsDelivr (recommended) -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/si18n.js@latest/si18n.js"></script>
+<!-- minified -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/si18n.js@latest/si18n.min.js"></script>
+
+<!-- UNPKG -->
+<script type="module" src="https://unpkg.com/si18n.js@latest/si18n.js"></script>
+<script type="module" src="https://unpkg.com/si18n.js@latest/si18n.min.js"></script>
 ```
 
 ### Node.js
 
-Installation using [npm](https://www.npmjs.com/package/si18n.js)...
 ```bash
 npm i si18n.js
 ```
 
-then use the `si18n` class:
+then use the dedicated Node.js export:
 ```js
-const si18n = require("si18n.js/node");
+const { Si18nNode: Si18n } = require("si18n.js/node");
 ```
 
 ### TypeScript
 
-Installation using [npm](https://www.npmjs.com/package/si18n.js)...
 ```bash
 npm i si18n.js
 ```
 
-then use the `si18n` class:
+then import the subpath that matches your runtime:
 ```ts
-import si18n from "si18n.js/node";
+import Si18nBrowser from "si18n.js/browser";
+import Si18nNode from "si18n.js/node";
+import { Si18nCore } from "si18n.js/core";
 ```
 
-## Usage
+### React (Client and Server)
 
-For detailed usage information,
-[visit the docs](https://si18n.js.bruxelles.dev).
+```bash
+npm i si18n.js react
+```
 
-### Node.js
+Client-side provider and hook:
+```tsx
+"use client";
 
-```js
-const Si18n = require("si18n.js/node");
+import Si18nBrowser from "si18n.js/browser";
+import { Si18nProvider, useTranslation } from "si18n.js/react";
 
-const loc = new Si18n({
+const i18n = new Si18nBrowser();
+
+function Content() {
+  const { t, locale, setLocale } = useTranslation();
+
+  return (
+    <>
+      <h1>{t("title")}</h1>
+      <button onClick={() => void setLocale(locale === "en" ? "fr" : "en")}>Switch</button>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <Si18nProvider
+      i18n={i18n}
+      options={{
+        locales: {
+          en: { title: "Hello" },
+          fr: { title: "Bonjour" }
+        },
+        lang: "en",
+        fallbackLang: "en"
+      }}
+    >
+      <Content />
+    </Si18nProvider>
+  );
+}
+```
+
+Server-side helper:
+```ts
+import { createServerTranslator } from "si18n.js/react/server";
+
+const { t } = await createServerTranslator({
   locales: {
-    en: { greeting: "Hello" },
-    fr: { greeting: "Bonjour" }
+    en: { title: "Hello" },
+    fr: { title: "Bonjour" }
   },
   lang: "en",
-  fallbackLang: "fr"
+  fallbackLang: "en"
 });
 
-console.log(loc.t("greeting")); // Output: Hello
+console.log(t("title"));
 ```
 
-### TypeScript
-
-```ts
-import Si18n from "si18n.js/node";
-
-const loc = new Si18n({
-  locales: {
-    en: { greeting: "Hello" },
-    fr: { greeting: "Bonjour" }
-  },
-  lang: "en",
-  fallbackLang: "fr"
-});
-
-console.log(loc.t("greeting")); // Output: Hello
-```
+> [!NOTE]
+> For detailed usage information, demos, and the full API reference, [visit the docs](https://si18n.js.bruxelles.dev).
 
 ## Run locally
 
-The following instructions will get you a copy of the project up and running
-on your local machine for development and testing purposes.
+The following instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Requirements
 
@@ -137,49 +163,49 @@ git clone git@github.com:jdbruxelles/si18n.js.git
 npm install
 ```
 
-### Gulp Tasks
+### Build Commands
 
-- The default build task (run once)
+- Run the build process
 ```bash
-gulp
+npm run build
 ```
 
-- Automatically rerun the build task when a script file changes
+- Run tests
 ```bash
-gulp watch
+npm test
 ```
 
-### TypeScript Build
-
-- Build the TypeScript version for Node.js
+- Watch files during development
 ```bash
-npm run build:node
+npm run watch
 ```
+
+<!--
+### npm Publishing
+
+To publish a new version, simply update the version in `package.json` and run:
+```bash
+npm publish
+```
+
+*Note: The `npm publish` command will automatically run `npm run build && npm test` to ensure everything is correct before creating the package.*
+-->
 
 ### Server
 
-For the server, you can use any server you want, but I recommend using
-[http-server](https://www.npmjs.com/package/http-server). It's a simple
-zero-configuration command-line http server. I personally use the server
-provided by [netlify-cli](https://www.npmjs.com/package/netlify-cli) to work
-locally.
+For the server, you can use any server you want, but I recommend using [http-server](https://www.npmjs.com/package/http-server). It's a simple zero-configuration command-line http server. I personally use the python `http.server` or the server provided by [netlify-cli](https://www.npmjs.com/package/netlify-cli) to work locally.
 
 ## Contributing
 
-Contributions are always welcome! For major changes, please
-[open an issue](https://github.com/jdbruxelles/si18n/issues/new) first to
-discuss what you would like to change.
+Contributions are always welcome! For major changes, please [open an issue](https://github.com/jdbruxelles/si18n/issues/new) first to discuss what you would like to change.
 
-## Traduction
+## Translation
 
 You can help translate the application by using [Crowdin](https://crwd.in/si18njs).
 
-All translations are stored in the `/locales` directory. Under no circumstances
-should you edit the files in this directory, except for the `index.js` and
-`fr.json` files which are the source language for the translations.
+All translations are stored in the `website/locales` directory. Under no circumstances should you edit the files in this directory, except for the `fr.json` file which is the source language for the translations.
 
-Translations will be available on the app if they exceed a certain threshold
-of completion (currently 90%).
+Translations will be available on the app if they exceed a certain threshold of completion (currently 90%).
 
 ## Licence
 
