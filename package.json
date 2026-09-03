@@ -54,10 +54,11 @@
     "site": "website"
   },
   "scripts": {
-    "test": "tsc --noEmit && node --test tests/*.test.cjs",
+    "test": "npm run build && tsc --noEmit && node --test tests/*.test.cjs",
+    "test:fast": "node --test tests/*.test.cjs",
     "build": "tsdown --config tsdown.config.mts && node ./scripts/build-browser-artifacts.mjs",
     "watch": "tsdown --config tsdown.config.mts --watch",
-    "prepublishOnly": "npm run build && npm test",
+    "prepublishOnly": "npm test",
     "netlifyServer": "netlify dev --framework=\"#static\""
   },
   "repository": {
