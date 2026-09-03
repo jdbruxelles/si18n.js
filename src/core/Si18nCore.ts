@@ -445,17 +445,16 @@ export class Si18nCore implements Si18nLike {
     message: string,
     replacements: TranslationReplacements
   ): string {
-    let translatedMessage = message;
-
-    Object.keys(replacements).forEach((replacementKey) => {
-      const replacementValue = replacements[replacementKey];
-      translatedMessage = translatedMessage.replace(
-        new RegExp(`\\%{${replacementKey}\\}`, "g"),
-        String(replacementValue)
-      );
+    return message.replace(/%\{([^{}]+)\}/g, (match, rawKey: string) => {
+      const key = rawKey.trim();
+      if (Object.prototype.hasOwnProperty.call(replacements, key)) {
+        return String(replacements[key]);
+      }
+      if (Object.prototype.hasOwnProperty.call(replacements, rawKey)) {
+        return String(replacements[rawKey]);
+      }
+      return match;
     });
-
-    return translatedMessage;
   }
 }
 

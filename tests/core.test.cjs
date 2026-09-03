@@ -426,6 +426,40 @@ test("Si18nCore t() does not mutate the stored message when applying replacement
   assert.equal(i18n.t("tpl", { name: "Bob" }), "Hello Bob");
 });
 
+test("Si18nCore t() preserves dollar sign strings without regex substitution corruption", async () => {
+  const i18n = new Si18nCore();
+  await i18n.init({
+    locales: {
+      en: {
+        price: "Total: %{amount}",
+        discount: "Save %{pct} today (%{amount})"
+      }
+    },
+    lang: "en"
+  });
+
+  assert.equal(i18n.t("price", { amount: "$100" }), "Total: $100");
+  assert.equal(i18n.t("price", { amount: "$$5.00" }), "Total: $$5.00");
+  assert.equal(i18n.t("price", { amount: "$' and text" }), "Total: $' and text");
+  assert.equal(i18n.t("discount", { pct: "20%", amount: "$20" }), "Save 20% today ($20)");
+});
+
+test("Si18nCore t() safely handles keys with regex metacharacters and preserves unknown placeholders", async () => {
+  const i18n = new Si18nCore();
+  await i18n.init({
+    locales: {
+      en: {
+        dotted: "Hello %{user.name} (%{status})",
+        special: "Item %{item+id}"
+      }
+    },
+    lang: "en"
+  });
+
+  assert.equal(i18n.t("dotted", { "user.name": "Ada" }), "Hello Ada (%{status})");
+  assert.equal(i18n.t("special", { "item+id": "42" }), "Item 42");
+});
+
 // ─── LOCALE RESOLUTION PRIORITY
 
 test("Si18nCore uses stored locale when URL returns null and storage has a match", async () => {
