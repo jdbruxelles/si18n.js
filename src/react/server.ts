@@ -1,8 +1,9 @@
-import Si18nCore, {
-  type Si18nInitOptions,
-  type Si18nLike,
-  type TranslationReplacements,
-  type TranslationValue
+import { Si18nNode } from "../node";
+import type {
+  Si18nInitOptions,
+  Si18nLike,
+  TranslationReplacements,
+  TranslationValue
 } from "../core";
 
 export interface ServerTranslator {
@@ -14,7 +15,7 @@ export interface ServerTranslator {
 
 export const createServerTranslator = async (
   options: Si18nInitOptions,
-  i18nInstance: Si18nLike = new Si18nCore()
+  i18nInstance: Si18nLike = new Si18nNode()
 ): Promise<ServerTranslator> => {
   await i18nInstance.init(options);
 

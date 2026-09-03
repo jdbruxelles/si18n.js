@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
   type PropsWithChildren,
@@ -29,6 +30,7 @@ export interface TranslationContextValue {
   locale: string;
   locales: string[];
   isReady: boolean;
+  error: Error | null;
   t: (path: string, replacements?: TranslationReplacements) => TranslationValue;
   setLocale: (locale: string) => Promise<void>;
 }
@@ -41,19 +43,37 @@ export const Si18nProvider = ({
   children
 }: Si18nProviderProps): ReactElement => {
   const [isReady, setIsReady] = useState<boolean>(i18n.isInitialized());
+  const [error, setError] = useState<Error | null>(null);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
 
   useEffect(() => {
     let isMounted = true;
 
+    if (i18n.isInitialized()) {
+      setIsReady(true);
+      return;
+    }
+
     void (async () => {
-      await i18n.init(options);
-      if (isMounted) setIsReady(true);
+      try {
+        await i18n.init(optionsRef.current);
+        if (isMounted) {
+          setError(null);
+          setIsReady(true);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(err instanceof Error ? err : new Error(String(err)));
+          setIsReady(false);
+        }
+      }
     })();
 
     return () => {
       isMounted = false;
     };
-  }, [i18n, options]);
+  }, [i18n]);
 
   const locale = useSyncExternalStore(
     (notify) => i18n.subscribe(() => notify()),
@@ -81,10 +101,11 @@ export const Si18nProvider = ({
       locale,
       locales: i18n.getLocales(),
       isReady,
+      error,
       t,
       setLocale
     };
-  }, [i18n, isReady, locale, setLocale, t]);
+  }, [i18n, isReady, error, locale, setLocale, t]);
 
   return (
     <TranslationContext.Provider value={value}>
