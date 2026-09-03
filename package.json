@@ -104,6 +104,8 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.2",
     "esbuild": "^0.25.11",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "tsdown": "^0.21.8",
     "typescript": "^6.0.2"
   }
