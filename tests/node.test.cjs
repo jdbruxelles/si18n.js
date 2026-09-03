@@ -4,7 +4,11 @@ const os = require("node:os");
 const path = require("node:path");
 const fs = require("node:fs/promises");
 
-const { Si18nNode } = require("../dist/node/index.cjs");
+const {
+  Si18nNode,
+  createProcessEnvStorage,
+  createMemoryStorage
+} = require("../dist/node/index.cjs");
 
 // ─── HELPERS
 
@@ -172,19 +176,44 @@ test("Si18nNode propagates ENOENT when a locale file is missing from the path", 
   );
 });
 
-// ─── process.env storage
+// ─── STORAGE ADAPTERS
 
-test("Si18nNode stores the locale in process.env after setLocale", async (t) => {
-  const tmpDir = await createLocaleTmpDir("si18n-store-");
+test("Si18nNode stores locale in memory by default without polluting process.env", async (t) => {
+  const tmpDir = await createLocaleTmpDir("si18n-store-mem-");
   t.after(async () => {
     await fs.rm(tmpDir, { recursive: true, force: true });
   });
 
-  const saveAs = "__si18n_test_store__";
+  const saveAs = "__si18n_test_memory_store__";
+  delete process.env[saveAs];
+
+  const i18n = new Si18nNode();
+  await i18n.init({
+    path: tmpDir,
+    availableLocales: ["en", "fr"],
+    lang: "en",
+    fallbackLang: "en",
+    saveAs,
+    saveLang: true
+  });
+
+  await i18n.setLocale("fr");
+  assert.equal(i18n.getLocale(), "fr");
+  // process.env must NOT be mutated by default
+  assert.equal(process.env[saveAs], undefined);
+});
+
+test("Si18nNode stores the locale in process.env when createProcessEnvStorage is opted in", async (t) => {
+  const tmpDir = await createLocaleTmpDir("si18n-store-env-");
+  t.after(async () => {
+    await fs.rm(tmpDir, { recursive: true, force: true });
+  });
+
+  const saveAs = "__si18n_test_store_env__";
   delete process.env[saveAs];
   t.after(() => { delete process.env[saveAs]; });
 
-  const i18n = new Si18nNode();
+  const i18n = new Si18nNode(undefined, { storage: createProcessEnvStorage() });
   await i18n.init({
     path: tmpDir,
     availableLocales: ["en", "fr"],
@@ -198,21 +227,21 @@ test("Si18nNode stores the locale in process.env after setLocale", async (t) => 
   assert.equal(process.env[saveAs], "fr");
 });
 
-test("Si18nNode reads locale from process.env on a subsequent instance", async (t) => {
-  const tmpDir = await createLocaleTmpDir("si18n-read-");
+test("Si18nNode reads locale from process.env when createProcessEnvStorage is opted in", async (t) => {
+  const tmpDir = await createLocaleTmpDir("si18n-read-env-");
   t.after(async () => {
     await fs.rm(tmpDir, { recursive: true, force: true });
   });
 
-  const saveAs = "__si18n_test_read__";
+  const saveAs = "__si18n_test_read_env__";
   process.env[saveAs] = "fr"; // pre-seed stored locale
   t.after(() => { delete process.env[saveAs]; });
 
-  const i18n = new Si18nNode();
+  const i18n = new Si18nNode(undefined, { storage: createProcessEnvStorage() });
   await i18n.init({
     path: tmpDir,
     availableLocales: ["en", "fr"],
-    lang: "en", // would pick "en" without storage
+    lang: "en",
     fallbackLang: "en",
     saveAs,
     saveLang: true

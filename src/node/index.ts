@@ -1,2 +1,6 @@
-export { Si18nNode } from "./Si18nNode";
-export { default } from "./Si18nNode";
+export {
+  Si18nNode,
+  Si18nNode as default,
+  createMemoryStorage,
+  createProcessEnvStorage
+} from "./Si18nNode";

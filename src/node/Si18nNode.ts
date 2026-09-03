@@ -4,7 +4,8 @@ import { resolve } from "node:path";
 import Si18nCore, {
   type LocaleMessages,
   type Si18nCoreDependencies,
-  type Si18nInitOptions
+  type Si18nInitOptions,
+  type StorageAdapter
 } from "../core";
 
 const resolveSystemLocale = (): string | null => {
@@ -19,7 +20,28 @@ const resolveSystemLocale = (): string | null => {
   return envLocale;
 };
 
-const createNodeDependencies = (): Si18nCoreDependencies => {
+export const createMemoryStorage = (): StorageAdapter => {
+  const store = new Map<string, string>();
+  return {
+    getItem: (key: string) => store.get(key) ?? null,
+    setItem: (key: string, value: string) => {
+      store.set(key, value);
+    }
+  };
+};
+
+export const createProcessEnvStorage = (): StorageAdapter => {
+  return {
+    getItem: (key: string) => process.env[key] ?? null,
+    setItem: (key: string, value: string) => {
+      process.env[key] = value;
+    }
+  };
+};
+
+const createNodeDependencies = (
+  customStorage?: StorageAdapter
+): Si18nCoreDependencies => {
   return {
     createPathLocaleLoader: (basePath) => {
       return async (locale) => {
@@ -29,18 +51,17 @@ const createNodeDependencies = (): Si18nCoreDependencies => {
       };
     },
     detectLanguage: resolveSystemLocale,
-    storage: {
-      getItem: (key) => process.env[key] ?? null,
-      setItem: (key, value) => {
-        process.env[key] = value;
-      }
-    }
+    storage: customStorage ?? createMemoryStorage()
   };
 };
 
 export class Si18nNode extends Si18nCore {
-  public constructor(options?: Si18nInitOptions) {
-    super(undefined, createNodeDependencies());
+  public constructor(
+    options?: Si18nInitOptions,
+    dependencies?: Partial<Si18nCoreDependencies>
+  ) {
+    const baseDeps = createNodeDependencies(dependencies?.storage);
+    super(undefined, { ...baseDeps, ...dependencies });
 
     if (options && typeof options === "object") {
       void this.init(options);
