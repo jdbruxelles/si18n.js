@@ -161,3 +161,27 @@ test("Si18nProvider renders without crashing when i18n is not yet initialized", 
 
   assert.match(html, /ready:false,locale:/);
 });
+
+test("Si18nProvider works without options prop when i18n is already initialized", async () => {
+  const i18n = new Si18nCore();
+  await i18n.init({
+    locales: { en: { title: "Direct Init" } },
+    lang: "en"
+  });
+
+  function Child() {
+    const { t } = useTranslation();
+    return React.createElement("h1", null, t("title"));
+  }
+
+  const html = renderToString(
+    React.createElement(
+      Si18nProvider,
+      { i18n },
+      React.createElement(Child)
+    )
+  );
+
+  assert.match(html, /<h1>Direct Init<\/h1>/);
+});
+

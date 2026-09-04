@@ -770,3 +770,22 @@ test("Si18nCore localeLoader rejection is logged via logError and re-thrown", as
   assert.match(loggedErrors[0].msg, /Unable to load locale/);
   assert.equal(loggedErrors[0].err, loadError);
 });
+
+test("Si18nCore static version matches package version", () => {
+  const pkg = require("../package.json");
+  assert.equal(Si18nCore.version, pkg.version);
+});
+
+test("Si18nCore t() guards against prototype property traversal", async () => {
+  const i18n = new Si18nCore();
+  await i18n.init({
+    locales: { en: { greeting: "Hi" } },
+    lang: "en"
+  });
+
+  assert.equal(i18n.t("__proto__"), "__proto__");
+  assert.equal(i18n.t("constructor"), "constructor");
+  assert.equal(i18n.t("prototype"), "prototype");
+  assert.equal(i18n.t("__proto__.polluted"), "__proto__.polluted");
+});
+

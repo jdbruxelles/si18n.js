@@ -417,6 +417,14 @@ export class Si18nCore implements Si18nLike {
     let value: TranslationValue | undefined = root;
 
     for (const pathItem of pathItems) {
+      if (
+        pathItem === "__proto__" ||
+        pathItem === "prototype" ||
+        pathItem === "constructor"
+      ) {
+        return undefined;
+      }
+
       if (!isObjectRecord(value) && !Array.isArray(value)) {
         return undefined;
       }

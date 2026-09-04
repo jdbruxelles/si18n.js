@@ -1,8 +1,9 @@
 export {
+  Si18nBrowser,
   Si18nBrowser as Si18n,
   Si18nBrowser as default
 } from "./browser";
-export { Si18nCore } from "./core";
+export { Si18nCore, DOCS_LINK } from "./core";
 
 export type {
   LocaleCollection,

@@ -6,7 +6,7 @@ export default defineConfig({
     "core/index": "src/core/index.ts",
     "browser/index": "src/browser/index.ts",
     "node/index": "src/node/index.ts",
-    "react/index": "src/react/client.tsx",
+    "react/index": "src/react/index.ts",
     "react/server": "src/react/server.ts"
   },
   clean: true,

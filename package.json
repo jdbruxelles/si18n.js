@@ -5,9 +5,9 @@
   "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "files": [
-    "dist/**/*.{js,cjs,mjs,d.ts,d.cts,d.mts}",
+    "dist",
     "si18n.js",
     "si18n.min.js",
     "si18n.es6.js",
@@ -18,36 +18,85 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./core": {
-      "types": "./dist/core/index.d.ts",
-      "import": "./dist/core/index.mjs",
-      "require": "./dist/core/index.cjs"
+      "import": {
+        "types": "./dist/core/index.d.mts",
+        "default": "./dist/core/index.mjs"
+      },
+      "require": {
+        "types": "./dist/core/index.d.cts",
+        "default": "./dist/core/index.cjs"
+      }
     },
     "./browser": {
-      "types": "./dist/browser/index.d.ts",
-      "import": "./dist/browser/index.mjs",
-      "require": "./dist/browser/index.cjs"
+      "import": {
+        "types": "./dist/browser/index.d.mts",
+        "default": "./dist/browser/index.mjs"
+      },
+      "require": {
+        "types": "./dist/browser/index.d.cts",
+        "default": "./dist/browser/index.cjs"
+      }
     },
     "./node": {
-      "types": "./dist/node/index.d.ts",
-      "import": "./dist/node/index.mjs",
-      "require": "./dist/node/index.cjs"
+      "import": {
+        "types": "./dist/node/index.d.mts",
+        "default": "./dist/node/index.mjs"
+      },
+      "require": {
+        "types": "./dist/node/index.d.cts",
+        "default": "./dist/node/index.cjs"
+      }
     },
     "./react": {
-      "types": "./dist/react/index.d.ts",
-      "import": "./dist/react/index.mjs",
-      "require": "./dist/react/index.cjs"
+      "import": {
+        "types": "./dist/react/index.d.mts",
+        "default": "./dist/react/index.mjs"
+      },
+      "require": {
+        "types": "./dist/react/index.d.cts",
+        "default": "./dist/react/index.cjs"
+      }
     },
     "./react/server": {
-      "types": "./dist/react/server.d.ts",
-      "import": "./dist/react/server.mjs",
-      "require": "./dist/react/server.cjs"
+      "import": {
+        "types": "./dist/react/server.d.mts",
+        "default": "./dist/react/server.mjs"
+      },
+      "require": {
+        "types": "./dist/react/server.d.cts",
+        "default": "./dist/react/server.cjs"
+      }
     },
     "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "core": [
+        "./dist/core/index.d.cts"
+      ],
+      "browser": [
+        "./dist/browser/index.d.cts"
+      ],
+      "node": [
+        "./dist/node/index.d.cts"
+      ],
+      "react": [
+        "./dist/react/index.d.cts"
+      ],
+      "react/server": [
+        "./dist/react/server.d.cts"
+      ]
+    }
   },
   "directories": {
     "src": "src",
@@ -92,6 +141,9 @@
     "url": "https://github.com/jdbruxelles/si18n.js/issues"
   },
   "homepage": "https://github.com/jdbruxelles/si18n.js#readme",
+  "engines": {
+    "node": ">=18"
+  },
   "peerDependencies": {
     "react": ">=18"
   },

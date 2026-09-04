@@ -22,7 +22,7 @@ import type {
 
 export interface Si18nProviderProps extends PropsWithChildren {
   i18n: Si18nLike;
-  options: Si18nInitOptions;
+  options?: Si18nInitOptions;
 }
 
 export interface TranslationContextValue {
