@@ -55,7 +55,7 @@ const isObjectRecord = (value: unknown): value is Record<string, unknown> => {
 };
 
 export class Si18nCore implements Si18nLike {
-  public static readonly version = "2.0.0";
+  public static readonly version = "2.0.0-beta.0";
 
   protected readonly options: InternalOptions = {
     lang: "",
