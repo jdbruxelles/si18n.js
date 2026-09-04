@@ -1,12 +1,24 @@
 # npm
 /node_modules
 /package-lock.json
+*.tgz
 
+# Configs
 /.vscode
 /.netlify
 /.gitignore
+/.github
 /netlify.toml
-/gulpfile.js
 /crowdin.yml
 
+# Source and Development
 /website
+/scripts
+/tests
+/src
+/tsconfig.json
+/tsdown.config.mts
+
+# Build artifacts
+*.map
+**/*.map

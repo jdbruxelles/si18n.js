@@ -1,5 +1,5 @@
 {
-  "site_description": "A simple and lightweight way to integrate internationalization on a small website project.",
+  "site_description": "A simple and lightweight way to integrate internationalization on a website project.",
   "good_morning": "Good morning",
   "text": "This is an example.",
   "fallback_text": "",
@@ -10,59 +10,112 @@
     "one": "There is one monkey in the tree.",
     "more": "There are %{0} monkeys in the tree."
   },
+  "demo_input_label": "Live HTML attributes demo:",
+  "search_placeholder": "Search a term or key...",
+  "demo_img_alt": "si18n.js logo demonstration",
+  "packages_title": "Ecosystem & Packages",
+  "packages_desc": "si18n.js 2.0 is completely rewritten in TypeScript and structured into dedicated packages for every use case:",
+  "packages": {
+    "browser": {
+      "title": "si18n.js (Browser)",
+      "badge": "Browser",
+      "desc": "Full browser client. Automatic HTML attribute translations (<code>data-si18n-*</code>), automated toggler buttons and <code>&lt;select&gt;</code> pickers, LTR/RTL switching, URL & browser language detection, and <code>localStorage</code> persistence."
+    },
+    "core": {
+      "title": "si18n.js/core (Universal Engine)",
+      "badge": "Universal",
+      "desc": "Platform-agnostic and ultra-lightweight translation core with zero DOM dependencies. Runs in any JS runtime (Browser, Node.js, Deno, Bun, React Native, Edge). Pluggable dependencies and custom storage adapters (<code>StorageAdapter</code>)."
+    },
+    "node": {
+      "title": "si18n.js/node (Node.js)",
+      "badge": "Node.js",
+      "desc": "Optimized Node.js implementation. Local filesystem file loading via <code>node:fs/promises</code>, automatic OS language detection (<code>LC_ALL</code>, <code>LANG</code>, etc.), and built-in memory or <code>process.env</code> storage adapters."
+    },
+    "react": {
+      "title": "si18n.js/react (React Client)",
+      "badge": "React Client",
+      "desc": "Context provider <code>&lt;Si18nProvider&gt;</code> and <code>useTranslation()</code> hook. Synchronous, tear-free rendering powered by <code>useSyncExternalStore</code>. Exposes <code>t</code>, <code>locale</code>, <code>locales</code>, <code>setLocale</code>, <code>isReady</code> and <code>error</code>."
+    },
+    "react_server": {
+      "title": "si18n.js/react/server (React Server / RSC)",
+      "badge": "React Server / RSC",
+      "desc": "Async <code>createServerTranslator()</code> translator for React Server Components (Next.js App Router), SSR and server rendering pipelines. Zero DOM and lightning-fast execution."
+    }
+  },
   "options": {
     "cols_title": {
-      "method": "Method",
-      "methods": "Methods",
+      "method": "Method / Function",
+      "methods": "Methods & Functions",
       "tableOfContent": "Table of content",
       "argument": "Argument",
       "default_value": "Default value",
       "description": "Description",
-      "default_options": "Default options"
+      "default_options": "Default options",
+      "packages": "Packages & Ecosystem",
+      "environment": "Environment"
     },
     "params": {
-      "locales": "Object containing your language translations. <b class='required'>Required only if </b><a href='#prop-path'><code>path</code></a> is not defined.",
-      "path": "Absolute access path to the directory containing your translation files. The files will be loaded automatically according to the active language (the fallback language will always be loaded). Priority over the <a href='#prop-locales'><code>locales</code></a> option. <b class='required'>Required only if</b> <a href='#prop-locales'><code>locales</code></a> is not defined. e.g.: <code>./locales</code>.",
+      "locales": "Object containing your language translations. <b class='required'>Required only if </b><a href='#prop-path'><code>path</code></a> or <a href='#prop-localeLoader'><code>localeLoader</code></a> is not defined.",
+      "path": "Access path to the directory containing your translation JSON files. Files will be loaded automatically according to the active language (the fallback language will always be loaded). Priority over the <a href='#prop-locales'><code>locales</code></a> option. <b class='required'>Required only if</b> <a href='#prop-locales'><code>locales</code></a> is not defined. e.g.: <code>./locales</code>.",
+      "localeLoader": "Custom async loader function <code>(locale) =&gt; Promise&lt;object&gt;</code> to load locale messages dynamically. Ideal for bundler code-splitting or server-side loaders.",
       "availableLocales": "List containing the names of available languages as defined in the translation files. <b class='required'>Required only if </b><a href='#prop-path'><code>path</code></a> is defined.",
-      "lang": "Active language to use. Don't use it if you want to let the browser's language detector provide the language. If this option is not set, the <code>fallbackLang</code> option becomes required.",
-      "fallbackLang": "Fallback language. The language to use when the requested language or a requested string in a non-fully translated language is missing. If not set, the fallback language will be the current one.",
-      "activeClass": "Class to add to the active button for the current language. Use only if <a href='#prop-togglersSelector'><code>togglersSelector</code></a> is used.",
-      "togglersSelector": "CSS selector for toggler elements. si18n.js will add a click event to selected items. Do not set this option if you are using the <code>setLocale(lang)</code> method. These elements must <b class='required'>compulsorily</b> have the attribute <code>data-lang=\"XX\"</code> where XX corresponds to the language code of the button (toggler element) to be detected.",
-      "isTogglerSelect": "Whether the toggler is a <code>select</code> or <code>button</code> element (or whatever).",
-      "saveLang": "Whether to save the language in the localStorage.",
-      "saveAs": "Name of the key to save the language in the localStorage. If set, the value will be used as key to retrieve the language from the URL parameter (Default: <code>lang</code>).",
-      "reloadPage": "If this option is set to <code>true</code>, the page will automatically refresh after changing the language. It may only be useful if you have a complex page structure and want the translations to be loaded every time you change the language, to keep it simple.",
-      "translate": "<b class='required'>(required)</b> - Function that translates text manually. For translation use only.<br><b>Note:</b> The <code>html</code> tag automatically has a <code>lang</code> attribute with the current language, no need to encode it manually.",
-      "onLocaleChanged": "Callback function triggered when the language changes. Everything you want to do else because the language has changed, do it here."
+      "lang": "Active language to use. If omitted, si18n.js detects language from URL, storage, or environment (browser / system variables). If not set, the <code>fallbackLang</code> option becomes required.",
+      "fallbackLang": "Fallback language. The language to use when the requested language or a requested string in a non-fully translated language is missing. If omitted, it falls back to the value of <code>lang</code>.",
+      "activeClass": "CSS class to add to the active button for the current language. Used with <a href='#prop-togglersSelector'><code>togglersSelector</code></a>.",
+      "togglersSelector": "CSS selector for toggler elements. si18n.js automatically binds click listeners. Elements must have the <code>data-lang=\"XX\"</code> attribute.",
+      "isTogglerSelect": "Set to <code>true</code> if the toggler selector targets a <code>&lt;select&gt;</code> element. Unavailable options are automatically disabled.",
+      "saveLang": "Whether to save the language in persistent storage (localStorage for browser, memory or process.env for Node.js).",
+      "saveAs": "Key name for persistent storage and URL parameter (Default: <code>'lang'</code>).",
+      "reloadPage": "If set to <code>true</code>, the page will automatically refresh after changing language.",
+      "translate": "Callback function called to apply manual translations.<br><b>Note:</b> For browsers, the <code>&lt;html&gt;</code> tag automatically receives <code>lang</code> and <code>dir</code> attributes.",
+      "onLocaleChanged": "Central callback triggered on locale changes (on <code>init</code> and <code>setLocale</code>). Receives <code>(locale, instance)</code>.",
+      "dependencies": "Pluggable dependency injection object for <code>Si18nCore</code> and <code>Si18nNode</code>: <code>storage</code> (custom <code>StorageAdapter</code>), <code>detectLanguage</code>, <code>getLanguageFromUrl</code>, <code>createPathLocaleLoader</code>, <code>reload</code>, <code>logError</code>."
     },
     "methods": {
-      "constructor": "Does the same thing as the following <code>init</code> method.",
-      "init": "<code class='recommanded'>Recommanded</code> - Initializes the si18n object with the given <a href='#options'>options</a>.",
-      "setLocale": "Sets the given language and applies the change by calling the <code>translate</code> option method. Don't use this method if have configured the <code>togglersSelector</code> option.",
+      "constructor": "Instantiates the si18n object. Accepts initial <code>options</code> and an optional <code>dependencies</code> object.",
+      "init": "<code class='recommanded'>Recommended</code> - Asynchronously initializes the si18n object with given <a href='#options'>options</a>. Returns a <code>Promise&lt;void&gt;</code>.",
+      "setLocale": "Sets the active language, loads translation data if needed, and applies changes. Returns a <code>Promise&lt;void&gt;</code>.",
       "getLocale": "Returns the current language code (e.g.: 'en').",
-      "getLocales": "Returns the list of all available languages (e.g.: <code>['fr', 'en', 'it']</code>).",
-      "t": "Returns the translation string at the given key (e.g.: <code>heroTitle</code>, <code>site.title</code>, <code>site.menu.link1</code>).<br>The <code>values</code> argument is optional. If provided, it must contain the key-values to be replaced. See the <a href='#values-replacement'>example</a> below.",
-      "getJSON": "Retrieves and returns the data from the given URL in JSON format in the callback function parameter.",
-      "toJSON": "Returns the options of the instance."
+      "getLocales": "Returns a copy of all available languages (e.g.: <code>['fr', 'en']</code>).",
+      "t": "Returns the translation string for the given key (supports dot notation: <code>site.nav.link</code>). Accepts an optional replacement object <code>%{key}</code>.",
+      "subscribe": "Subscribes to locale changes and returns an unsubscribe function <code>() =&gt; void</code>.",
+      "isInitialized": "Returns <code>true</code> if the instance is initialized, otherwise <code>false</code>.",
+      "getJSON": "Static async method fetching JSON from a URL (browser via <code>fetch</code>) or file path (Node.js via <code>fs</code>). Returns <code>Promise&lt;T&gt;</code> or passes result to optional callback.",
+      "toJSON": "Returns a serialized snapshot of the instance configuration options.",
+      "createMemoryStorage": "Creates an in-memory volatile storage adapter (<code>StorageAdapter</code>) based on a <code>Map</code>.",
+      "createProcessEnvStorage": "Creates a storage adapter persisting active locale in <code>process.env[saveAs]</code>.",
+      "createServerTranslator": "Async function creating a translator <code>{ t, locale, locales, i18n }</code> for React Server Components (RSC / Next.js / SSR).",
+      "provider": "Context component <code>&lt;Si18nProvider&gt;</code> synchronizing locale changes tear-free via <code>useSyncExternalStore</code>.",
+      "useTranslation": "React hook returning <code>{ t, locale, locales, setLocale, isReady, error, i18n }</code>."
     },
     "others": {
       "valuesReplacement": "Replacement of values",
-      "valuesReplacementDesc": "Besides doing simple text replacements, si18n.js can also insert values into placeholders for that purpose. Just define a key-value in the argument <code>values</code> (second argument) of the method <a href='#fn-t'><code>t</code></a>. And in your texts, all you have to do is reserve the spaces with a <code>%{X}</code> where X is the key (number or property name) of the value to insert. Example:"
+      "valuesReplacementDesc": "Besides simple text replacements, si18n.js can insert dynamic values into placeholders with <code>%{name}</code> or <code>%{0}</code> syntax. Simply pass a key-value object as the second argument to <a href='#fn-t'><code>t()</code></a>:"
     }
+  },
+  "filters": {
+    "title": "Filter by package:",
+    "web": "Web",
+    "core": "Core",
+    "node": "Node.js",
+    "react": "React Client",
+    "react_server": "React Server"
   },
   "main": {
     "bugReport": "Bugs or suggestions for improvements? Create an issue ${0}."
   },
   "autoDetect": {
-    "autoDetection": "Automatic detection",
-    "autoDetectionDesc": "This allows si18n.js to automatically detect and update the text for the element:",
-    "autoSetLangAndDir": "The <code>lang</code> and <code>dir</code> attributes of the <code>html</code> tag are set automatically. The only thing you can do for the <code>dir</code> attribute is to set it manually for all languages or only for <code>rtl</code> (boolean) languages. Default: <code>ltr</code>. e.g.: <code>\"rtl\": true</code>.",
-    "noContent": "Not for tag content",
-    "noContentDesc": "When there is the <code>data-si18n-default</code> attribute, and it is set to <code>false</code>, the text will not be set as the content of the tag. You should only use this option for the content of the attributes, without forgetting to mention which attribute(s) they are.",
-    "cdnDesc": "You can also use si18n.js from a CDN. There are different versions of links available for different CDN platforms. You can pick and use only one link at once.",
-    "attrDescTitle": "All attributes are:",
-    "attrDescType": "The following attributes are booleans. They are mandatory depending on the needs. Possible values are <code>true</code> or <code>false</code>.",
-    "attrDesc": "<li><code>data-si18n-default</code>: If set to <code>false</code>, the text will not be placed in the tag. (Reserved for attributes.)</li><li><code>data-si18n-html</code>: If set to <code>true</code>, text will be added as HTML code. Default: <code>false</code>.</li><li><code>data-si18n-value</code> for the <code>value</code> attribute of a tag like <code>option</code> and <code>input</code>.</li><li><code>data-si18n-alt</code> for the <code>alt</code> attribute of the <code>img</code> tag to provide a text description of the image.</li><li><code>data-si18n-title</code> for the <code>title</code> attribute of the tag.</li><li><code>data-si18n-label</code> for the <code>label</code> attribute of a tag like <code>optgroup</code>.</li><li><code>data-si18n-aria-label</code> for the <code>aria-label</code> attribute of the tag.</li><li><code>data-si18n-placeholder</code> for the <code>placeholder</code> attribute of the <code>input</code> and <code>textarea</code> tags.</li><li><code>data-si18n-content</code> for the attribute <code>content</code> of a tag like <code>meta</code> for the description of the page, for example (useful if you use <code>Prerendering</code> technology.</li>"
+    "autoDetection": "Automatic detection & HTML attributes",
+    "autoDetectionDesc": "In browser environments, si18n.js automatically inspects and translates elements bearing these attributes:",
+    "autoSetLangAndDir": "The <code>lang</code> and <code>dir</code> attributes of the <code>&lt;html&gt;</code> tag are set automatically. Set <code>\"rtl\": true</code> in your locale file to activate RTL direction automatically. Default: <code>ltr</code>.",
+    "noContent": "data-si18n-default attribute",
+    "noContentDesc": "When <code>data-si18n-default=\"false\"</code> is set, the translation is not inserted into the element's textContent. Useful when only translating HTML attributes (title, placeholder, alt, etc.).",
+    "cdnDesc": "You can also use si18n.js from a CDN. Different builds are distributed depending on your import style:",
+    "cdnClassicDesc": "Classic global script (non-module) which sets the global class <code>window.Si18n</code>.",
+    "cdnEs6Desc": "Untranspiled ES6 source modules. Recommended if your own bundler handles transpiling node_modules.",
+    "attrDescTitle": "Complete list of supported attributes:",
+    "attrDescType": "The following attributes are boolean flags (<code>\"true\"</code> or <code>\"false\"</code>) targeting specific element properties:",
+    "attrDesc": "<li><code>data-si18n</code>: translation key to apply (e.g. <code>\"site.title\"</code>).</li><li><code>data-si18n-default</code>: if set to <code>\"false\"</code>, does not overwrite the element's text content.</li><li><code>data-si18n-html</code>: if set to <code>\"true\"</code>, injects the translated string as HTML (<code>innerHTML</code>). Default: <code>false</code>.</li><li><code>data-si18n-placeholder</code>: translates the <code>placeholder</code> attribute of <code>&lt;input&gt;</code> and <code>&lt;textarea&gt;</code> elements.</li><li><code>data-si18n-alt</code>: translates the <code>alt</code> attribute of <code>&lt;img&gt;</code> elements for accessibility.</li><li><code>data-si18n-title</code>: translates the element's native tooltip <code>title</code> attribute.</li><li><code>data-si18n-aria-label</code>: translates the <code>aria-label</code> attribute for screen readers.</li><li><code>data-si18n-label</code>: translates the <code>label</code> attribute of tags like <code>&lt;optgroup&gt;</code>.</li><li><code>data-si18n-value</code>: translates the <code>value</code> attribute of tags like <code>&lt;option&gt;</code> or <code>&lt;input&gt;</code>.</li><li><code>data-si18n-content</code>: translates the <code>content</code> attribute of tags like <code>&lt;meta&gt;</code> (SEO / prerendering).</li>"
   },
   "utils": {
     "start": "Get started",
@@ -76,6 +129,59 @@
     "values": "values",
     "or": "or",
     "changelog": "Changelog",
-    "itLangNotAvailable": "Italian: Not available"
+    "itLangNotAvailable": "Italian: Not available",
+    "packages": "Packages"
+  },
+  "demos": {
+    "title": "More demos",
+    "nestedKeys": "Nested keys (dot-notation)",
+    "nestedKeysDesc": "Keys can be nested to any depth and accessed with dot-notation:",
+    "lazyPath": "Lazy-loading via <code>path</code>",
+    "lazyPathDesc": "Place your locale JSON files in a directory and si18n.js will fetch them on demand. <b>Note:</b> Only the fallback and active locales are loaded at startup.",
+    "lazyLoader": "Lazy-loading via <code>localeLoader</code>",
+    "lazyLoaderDesc": "Use a custom async function — ideal for bundler code-splitting or custom server loaders:",
+    "subscribe": "Subscribing to locale changes",
+    "subscribeDesc": "<code>subscribe()</code> lets you react to locale changes anywhere in your code:",
+    "rtl": "RTL language support",
+    "rtlDesc": "Set <code>rtl: true</code> inside a locale object. si18n.js will automatically set <code>dir=\"rtl\"</code> on the <code>&lt;html&gt;</code> element when that locale is active:",
+    "onLocaleChanged": "<code>onLocaleChanged</code> callback",
+    "onLocaleChangedDesc": "Run side-effects after a locale switch (update page title, refresh dynamic content, …):",
+    "nodeJs": "Node.js (Filesystem & System Detection)",
+    "nodeJsDesc": "Use the dedicated <code>Si18nNode</code> class to load local files and detect system locale:",
+    "nodeStorage": "Node.js (Storage Adapters)",
+    "nodeStorageDesc": "Choose between volatile in-memory storage or environment variable persistence:",
+    "reactClient": "React Client (&lt;Si18nProvider&gt; & useTranslation)",
+    "reactClientDesc": "Production-ready example handling ready state (<code>isReady</code>), errors, and available locales:",
+    "reactServer": "React Server Components (Next.js App Router / SSR)",
+    "reactServerDesc": "Translate pages server-side asynchronously without a DOM using <code>createServerTranslator()</code>:",
+    "coreCustom": "Universal Core & Custom Storage Adapter",
+    "coreCustomDesc": "Create an instance with a custom <code>StorageAdapter</code> (AsyncStorage, cookie, Redis, etc.):"
+  },
+  "usage": {
+    "browser": "Browser (NPM / ESM)",
+    "core": "Universal Core (Any JS runtime without DOM)",
+    "node": "Node.js (CommonJS & ESM)",
+    "typescript": "TypeScript (All packages & Types)",
+    "reactClient": "React Client (&lt;Si18nProvider&gt; & useTranslation)",
+    "reactServer": "React Server Components (Next.js App Router / SSR)"
+  },
+  "summary": {
+    "browser": "Browser (NPM)",
+    "core": "Universal Core",
+    "node": "Node.js",
+    "typescript": "TypeScript",
+    "reactClient": "React (Client)",
+    "reactServer": "React (Server)",
+    "nestedKeys": "Nested keys",
+    "lazyPath": "Lazy-loading (path)",
+    "lazyLoader": "Dynamic loader (localeLoader)",
+    "subscribe": "Subscriptions (subscribe)",
+    "rtl": "RTL support",
+    "onLocaleChanged": "onLocaleChanged callback",
+    "nodeJs": "Node.js Files & System",
+    "nodeStorage": "Node.js Storage adapters",
+    "reactClientDemo": "React Client (&lt;Si18nProvider&gt;)",
+    "reactServerDemo": "React Server Components (RSC)",
+    "coreCustom": "Core & Custom adapter"
   }
 }

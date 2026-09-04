@@ -1,21 +1,118 @@
 {
   "name": "si18n.js",
-  "version": "1.4.4",
+  "version": "2.0.0-beta.0",
   "description": "A simple and lightweight way to integrate internationalization on a small web site project.",
-  "main": "./si18n.js",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "files": [
+    "dist",
+    "si18n.js",
+    "si18n.min.js",
+    "si18n.es6.js",
+    "si18n.es6.min.js",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./core": {
+      "import": {
+        "types": "./dist/core/index.d.mts",
+        "default": "./dist/core/index.mjs"
+      },
+      "require": {
+        "types": "./dist/core/index.d.cts",
+        "default": "./dist/core/index.cjs"
+      }
+    },
+    "./browser": {
+      "import": {
+        "types": "./dist/browser/index.d.mts",
+        "default": "./dist/browser/index.mjs"
+      },
+      "require": {
+        "types": "./dist/browser/index.d.cts",
+        "default": "./dist/browser/index.cjs"
+      }
+    },
+    "./node": {
+      "import": {
+        "types": "./dist/node/index.d.mts",
+        "default": "./dist/node/index.mjs"
+      },
+      "require": {
+        "types": "./dist/node/index.d.cts",
+        "default": "./dist/node/index.cjs"
+      }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/react/index.d.mts",
+        "default": "./dist/react/index.mjs"
+      },
+      "require": {
+        "types": "./dist/react/index.d.cts",
+        "default": "./dist/react/index.cjs"
+      }
+    },
+    "./react/server": {
+      "import": {
+        "types": "./dist/react/server.d.mts",
+        "default": "./dist/react/server.mjs"
+      },
+      "require": {
+        "types": "./dist/react/server.d.cts",
+        "default": "./dist/react/server.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "core": [
+        "./dist/core/index.d.cts"
+      ],
+      "browser": [
+        "./dist/browser/index.d.cts"
+      ],
+      "node": [
+        "./dist/node/index.d.cts"
+      ],
+      "react": [
+        "./dist/react/index.d.cts"
+      ],
+      "react/server": [
+        "./dist/react/server.d.cts"
+      ]
+    }
+  },
   "directories": {
     "src": "src",
     "site": "website"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp",
-    "watch": "gulp watch",
+    "test": "npm run build && tsc --noEmit && node --test tests/*.test.cjs",
+    "test:fast": "node --test tests/*.test.cjs",
+    "build": "tsdown --config tsdown.config.mts && node ./scripts/build-browser-artifacts.mjs",
+    "watch": "tsdown --config tsdown.config.mts --watch",
+    "prepublishOnly": "npm test",
     "netlifyServer": "netlify dev --framework=\"#static\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jdbruxelles/si18n.git"
+    "url": "git+https://github.com/jdbruxelles/si18n.js.git"
   },
   "keywords": [
     "i18n",
@@ -44,13 +141,24 @@
     "url": "https://github.com/jdbruxelles/si18n.js/issues"
   },
   "homepage": "https://github.com/jdbruxelles/si18n.js#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
   "devDependencies": {
-    "@babel/core": "^7.18.5",
-    "@babel/preset-env": "^7.18.2",
-    "babel-preset-minify": "^0.5.2",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-watch": "^5.0.1"
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.2",
+    "esbuild": "^0.25.11",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tsdown": "^0.21.8",
+    "typescript": "^6.0.2"
   }
 }

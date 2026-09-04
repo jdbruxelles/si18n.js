@@ -6,6 +6,20 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
+## 2.0.0-beta.0
+
+**Major TypeScript rewrite & Node.js/React support**
+
+The project got a massive architectural shift in the PR ([#8: Add Node.js and TypeScript version of si18n.js](https://github.com/jdbruxelles/si18n.js/pull/8)). The codebase has been rewritten from standard JavaScript to TypeScript and modularized to support multiple environments.
+
+The new structure in the src directory includes:
+ - `core/`: The base translation logic (`Si18nCore.ts`) decoupled from browser-specific APIs.
+ - `browser/`: The traditional browser environment implementation (Si18nBrowser.ts).
+ - `node/`: A new implementation specifically for Node.js environments (`Si18nNode.ts`).
+ - `react/`: New integrations for React applications, including both client (`client.tsx`) and server (`server.ts`) components.
+
+In short, the project is evolving from a browser-only JavaScript library into a robust, multi-platform TypeScript library capable of running in the Browser, Node.js, and React environments.
+
 ## 1.4.4 (June 5, 2024)
 
 - Add `alt` attribute support for auto translating using the `data-si18n-alt` attribute with value `true` in the element (e.g.: `<img>` tag).

@@ -1,7 +1,8 @@
 {
   "search.exclude": {
-    "**/node_modules": true,
+    "**/*.min.js": true,
     "**/bower_components": true,
-    "**/*.min.js": true
+    "**/dist": true,
+    "**/node_modules": true
   }
 }
