@@ -1,6 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/8265ca9c-3d2f-434a-94b8-0b5f3ff7af45/deploy-status)](https://app.netlify.com/sites/si18n/deploys)
 [![npm version](https://img.shields.io/npm/v/si18n.js)](https://www.npmjs.com/package/si18n.js)
-[![wakatime](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/7b08fe76-98cb-44e3-bcab-294aad0fda0a.svg)](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/7b08fe76-98cb-44e3-bcab-294aad0fda0a)
+[![wakatime](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/22c7a7a1-a930-4a2e-835e-e57f41fc3b1b.svg)](https://wakatime.com/badge/user/c7cc65f4-4921-4723-a014-551e8110a116/project/22c7a7a1-a930-4a2e-835e-e57f41fc3b1b)
 [![Crowdin](https://badges.crowdin.net/si18njs/localized.svg)](https://crowdin.com/project/si18njs)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/si18n.js/badge)](https://www.jsdelivr.com/package/npm/si18n.js)
 
@@ -197,7 +197,7 @@ For the server, you can use any server you want, but I recommend using [http-ser
 
 ## Contributing
 
-Contributions are always welcome! For major changes, please [open an issue](https://github.com/jdbruxelles/si18n/issues/new) first to discuss what you would like to change.
+Contributions are always welcome! For major changes, please [open an issue](https://github.com/jdbruxelles/si18n.js/issues/new) first to discuss what you would like to change.
 
 ## Translation
 
