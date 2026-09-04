@@ -145,3 +145,113 @@ table tr td:nth-child(3) code {
 main pre code.hljs {
   padding: 0;
 }
+
+.package-tabs-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  max-width: 100%;
+  scrollbar-width: none;
+  padding: 6px 16px;
+}
+
+@media (min-width: 680px) {
+  .package-tabs-wrapper {
+    justify-content: center;
+  }
+}
+
+.package-tabs-bar {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  background-color: #101c27;
+  padding: 8px 5px;
+  gap: 4px;
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+
+.package-tab {
+  font-weight: 600;
+  border-radius: 9999px !important;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  border: none;
+}
+
+.package-tab:hover {
+  color: #f8fafc;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.package-card {
+  background-color: #132230;
+  border-color: #1f3a50;
+  transition: border-color 0.25s ease;
+}
+
+.package-card:hover {
+  border-color: #009688;
+}
+
+.package-card-inner {
+  padding: 22px;
+}
+
+.package-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.package-title code {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #009688;
+  background: transparent;
+  padding: 0;
+}
+
+.package-desc {
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: #cbd5e1;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.package-desc code {
+  background: rgba(0, 188, 212, 0.12);
+  color: #79c0ff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+
+.package-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.package-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
