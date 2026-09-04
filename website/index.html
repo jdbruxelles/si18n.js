@@ -364,7 +364,7 @@
             <span class="code-title" data-si18n="usage.browser">Navigateur (NPM / ESM)</span>
           </div>
           <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>import Si18n from "si18n.js";
-// ou import Si18nBrowser from "si18n.js/browser";
+// or import Si18nBrowser from "si18n.js/browser";
 
 const loc = new Si18n();
 await loc.init({
@@ -414,7 +414,7 @@ console.log(loc.t("greeting"));</code></pre>
           <div class="code-header">
             <span class="code-title" data-si18n="usage.typescript">TypeScript (Tous packages &amp; Types)</span>
           </div>
-          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="ts"><code>// Importation ciblée des classes et utilitaires
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="ts"><code>// Targeted imports of classes and utilities
 import Si18nBrowser, { type Si18nBrowserInitOptions } from "si18n.js/browser";
 import { Si18nCore, type Si18nInitOptions, type StorageAdapter } from "si18n.js/core";
 import { Si18nNode, createMemoryStorage, createProcessEnvStorage } from "si18n.js/node";
@@ -469,7 +469,7 @@ export default function App() {
           <div class="code-header">
             <span class="code-title" data-si18n="usage.reactServer">React Server Components (Next.js App Router / SSR)</span>
           </div>
-          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="tsx"><code>// app/page.tsx (Server Component sans DOM)
+          <pre class="jdb-code notranslate jdb-responsive hl" data-mode="tsx"><code>// app/page.tsx (Server Component without DOM)
 import { createServerTranslator } from "si18n.js/react/server";
 
 export default async function Page() {
@@ -719,7 +719,7 @@ const loc = new Si18nNode({
   fallbackLang: "en"
 });
 
-// Détecte automatiquement la langue système (LC_ALL, LANG, etc.)
+// Automatically detects system language (LC_ALL, LANG, etc.)
 console.log(loc.getLocale());
 console.log(loc.t("greeting"));</code></pre>
         </div>
@@ -731,13 +731,13 @@ console.log(loc.t("greeting"));</code></pre>
           </div>
           <pre class="jdb-code notranslate jdb-responsive hl" data-mode="js"><code>const { Si18nNode, createMemoryStorage, createProcessEnvStorage } = require("si18n.js/node");
 
-// 1. Stockage en mémoire volatile (par défaut, sans polluer process.env)
+// 1. In-memory volatile storage (default, does not pollute process.env)
 const locMemory = new Si18nNode(
   { locales: { en: { hi: "Hi" } }, lang: "en" },
   { storage: createMemoryStorage() }
 );
 
-// 2. Persistance dans process.env (ex: process.env.APP_LANG)
+// 2. Persistence in process.env (e.g. process.env.APP_LANG)
 const locEnv = new Si18nNode(
   { locales: { en: { hi: "Hi" } }, lang: "en", saveAs: "APP_LANG" },
   { storage: createProcessEnvStorage() }
@@ -806,7 +806,7 @@ export default async function Page({ params }: { params: Promise&lt;{ lang: stri
           </div>
           <pre class="jdb-code notranslate jdb-responsive hl" data-mode="ts"><code>import { Si18nCore, type StorageAdapter } from "si18n.js/core";
 
-// Adaptateur de stockage personnalisé (ex. AsyncStorage, Redis, cookies...)
+// Custom storage adapter (e.g. AsyncStorage, Redis, cookies...)
 const customStorage: StorageAdapter = {
   getItem: (key) => window.sessionStorage.getItem(key),
   setItem: (key, val) => { window.sessionStorage.setItem(key, val); }
