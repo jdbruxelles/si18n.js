@@ -85,7 +85,7 @@
         <p data-si18n="fallback_text"></p>
         <p class="monkey">
           <span class="one" data-si18n="nested.one"></span><br>
-          <span class="more"></span>
+          <span class="more" data-si18n="nested.more" data-si18n-vars='{"0": 12}'></span>
         </p>
         <hr class="jdb-hr">
         <p id="info">
@@ -981,6 +981,11 @@ await loc.init({
               <tr id="prop-isTogglerSelect" data-package="web">
                 <td><code>isTogglerSelect</code></td>
                 <td><code>false</code></td>
+                <td></td>
+              </tr>
+              <tr id="prop-sanitizeHtml" data-package="web">
+                <td><code>sanitizeHtml</code></td>
+                <td><code>undefined</code></td>
                 <td></td>
               </tr>
               <tr id="prop-saveLang" data-package="web node">

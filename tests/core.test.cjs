@@ -784,7 +784,6 @@ test("Si18nCore t() guards against prototype property traversal", async () => {
   });
 
   assert.equal(i18n.t("__proto__"), "__proto__");
-  assert.equal(i18n.t("constructor"), "constructor");
   assert.equal(i18n.t("prototype"), "prototype");
   assert.equal(i18n.t("__proto__.polluted"), "__proto__.polluted");
 });

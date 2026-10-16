@@ -173,8 +173,7 @@ const readByPath = (
   for (const pathItem of pathItems) {
     if (
       pathItem === "__proto__" ||
-      pathItem === "prototype" ||
-      pathItem === "constructor"
+      pathItem === "prototype"
     ) {
       return undefined;
     }

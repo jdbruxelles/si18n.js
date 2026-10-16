@@ -748,4 +748,125 @@ test("Si18nBrowser concurrent init() calls do not register duplicate toggler lis
   assert.equal(i18n.getLocale(), "fr");
 });
 
+test("Si18nBrowser sanitizeHtml hook sanitizes innerHTML when data-si18n-html is true", async (t) => {
+  const dom = createMockDOM();
+  setupMockEnvironment(dom);
+  t.after(restoreEnvironment);
+
+  const htmlEl = new dom.MockElement("div", {
+    "data-si18n": "markup",
+    "data-si18n-html": "true"
+  });
+  const textEl = new dom.MockElement("p", {
+    "data-si18n": "plain"
+  });
+
+  let sanitizedCount = 0;
+  const sanitizeHtml = (html) => {
+    sanitizedCount++;
+    return html.replace(/<script.*?>.*?<\/script>/gi, "");
+  };
+
+  const i18n = new Si18nBrowser();
+  await i18n.init({
+    locales: {
+      en: {
+        markup: "<span>Safe</span><script>alert(1)</script>",
+        plain: "Just plain text"
+      }
+    },
+    lang: "en",
+    sanitizeHtml
+  });
+
+  assert.equal(htmlEl.innerHTML, "<span>Safe</span>");
+  assert.equal(textEl.textContent, "Just plain text");
+  assert.equal(sanitizedCount, 1);
+});
+
+test("Si18nBrowser rejects init when sanitizeHtml is not a function", async (t) => {
+  const dom = createMockDOM();
+  setupMockEnvironment(dom);
+  t.after(restoreEnvironment);
+
+  const i18n = new Si18nBrowser();
+  await assert.rejects(
+    () =>
+      i18n.init({
+        locales: { en: { a: "b" } },
+        lang: "en",
+        sanitizeHtml: "not-a-fn"
+      }),
+    /The sanitizeHtml option must be a function\./
+  );
+});
+
+test("Si18nBrowser parses data-si18n-vars for content and attributes", async (t) => {
+  const dom = createMockDOM();
+  setupMockEnvironment(dom);
+  t.after(restoreEnvironment);
+
+  const el = new dom.MockElement("input", {
+    "data-si18n": "userGreeting",
+    "data-si18n-vars": JSON.stringify({ name: "Ada", count: 3 }),
+    "data-si18n-title": "",
+    "data-si18n-placeholder": ""
+  });
+
+  const i18n = new Si18nBrowser();
+  await i18n.init({
+    locales: {
+      en: {
+        userGreeting: "Hello %{name}, %{count} new messages"
+      },
+      fr: {
+        userGreeting: "Bonjour %{name}, %{count} nouveaux messages"
+      }
+    },
+    lang: "en"
+  });
+
+  assert.equal(el.textContent, "Hello Ada, 3 new messages");
+  assert.equal(el.getAttribute("title"), "Hello Ada, 3 new messages");
+  assert.equal(el.getAttribute("placeholder"), "Hello Ada, 3 new messages");
+
+  await i18n.setLocale("fr");
+  assert.equal(el.textContent, "Bonjour Ada, 3 nouveaux messages");
+  assert.equal(el.getAttribute("title"), "Bonjour Ada, 3 nouveaux messages");
+  assert.equal(el.getAttribute("placeholder"), "Bonjour Ada, 3 nouveaux messages");
+});
+
+test("Si18nBrowser handles invalid or non-object JSON in data-si18n-vars gracefully", async (t) => {
+  const dom = createMockDOM();
+  setupMockEnvironment(dom);
+  t.after(restoreEnvironment);
+
+  const malformedEl = new dom.MockElement("p", {
+    "data-si18n": "greeting",
+    "data-si18n-vars": "{not valid json}"
+  });
+  const arrayEl = new dom.MockElement("p", {
+    "data-si18n": "greeting",
+    "data-si18n-vars": '["not", "an", "object"]'
+  });
+  const validEl = new dom.MockElement("p", {
+    "data-si18n": "validMsg"
+  });
+
+  const i18n = new Si18nBrowser();
+  await i18n.init({
+    locales: {
+      en: {
+        greeting: "Hello %{name}",
+        validMsg: "Works fine"
+      }
+    },
+    lang: "en"
+  });
+
+  assert.equal(malformedEl.textContent, "Hello %{name}");
+  assert.equal(arrayEl.textContent, "Hello %{name}");
+  assert.equal(validEl.textContent, "Works fine");
+});
+
 

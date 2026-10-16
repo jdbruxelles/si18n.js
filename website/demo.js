@@ -64,7 +64,6 @@ const translate = (locObj) => {
   $("meta[name='description']").setAttribute("content", siteDescription);
   $("meta[property='og:description']").setAttribute("content", siteDescription);
   $("meta[property='twitter:description']").setAttribute("content", siteDescription);
-  $(".monkey .more").innerText = locObj.t("nested.more", { 0: 12 });
 
   // Show locales infos
   const infos = $$("#demo #info span");
@@ -74,8 +73,8 @@ const translate = (locObj) => {
   const params = [
     "locales", "path", "localeLoader", "availableLocales", "lang",
     "fallbackLang", "activeClass", "togglersSelector", "isTogglerSelect",
-    "saveLang", "saveAs", "reloadPage", "translate", "onLocaleChanged",
-    "dependencies"
+    "sanitizeHtml", "saveLang", "saveAs", "reloadPage", "translate",
+    "onLocaleChanged", "dependencies"
   ];
 
   const optTable = $("#options table");

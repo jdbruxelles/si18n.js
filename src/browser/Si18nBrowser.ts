@@ -1,6 +1,7 @@
 import Si18nCore, {
   type LocaleMessages,
-  type Si18nCoreDependencies
+  type Si18nCoreDependencies,
+  type TranslationReplacements
 } from "../core";
 import { createDocsError } from "../core/Si18nCore";
 import type { Si18nBrowserInitOptions } from "./types";
@@ -23,6 +24,7 @@ interface BrowserOptions {
   activeClass: string;
   togglersSelector: string;
   isTogglerSelect: boolean;
+  sanitizeHtml?: (html: string) => string;
 }
 
 const getBrowserLanguage = (): string | null => {
@@ -95,6 +97,23 @@ function throwInvalidSelectorError(): never {
   );
 }
 
+// Parse declarative JSON replacements from `data-si18n-vars` safely so a malformed
+// attribute on one element never aborts translation for the rest of the document.
+function parseElementVars(
+  rawVars: string | undefined
+): TranslationReplacements | undefined {
+  if (!rawVars) return undefined;
+  try {
+    const parsed: unknown = JSON.parse(rawVars);
+    if (typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)) {
+      return parsed as TranslationReplacements;
+    }
+  } catch {
+    // Malformed JSON is ignored to preserve resilience during DOM translation.
+  }
+  return undefined;
+}
+
 export class Si18nBrowser extends Si18nCore {
   private readonly browserOptions: BrowserOptions = {
     activeClass: "",
@@ -116,11 +135,19 @@ export class Si18nBrowser extends Si18nCore {
   public override async init(options: Si18nBrowserInitOptions = {}): Promise<void> {
     if (this.isInitialized()) return;
 
+    if (
+      typeof options.sanitizeHtml !== "undefined" &&
+      typeof options.sanitizeHtml !== "function"
+    ) {
+      throw createDocsError("The sanitizeHtml option must be a function.");
+    }
+
     if (!this.browserInitStarted) {
       this.browserInitStarted = true;
       this.browserOptions.activeClass = options.activeClass ?? "";
       this.browserOptions.togglersSelector = options.togglersSelector ?? "";
       this.browserOptions.isTogglerSelect = options.isTogglerSelect ?? false;
+      this.browserOptions.sanitizeHtml = options.sanitizeHtml;
     }
 
     try {
@@ -177,12 +204,15 @@ export class Si18nBrowser extends Si18nCore {
       const jsonPath = element.dataset.si18n;
       if (!jsonPath) continue;
 
-      const translated = this.t(jsonPath);
+      const replacements = parseElementVars(element.dataset.si18nVars);
+      const translated = this.t(jsonPath, replacements);
       if (typeof translated !== "string") continue;
 
       if (element.dataset.si18nDefault !== "false") {
         if (element.dataset.si18nHtml === "true") {
-          element.innerHTML = translated;
+          element.innerHTML = this.browserOptions.sanitizeHtml
+            ? this.browserOptions.sanitizeHtml(translated)
+            : translated;
         } else {
           element.textContent = translated;
         }
