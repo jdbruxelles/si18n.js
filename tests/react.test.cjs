@@ -185,3 +185,20 @@ test("Si18nProvider works without options prop when i18n is already initialized"
   assert.match(html, /<h1>Direct Init<\/h1>/);
 });
 
+test("dist/react/index.mjs and dist/react/index.cjs include use client directive banner", async () => {
+  const mjsPath = path.resolve(__dirname, "../dist/react/index.mjs");
+  const cjsPath = path.resolve(__dirname, "../dist/react/index.cjs");
+
+  const mjsContent = await fs.readFile(mjsPath, "utf8");
+  const cjsContent = await fs.readFile(cjsPath, "utf8");
+
+  assert.ok(
+    mjsContent.startsWith('"use client";'),
+    "dist/react/index.mjs should start with '\"use client\";'"
+  );
+  assert.ok(
+    cjsContent.startsWith('"use client";'),
+    "dist/react/index.cjs should start with '\"use client\";'"
+  );
+});
+

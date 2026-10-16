@@ -1,8 +1,8 @@
 import Si18nCore, {
   type LocaleMessages,
-  type Si18nCoreDependencies,
-  DOCS_LINK
+  type Si18nCoreDependencies
 } from "../core";
+import { createDocsError } from "../core/Si18nCore";
 import type { Si18nBrowserInitOptions } from "./types";
 
 const SUPPORTED_AUTO_TRANSLATION_ATTRIBUTES: Record<string, keyof DOMStringMap> = {
@@ -87,6 +87,14 @@ const createBrowserDependencies = (): Si18nCoreDependencies => {
   };
 };
 
+// Moving internal helpers to module-scoped functions allows minifiers (esbuild/tsdown)
+// to mangle their identifiers to single letters without changing the Si18nBrowser prototype.
+function throwInvalidSelectorError(): never {
+  throw createDocsError(
+    "The togglersSelector option must be a valid selector and match at least one element."
+  );
+}
+
 export class Si18nBrowser extends Si18nCore {
   private readonly browserOptions: BrowserOptions = {
     activeClass: "",
@@ -165,12 +173,12 @@ export class Si18nBrowser extends Si18nCore {
 
     const elements = document.querySelectorAll<HTMLElement>("[data-si18n]");
 
-    elements.forEach((element) => {
+    for (const element of elements) {
       const jsonPath = element.dataset.si18n;
-      if (!jsonPath) return;
+      if (!jsonPath) continue;
 
       const translated = this.t(jsonPath);
-      if (typeof translated !== "string") return;
+      if (typeof translated !== "string") continue;
 
       if (element.dataset.si18nDefault !== "false") {
         if (element.dataset.si18nHtml === "true") {
@@ -185,7 +193,7 @@ export class Si18nBrowser extends Si18nCore {
           element.setAttribute(attributeName, translated);
         }
       }
-    });
+    }
   }
 
   private configureTogglers(): void {
@@ -202,16 +210,16 @@ export class Si18nBrowser extends Si18nCore {
       this.browserOptions.togglersSelector
     );
 
-    if (buttons.length === 0) this.throwInvalidSelectorError();
+    if (buttons.length === 0) throwInvalidSelectorError();
 
-    buttons.forEach((button) => {
+    for (const button of buttons) {
       const locale = button.dataset.lang;
-      if (!locale || !this.getLocales().includes(locale)) return;
+      if (!locale || !this.getLocales().includes(locale)) continue;
 
       button.addEventListener("click", () => {
         void this.setLocale(locale);
       });
-    });
+    }
 
     this.updateActiveTogglerClass();
   }
@@ -223,15 +231,15 @@ export class Si18nBrowser extends Si18nCore {
       this.browserOptions.togglersSelector
     );
 
-    if (!selectElement) this.throwInvalidSelectorError();
+    if (!selectElement) throwInvalidSelectorError();
 
     const availableLocales = this.getLocales();
 
-    Array.from(selectElement.options).forEach((option) => {
+    for (const option of selectElement.options) {
       if (!availableLocales.includes(option.value)) {
         option.disabled = true;
       }
-    });
+    }
 
     this.updateSelectValue();
 
@@ -257,12 +265,12 @@ export class Si18nBrowser extends Si18nCore {
       this.browserOptions.togglersSelector
     );
 
-    buttons.forEach((button) => {
+    for (const button of buttons) {
       button.classList.remove(this.browserOptions.activeClass);
       if (button.dataset.lang === activeLocale) {
         button.classList.add(this.browserOptions.activeClass);
       }
-    });
+    }
   }
 
   private updateSelectValue(): void {
@@ -279,13 +287,6 @@ export class Si18nBrowser extends Si18nCore {
     if (!selectElement) return;
 
     selectElement.value = this.getLocale();
-  }
-
-  private throwInvalidSelectorError(): never {
-    throw new Error(
-      "The togglersSelector option must be a valid selector and match at least one element. " +
-        `See docs ${DOCS_LINK}`
-    );
   }
 }
 

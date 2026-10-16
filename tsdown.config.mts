@@ -18,13 +18,17 @@ export default defineConfig({
   minify: true,
   cjsDefault: true,
   outputOptions: (options, format) => {
-    if (format === "cjs") {
-      return {
-        ...options,
-        exports: "named"
-      };
-    }
-    return options;
+    return {
+      ...options,
+      banner: (chunk) => {
+        // Prepend "use client"; only to the React client entry chunk
+        if (chunk.name === "react/index") {
+          return '"use client";\n';
+        }
+        return "";
+      },
+      ...(format === "cjs" ? { exports: "named" } : {})
+    };
   },
   deps: {
     neverBundle: ["react"]

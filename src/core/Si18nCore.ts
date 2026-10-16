@@ -68,6 +68,157 @@ const isSafeLocaleToken = (locale: unknown): locale is string => {
   return !/[/\\0\r\n]|\.\./.test(trimmed);
 };
 
+// Centralize error creation with DOCS_LINK to avoid repeating template strings across bundles.
+export const createDocsError = (message: string): Error => {
+  return new Error(`${message} See docs ${DOCS_LINK}`);
+};
+
+// Moving internal helpers to module-scoped functions allows minifiers (esbuild/tsdown)
+// to mangle their identifiers to single letters without changing the Si18nCore prototype.
+const validateInitOptions = (options: Si18nInitOptions): void => {
+  const optionKeys = Object.keys(options);
+  if (optionKeys.length === 0) {
+    throw createDocsError("No options provided.");
+  }
+
+  if (typeof options.fallbackLang !== "undefined" && typeof options.fallbackLang !== "string") {
+    throw createDocsError("The fallbackLang option must be a string.");
+  }
+
+  if (typeof options.lang !== "undefined" && typeof options.lang !== "string") {
+    throw createDocsError("The lang option must be a string.");
+  }
+
+  if (
+    typeof options.fallbackLang === "undefined" &&
+    typeof options.lang === "undefined"
+  ) {
+    throw createDocsError("The lang option is required when no fallbackLang option is set.");
+  }
+
+  if (typeof options.locales !== "undefined") {
+    if (
+      !isObjectRecord(options.locales) ||
+      Object.keys(options.locales).some((loc) => !isSafeLocaleToken(loc) || !isObjectRecord(options.locales![loc]))
+    ) {
+      throw createDocsError("The locales option must be an object.");
+    }
+  }
+
+  if (typeof options.availableLocales !== "undefined") {
+    if (
+      !Array.isArray(options.availableLocales) ||
+      options.availableLocales.some((loc) => !isSafeLocaleToken(loc))
+    ) {
+      throw createDocsError("The availableLocales option must be an array.");
+    }
+  }
+
+  if (typeof options.path !== "undefined" && typeof options.path !== "string") {
+    throw createDocsError("The path option must be a string.");
+  }
+
+  if (typeof options.saveAs !== "undefined") {
+    if (typeof options.saveAs !== "string" || options.saveAs.trim() === "") {
+      throw createDocsError("The saveAs option must be a non-empty string.");
+    }
+  }
+
+  if (typeof options.translate !== "undefined" && typeof options.translate !== "function") {
+    throw createDocsError("The translate option must be a function.");
+  }
+
+  if (
+    typeof options.onLocaleChanged !== "undefined" &&
+    typeof options.onLocaleChanged !== "function"
+  ) {
+    throw createDocsError("The onLocaleChanged option must be a function.");
+  }
+
+  if (typeof options.localeLoader !== "undefined" && typeof options.localeLoader !== "function") {
+    throw createDocsError("The localeLoader option must be a function.");
+  }
+
+  const hasAutoLoader =
+    typeof options.path === "string" ||
+    typeof options.localeLoader === "function";
+
+  if (!options.locales && !hasAutoLoader) {
+    throw createDocsError("Missing required options.");
+  }
+
+  if (
+    typeof options.path === "string" &&
+    (!Array.isArray(options.availableLocales) || options.availableLocales.length === 0)
+  ) {
+    throw createDocsError("The availableLocales option is required when using the path option.");
+  }
+};
+
+const isMissingValue = (value: TranslationValue | undefined): boolean => {
+  return typeof value === "undefined" || value === "";
+};
+
+const readByPath = (
+  root: TranslationValue | undefined,
+  path: string
+): TranslationValue | undefined => {
+  if (!root) return undefined;
+
+  const pathItems = path.split(".").filter(Boolean);
+  if (pathItems.length === 0) return undefined;
+
+  let value: TranslationValue | undefined = root;
+
+  for (const pathItem of pathItems) {
+    if (
+      pathItem === "__proto__" ||
+      pathItem === "prototype" ||
+      pathItem === "constructor"
+    ) {
+      return undefined;
+    }
+
+    if (!isObjectRecord(value) && !Array.isArray(value)) {
+      return undefined;
+    }
+
+    if (Array.isArray(value)) {
+      const parsedIndex = Number(pathItem);
+      if (!Number.isInteger(parsedIndex) || parsedIndex < 0) {
+        return undefined;
+      }
+      value = value[parsedIndex];
+      continue;
+    }
+
+    // Only read own properties on object records to prevent prototype chain leakage
+    // (e.g. `t("toString")` or `t("__proto__.polluted")`).
+    if (!hasOwn(value, pathItem)) return undefined;
+
+    value = value[pathItem] as TranslationValue | undefined;
+    if (typeof value === "undefined") return undefined;
+  }
+
+  return value;
+};
+
+const applyReplacements = (
+  message: string,
+  replacements: TranslationReplacements
+): string => {
+  return message.replace(/%\{([^{}]+)\}/g, (match, rawKey: string) => {
+    const key = rawKey.trim();
+    if (Object.prototype.hasOwnProperty.call(replacements, key)) {
+      return String(replacements[key]);
+    }
+    if (Object.prototype.hasOwnProperty.call(replacements, rawKey)) {
+      return String(replacements[rawKey]);
+    }
+    return match;
+  });
+};
+
 export class Si18nCore implements Si18nLike {
   public static readonly version = "2.0.0-beta.0";
 
@@ -123,7 +274,7 @@ export class Si18nCore implements Si18nLike {
     if (this.initPromise) return this.initPromise;
 
     this.initPromise = (async () => {
-      this.validateInitOptions(options);
+      validateInitOptions(options);
       this.applyInitOptions(options);
 
       this.options.lang = await this.resolveInitialLocale(options.lang);
@@ -154,7 +305,7 @@ export class Si18nCore implements Si18nLike {
 
   public async setLocale(locale: string): Promise<void> {
     if (!this.initialized) {
-      throw new Error(`Call init before setLocale. See docs ${DOCS_LINK}`);
+      throw createDocsError("Call init before setLocale.");
     }
 
     const requestId = ++this.setLocaleRequestId;
@@ -197,12 +348,12 @@ export class Si18nCore implements Si18nLike {
     const localeObj = this.getLocaleMessages(this.options.lang);
     const fallbackObj = this.getLocaleMessages(this.options.fallbackLang);
 
-    let value = this.readByPath(localeObj, path);
-    if (this.isMissingValue(value)) {
-      value = this.readByPath(fallbackObj, path);
+    let value = readByPath(localeObj, path);
+    if (isMissingValue(value)) {
+      value = readByPath(fallbackObj, path);
     }
 
-    if (this.isMissingValue(value)) {
+    if (isMissingValue(value)) {
       this.dependencies.logError(
         `The path "${path}" was not found in the current language (${this.options.lang}), nor in the fallback language (${this.options.fallbackLang}).`
       );
@@ -210,7 +361,7 @@ export class Si18nCore implements Si18nLike {
     }
 
     if (typeof value === "string" && replacements) {
-      return this.applyReplacements(value, replacements);
+      return applyReplacements(value, replacements);
     }
 
     return value as TranslationValue;
@@ -252,86 +403,6 @@ export class Si18nCore implements Si18nLike {
     });
   }
 
-  private validateInitOptions(options: Si18nInitOptions): void {
-    const optionKeys = Object.keys(options);
-    if (optionKeys.length === 0) {
-      throw new Error(`No options provided. See docs ${DOCS_LINK}`);
-    }
-
-    if (typeof options.fallbackLang !== "undefined" && typeof options.fallbackLang !== "string") {
-      throw new Error(`The fallbackLang option must be a string. See docs ${DOCS_LINK}`);
-    }
-
-    if (typeof options.lang !== "undefined" && typeof options.lang !== "string") {
-      throw new Error(`The lang option must be a string. See docs ${DOCS_LINK}`);
-    }
-
-    if (
-      typeof options.fallbackLang === "undefined" &&
-      typeof options.lang === "undefined"
-    ) {
-      throw new Error(`The lang option is required when no fallbackLang option is set. See docs ${DOCS_LINK}`);
-    }
-
-    if (typeof options.locales !== "undefined") {
-      if (
-        !isObjectRecord(options.locales) ||
-        Object.keys(options.locales).some((loc) => !isSafeLocaleToken(loc) || !isObjectRecord(options.locales![loc]))
-      ) {
-        throw new Error(`The locales option must be an object. See docs ${DOCS_LINK}`);
-      }
-    }
-
-    if (typeof options.availableLocales !== "undefined") {
-      if (
-        !Array.isArray(options.availableLocales) ||
-        options.availableLocales.some((loc) => !isSafeLocaleToken(loc))
-      ) {
-        throw new Error(`The availableLocales option must be an array. See docs ${DOCS_LINK}`);
-      }
-    }
-
-    if (typeof options.path !== "undefined" && typeof options.path !== "string") {
-      throw new Error(`The path option must be a string. See docs ${DOCS_LINK}`);
-    }
-
-    if (typeof options.saveAs !== "undefined") {
-      if (typeof options.saveAs !== "string" || options.saveAs.trim() === "") {
-        throw new Error(`The saveAs option must be a non-empty string. See docs ${DOCS_LINK}`);
-      }
-    }
-
-    if (typeof options.translate !== "undefined" && typeof options.translate !== "function") {
-      throw new Error(`The translate option must be a function. See docs ${DOCS_LINK}`);
-    }
-
-    if (
-      typeof options.onLocaleChanged !== "undefined" &&
-      typeof options.onLocaleChanged !== "function"
-    ) {
-      throw new Error(`The onLocaleChanged option must be a function. See docs ${DOCS_LINK}`);
-    }
-
-    if (typeof options.localeLoader !== "undefined" && typeof options.localeLoader !== "function") {
-      throw new Error(`The localeLoader option must be a function. See docs ${DOCS_LINK}`);
-    }
-
-    const hasAutoLoader =
-      typeof options.path === "string" ||
-      typeof options.localeLoader === "function";
-
-    if (!options.locales && !hasAutoLoader) {
-      throw new Error(`Missing required options. See docs ${DOCS_LINK}`);
-    }
-
-    if (
-      typeof options.path === "string" &&
-      (!Array.isArray(options.availableLocales) || options.availableLocales.length === 0)
-    ) {
-      throw new Error(`The availableLocales option is required when using the path option. See docs ${DOCS_LINK}`);
-    }
-  }
-
   private applyInitOptions(options: Si18nInitOptions): void {
     if (options.locales) this.options.locales = options.locales;
 
@@ -339,7 +410,7 @@ export class Si18nCore implements Si18nLike {
     this.options.availableLocales = [...new Set(availableLocales)];
 
     if (this.options.availableLocales.length === 0) {
-      throw new Error(`No available locales were found. See docs ${DOCS_LINK}`);
+      throw createDocsError("No available locales were found.");
     }
 
     this.localeLookupMap.clear();
@@ -357,8 +428,8 @@ export class Si18nCore implements Si18nLike {
     const resolvedFallbackLang = this.matchAvailableLocale(fallbackLangInput);
 
     if (!resolvedFallbackLang) {
-      throw new Error(
-        `The fallbackLang option must match one of the availableLocales. See docs ${DOCS_LINK}`
+      throw createDocsError(
+        "The fallbackLang option must match one of the availableLocales."
       );
     }
 
@@ -373,7 +444,7 @@ export class Si18nCore implements Si18nLike {
 
     if (!this.options.localeLoader && this.options.path) {
       if (!this.dependencies.createPathLocaleLoader) {
-        throw new Error(`No locale loader was configured for path loading. See docs ${DOCS_LINK}`);
+        throw createDocsError("No locale loader was configured for path loading.");
       }
       this.options.localeLoader = this.dependencies.createPathLocaleLoader(this.options.path);
     }
@@ -443,8 +514,8 @@ export class Si18nCore implements Si18nLike {
     if (hasOwn(this.options.locales, locale) && this.options.locales[locale]) return;
 
     if (!this.options.localeLoader) {
-      throw new Error(
-        `No locale loader found for "${locale}". Provide locales or a path/localeLoader option. See docs ${DOCS_LINK}`
+      throw createDocsError(
+        `No locale loader found for "${locale}". Provide locales or a path/localeLoader option.`
       );
     }
 
@@ -476,70 +547,6 @@ export class Si18nCore implements Si18nLike {
   private applyTranslation(): void {
     this.beforeTranslate();
     this.options.translate(this);
-  }
-
-  private readByPath(
-    root: TranslationValue | undefined,
-    path: string
-  ): TranslationValue | undefined {
-    if (!root) return undefined;
-
-    const pathItems = path.split(".").filter(Boolean);
-    if (pathItems.length === 0) return undefined;
-
-    let value: TranslationValue | undefined = root;
-
-    for (const pathItem of pathItems) {
-      if (
-        pathItem === "__proto__" ||
-        pathItem === "prototype" ||
-        pathItem === "constructor"
-      ) {
-        return undefined;
-      }
-
-      if (!isObjectRecord(value) && !Array.isArray(value)) {
-        return undefined;
-      }
-
-      if (Array.isArray(value)) {
-        const parsedIndex = Number(pathItem);
-        if (!Number.isInteger(parsedIndex) || parsedIndex < 0) {
-          return undefined;
-        }
-        value = value[parsedIndex];
-        continue;
-      }
-
-      // Only read own properties on object records to prevent prototype chain leakage
-      // (e.g. `t("toString")` or `t("__proto__.polluted")`).
-      if (!hasOwn(value, pathItem)) return undefined;
-
-      value = value[pathItem] as TranslationValue | undefined;
-      if (typeof value === "undefined") return undefined;
-    }
-
-    return value;
-  }
-
-  private isMissingValue(value: TranslationValue | undefined): boolean {
-    return typeof value === "undefined" || value === "";
-  }
-
-  private applyReplacements(
-    message: string,
-    replacements: TranslationReplacements
-  ): string {
-    return message.replace(/%\{([^{}]+)\}/g, (match, rawKey: string) => {
-      const key = rawKey.trim();
-      if (Object.prototype.hasOwnProperty.call(replacements, key)) {
-        return String(replacements[key]);
-      }
-      if (Object.prototype.hasOwnProperty.call(replacements, rawKey)) {
-        return String(replacements[rawKey]);
-      }
-      return match;
-    });
   }
 }
 
