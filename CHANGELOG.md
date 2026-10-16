@@ -6,7 +6,41 @@
 > breaking changes and/or new features that you need to implement in your
 > project.
 
-## 2.0.0-beta.0
+## 2.0.0 (October 16, 2026)
+
+**Production release: Security hardening, concurrency performance, declarative HTML vars, and package hardening**
+
+This stable 2.0.0 release finalizes the multi-platform TypeScript rewrite introduced in `2.0.0-beta.0`, delivering enterprise-grade security hardening, concurrent runtime performance, bundle size reductions, and new declarative HTML features.
+
+### Security & Hardening
+- **Optional `sanitizeHtml` hook**: Added `sanitizeHtml?: (html: string) => string` to `Si18nBrowserInitOptions`. When `data-si18n-html="true"` is set, translations are passed through the custom sanitizer (e.g. `DOMPurify.sanitize`) before assignment to `element.innerHTML`.
+- **Prototype pollution & lookup guards**: Guarded `readByPath`, `t()`, and `ensureLocaleLoaded` against prototype inheritance (`Object.prototype` properties such as `toString`, `valueOf`, `hasOwnProperty`, and `__proto__` traversal).
+- **Safe browser storage**: Wrapped browser `localStorage` access in `try/catch` to gracefully degrade in restricted environments (sandboxed iframes, disabled cookies, private browsing storage quota).
+- **Filesystem & path traversal protection**: Enforced directory containment in Node.js path locale loader and disallowed path traversal tokens (`..`, `/`, `\`) in locale identifiers.
+- **Strict locale validation**: Enforced plain key-value records for locale objects and rejected array payloads in `isObjectRecord`.
+
+### Performance & Concurrency
+- **Deduplicated `init()` calls**: Concurrent `init()` invocations in `Si18nCore` are now tracked and deduplicated via an internal initialization promise.
+- **Parallel locale startup**: Active `lang` and `fallbackLang` are now loaded concurrently with `Promise.all` during initialization to minimize cold-start latency.
+- **In-flight loader request deduplication**: In-flight locale loading promises are cached to prevent redundant network requests (`fetch`) or filesystem reads (`readFile`).
+- **Race condition prevention**: Monotonic request IDs in `setLocale()` ensure out-of-order asynchronous completions cannot overwrite newer locale selections.
+- **Optimized lookups**: Replaced repeated scans in `matchAvailableLocale` with $O(1)$ lookup maps and pre-computed auto-translation attribute entries in `Si18nBrowser`.
+- **Idempotent toggler bindings**: Prevented duplicate toggler event listener registrations in `Si18nBrowser` across concurrent or repeated `init()` calls.
+
+### New Features & Developer Experience (DX)
+- **Declarative `data-si18n-vars` attribute**: DOM elements can now declare replacement variables directly in HTML (e.g. `data-si18n-vars='{"0": 12}'` or `data-si18n-vars='{"name": "Ada"}'`), interpolating values into `%{...}` placeholders without manual JavaScript code.
+- **RSC `"use client";` preservation**: Fixed client directive preservation in React exports (`dist/react/index.mjs` and `dist/react/index.cjs`) for seamless Next.js App Router and React Server Components compatibility.
+- **Bundle size optimization**: Extracted stateless internal helpers to module scope to maximize identifier mangling by minifiers, and extracted `createDocsError` to eliminate duplicate error template strings across chunks.
+
+### CI, Packaging & Supply Chain
+- **Package exports test suite**: Added comprehensive automated tests (`tests/exports.test.cjs`) verifying CommonJS and ESM parity across all 6 package entrypoints (`.`, `./core`, `./browser`, `./node`, `./react`, `./react/server`).
+- **Secure publishing workflow**: Added `.github/workflows/publish.yml` with OIDC trusted publishing, cryptographic SLSA provenance generation, tag consistency verification, and automated tarball dry-runs (`pack:check`).
+
+### Documentation & Demo
+- Added full French and English documentation for `sanitizeHtml` and `data-si18n-vars` in `website/locales/fr.json` and `website/locales/en.json`.
+- Updated the interactive demo site (`website/index.html`, `website/demo.js`) to use declarative `data-si18n-vars` and document the `sanitizeHtml` option.
+
+## 2.0.0-beta.0 (September 4, 2026)
 
 **Major TypeScript rewrite & Node.js/React support**
 
