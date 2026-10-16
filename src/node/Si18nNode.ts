@@ -73,7 +73,7 @@ export class Si18nNode extends Si18nCore {
     super(undefined, { ...baseDeps, ...dependencies });
 
     if (options && typeof options === "object") {
-      void this.init(options);
+      void this.init(options).catch(() => {});
     }
   }
 

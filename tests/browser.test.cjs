@@ -712,3 +712,40 @@ test("Si18nBrowser.getJSON rejects when response.ok is false", async (t) => {
   );
 });
 
+test("Si18nBrowser concurrent init() calls do not register duplicate toggler listeners", async (t) => {
+  const dom = createMockDOM();
+  setupMockEnvironment(dom);
+  t.after(restoreEnvironment);
+
+  const btnEn = new dom.MockElement("button", {
+    class: "lang-btn",
+    "data-lang": "en"
+  });
+  const btnFr = new dom.MockElement("button", {
+    class: "lang-btn",
+    "data-lang": "fr"
+  });
+
+  const i18n = new Si18nBrowser();
+  const opts = {
+    locales: {
+      en: { msg: "Hello" },
+      fr: { msg: "Bonjour" }
+    },
+    lang: "en",
+    togglersSelector: ".lang-btn",
+    activeClass: "is-active"
+  };
+
+  await Promise.all([i18n.init(opts), i18n.init(opts)]);
+
+  assert.equal(btnEn.listeners.click?.length, 1);
+  assert.equal(btnFr.listeners.click?.length, 1);
+
+  btnFr.click();
+  await new Promise((resolve) => setImmediate(resolve));
+
+  assert.equal(i18n.getLocale(), "fr");
+});
+
+

@@ -88,6 +88,10 @@ export class Si18nCore implements Si18nLike {
 
   private readonly dependencies: InternalDependencies;
   private readonly localeListeners = new Set<LocaleListener>();
+  private initPromise: Promise<void> | null = null;
+  private readonly loadingLocales = new Map<string, Promise<void>>();
+  private readonly localeLookupMap = new Map<string, string>();
+  private setLocaleRequestId = 0;
 
   public constructor(
     initialOptions?: Si18nInitOptions,
@@ -103,7 +107,9 @@ export class Si18nCore implements Si18nLike {
     };
 
     if (initialOptions && typeof initialOptions === "object") {
-      void this.init(initialOptions);
+      // Auto-initialize when constructor options are provided. Errors are already reported
+      // via logError and catching prevents uncaught promise rejections when callers use constructor auto-init.
+      void this.init(initialOptions).catch(() => {});
     }
   }
 
@@ -113,21 +119,37 @@ export class Si18nCore implements Si18nLike {
 
   public async init(options: Si18nInitOptions = {}): Promise<void> {
     if (this.initialized) return;
+    // Deduplicate concurrent init() calls (e.g. constructor auto-init + React StrictMode effect).
+    if (this.initPromise) return this.initPromise;
 
-    this.validateInitOptions(options);
-    this.applyInitOptions(options);
+    this.initPromise = (async () => {
+      this.validateInitOptions(options);
+      this.applyInitOptions(options);
 
-    this.options.lang = await this.resolveInitialLocale(options.lang);
+      this.options.lang = await this.resolveInitialLocale(options.lang);
 
-    await this.ensureLocaleLoaded(this.options.fallbackLang);
-    if (this.options.lang !== this.options.fallbackLang) {
-      await this.ensureLocaleLoaded(this.options.lang);
+      // Load fallbackLang and active lang in parallel when they differ to avoid a 2-RTT waterfall.
+      // Invoking fallbackLang first preserves deterministic loader call order in synchronous steps.
+      if (this.options.lang !== this.options.fallbackLang) {
+        await Promise.all([
+          this.ensureLocaleLoaded(this.options.fallbackLang),
+          this.ensureLocaleLoaded(this.options.lang)
+        ]);
+      } else {
+        await this.ensureLocaleLoaded(this.options.fallbackLang);
+      }
+
+      this.initialized = true;
+      this.applyTranslation();
+      this.options.onLocaleChanged(this.options.lang, this);
+      this.notifyLocaleListeners(this.options.lang);
+    })();
+
+    try {
+      await this.initPromise;
+    } finally {
+      this.initPromise = null;
     }
-
-    this.initialized = true;
-    this.applyTranslation();
-    this.options.onLocaleChanged(this.options.lang, this);
-    this.notifyLocaleListeners(this.options.lang);
   }
 
   public async setLocale(locale: string): Promise<void> {
@@ -135,11 +157,14 @@ export class Si18nCore implements Si18nLike {
       throw new Error(`Call init before setLocale. See docs ${DOCS_LINK}`);
     }
 
+    const requestId = ++this.setLocaleRequestId;
     const nextLocale = this.matchAvailableLocale(locale) ?? this.options.fallbackLang;
 
     if (this.options.saveLang) {
       await this.setStoredLocale(nextLocale);
     }
+
+    if (requestId !== this.setLocaleRequestId) return;
 
     if (this.options.reloadPage) {
       this.dependencies.reload();
@@ -147,6 +172,9 @@ export class Si18nCore implements Si18nLike {
     }
 
     await this.ensureLocaleLoaded(nextLocale);
+
+    // Ignore stale completions when a newer setLocale() call was issued concurrently.
+    if (requestId !== this.setLocaleRequestId) return;
 
     this.options.lang = nextLocale;
     this.applyTranslation();
@@ -314,6 +342,14 @@ export class Si18nCore implements Si18nLike {
       throw new Error(`No available locales were found. See docs ${DOCS_LINK}`);
     }
 
+    this.localeLookupMap.clear();
+    for (const loc of this.options.availableLocales) {
+      const lower = loc.toLowerCase();
+      if (!this.localeLookupMap.has(lower)) {
+        this.localeLookupMap.set(lower, loc);
+      }
+    }
+
     const fallbackLangInput =
       options.fallbackLang ??
       options.lang ??
@@ -393,9 +429,7 @@ export class Si18nCore implements Si18nLike {
     }
 
     for (const candidate of normalizedLocales) {
-      const match = this.options.availableLocales.find((availableLocale) => {
-        return availableLocale.toLowerCase() === candidate.toLowerCase();
-      });
+      const match = this.localeLookupMap.get(candidate.toLowerCase());
       if (match) return match;
     }
 
@@ -414,16 +448,29 @@ export class Si18nCore implements Si18nLike {
       );
     }
 
-    try {
-      const loadedLocale = await this.options.localeLoader(locale);
-      if (!isObjectRecord(loadedLocale)) {
-        throw new Error(`Locale "${locale}" is not a valid object.`);
-      }
-      this.options.locales[locale] = loadedLocale as LocaleMessages;
-    } catch (error) {
-      this.dependencies.logError(`Unable to load locale "${locale}".`, error);
-      throw error;
+    const existingLoad = this.loadingLocales.get(locale);
+    if (existingLoad) {
+      await existingLoad;
+      return;
     }
+
+    const loadTask = (async () => {
+      try {
+        const loadedLocale = await this.options.localeLoader!(locale);
+        if (!isObjectRecord(loadedLocale)) {
+          throw new Error(`Locale "${locale}" is not a valid object.`);
+        }
+        this.options.locales[locale] = loadedLocale as LocaleMessages;
+      } catch (error) {
+        this.dependencies.logError(`Unable to load locale "${locale}".`, error);
+        throw error;
+      } finally {
+        this.loadingLocales.delete(locale);
+      }
+    })();
+
+    this.loadingLocales.set(locale, loadTask);
+    await loadTask;
   }
 
   private applyTranslation(): void {

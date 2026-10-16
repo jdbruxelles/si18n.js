@@ -836,4 +836,129 @@ test("Si18nCore rejects traversal tokens in availableLocales", async () => {
   );
 });
 
+test("Si18nCore loads fallbackLang and lang in parallel during init", async () => {
+  const started = [];
+  let resolveEn;
+  let resolveFr;
+
+  const pEn = new Promise((resolve) => {
+    resolveEn = resolve;
+  });
+  const pFr = new Promise((resolve) => {
+    resolveFr = resolve;
+  });
+
+  const i18n = new Si18nCore(undefined, silentDeps());
+
+  const initPromise = i18n.init({
+    localeLoader: async (locale) => {
+      started.push(locale);
+      if (locale === "en") {
+        await pEn;
+        return { greeting: "Hello" };
+      }
+      if (locale === "fr") {
+        await pFr;
+        return { greeting: "Bonjour" };
+      }
+      return {};
+    },
+    availableLocales: ["en", "fr"],
+    lang: "fr",
+    fallbackLang: "en"
+  });
+
+  // Yield to allow synchronous loader invocation inside Promise.all
+  await new Promise((resolve) => setImmediate(resolve));
+
+  // Both "en" and "fr" should have started loading before either resolves
+  assert.deepEqual(started, ["en", "fr"]);
+
+  resolveEn();
+  resolveFr();
+  await initPromise;
+
+  assert.equal(i18n.getLocale(), "fr");
+  assert.equal(i18n.t("greeting"), "Bonjour");
+});
+
+test("Si18nCore deduplicates concurrent init() calls and notifies subscribers once", async () => {
+  const loadCounts = { en: 0, fr: 0 };
+  const notifications = [];
+
+  const i18n = new Si18nCore(undefined, silentDeps());
+  i18n.subscribe((locale) => {
+    notifications.push(locale);
+  });
+
+  const opts = {
+    localeLoader: async (locale) => {
+      loadCounts[locale] = (loadCounts[locale] || 0) + 1;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      return { greeting: locale === "en" ? "Hello" : "Bonjour" };
+    },
+    availableLocales: ["en", "fr"],
+    lang: "fr",
+    fallbackLang: "en"
+  };
+
+  await Promise.all([i18n.init(opts), i18n.init(opts), i18n.init(opts)]);
+
+  assert.equal(loadCounts.en, 1);
+  assert.equal(loadCounts.fr, 1);
+  assert.equal(notifications.length, 1);
+  assert.equal(notifications[0], "fr");
+  assert.equal(i18n.isInitialized(), true);
+});
+
+test("Si18nCore guards setLocale against out-of-order async completion", async () => {
+  let resolveFr;
+  const pFr = new Promise((resolve) => {
+    resolveFr = resolve;
+  });
+
+  const i18n = new Si18nCore(undefined, silentDeps());
+  await i18n.init({
+    locales: {
+      en: { msg: "Hello" },
+      de: { msg: "Hallo" }
+    },
+    localeLoader: async (locale) => {
+      if (locale === "fr") {
+        await pFr;
+        return { msg: "Bonjour" };
+      }
+      return { msg: "Other" };
+    },
+    availableLocales: ["en", "de", "fr"],
+    lang: "en",
+    fallbackLang: "en"
+  });
+
+  const notifications = [];
+  i18n.subscribe((loc) => {
+    notifications.push(loc);
+  });
+
+  // Call setLocale("fr") which is delayed by pFr
+  const p1 = i18n.setLocale("fr");
+
+  // Call setLocale("de") immediately, which completes quickly
+  const p2 = i18n.setLocale("de");
+  await p2;
+
+  assert.equal(i18n.getLocale(), "de");
+  assert.deepEqual(notifications, ["de"]);
+
+  // Now resolve the slower "fr" loader
+  resolveFr();
+  await p1;
+
+  // Stale completion should be discarded: active locale and messages remain "de"
+  assert.equal(i18n.getLocale(), "de");
+  assert.deepEqual(notifications, ["de"]);
+  assert.equal(i18n.t("msg"), "Hallo");
+});
+
+
 

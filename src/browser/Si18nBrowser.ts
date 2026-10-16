@@ -15,6 +15,10 @@ const SUPPORTED_AUTO_TRANSLATION_ATTRIBUTES: Record<string, keyof DOMStringMap> 
   placeholder: "si18nPlaceholder"
 };
 
+const AUTO_TRANSLATION_ATTRIBUTE_ENTRIES = Object.entries(
+  SUPPORTED_AUTO_TRANSLATION_ATTRIBUTES
+) as Array<[string, keyof DOMStringMap]>;
+
 interface BrowserOptions {
   activeClass: string;
   togglersSelector: string;
@@ -91,21 +95,32 @@ export class Si18nBrowser extends Si18nCore {
   };
 
   private togglersConfigured = false;
+  private browserInitStarted = false;
 
   public constructor(options?: Si18nBrowserInitOptions) {
     super(undefined, createBrowserDependencies());
 
     if (options && typeof options === "object") {
-      void this.init(options);
+      void this.init(options).catch(() => {});
     }
   }
 
   public override async init(options: Si18nBrowserInitOptions = {}): Promise<void> {
-    this.browserOptions.activeClass = options.activeClass ?? "";
-    this.browserOptions.togglersSelector = options.togglersSelector ?? "";
-    this.browserOptions.isTogglerSelect = options.isTogglerSelect ?? false;
+    if (this.isInitialized()) return;
 
-    await super.init(options);
+    if (!this.browserInitStarted) {
+      this.browserInitStarted = true;
+      this.browserOptions.activeClass = options.activeClass ?? "";
+      this.browserOptions.togglersSelector = options.togglersSelector ?? "";
+      this.browserOptions.isTogglerSelect = options.isTogglerSelect ?? false;
+    }
+
+    try {
+      await super.init(options);
+    } catch (error) {
+      this.browserInitStarted = false;
+      throw error;
+    }
 
     if (!this.togglersConfigured) {
       this.configureTogglers();
@@ -165,13 +180,11 @@ export class Si18nBrowser extends Si18nCore {
         }
       }
 
-      Object.entries(SUPPORTED_AUTO_TRANSLATION_ATTRIBUTES).forEach(
-        ([attributeName, datasetKey]) => {
-          if (typeof element.dataset[datasetKey] !== "undefined") {
-            element.setAttribute(attributeName, translated);
-          }
+      for (const [attributeName, datasetKey] of AUTO_TRANSLATION_ATTRIBUTE_ENTRIES) {
+        if (typeof element.dataset[datasetKey] !== "undefined") {
+          element.setAttribute(attributeName, translated);
         }
-      );
+      }
     });
   }
 
