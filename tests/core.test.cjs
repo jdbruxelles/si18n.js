@@ -789,3 +789,51 @@ test("Si18nCore t() guards against prototype property traversal", async () => {
   assert.equal(i18n.t("__proto__.polluted"), "__proto__.polluted");
 });
 
+test("Si18nCore t() guards against Object.prototype properties (toString, valueOf, hasOwnProperty)", async () => {
+  const i18n = new Si18nCore();
+  await i18n.init({
+    locales: { en: { greeting: "Hi" } },
+    lang: "en"
+  });
+
+  assert.equal(i18n.t("toString"), "toString");
+  assert.equal(i18n.t("valueOf"), "valueOf");
+  assert.equal(i18n.t("hasOwnProperty"), "hasOwnProperty");
+});
+
+test("Si18nCore rejects array for locales option", async () => {
+  const i18n = new Si18nCore();
+  await assert.rejects(
+    () => i18n.init({ locales: [], lang: "en" }),
+    /The locales option must be an object/
+  );
+});
+
+test("Si18nCore localeLoader returning an array throws validation error", async () => {
+  const i18n = new Si18nCore(undefined, silentDeps());
+  await assert.rejects(
+    () =>
+      i18n.init({
+        localeLoader: async () => [],
+        availableLocales: ["en"],
+        lang: "en",
+        fallbackLang: "en"
+      }),
+    /not a valid object/
+  );
+});
+
+test("Si18nCore rejects traversal tokens in availableLocales", async () => {
+  const i18n = new Si18nCore();
+  await assert.rejects(
+    () =>
+      i18n.init({
+        path: "/locales",
+        availableLocales: ["../secret"],
+        lang: "en"
+      }),
+    /The availableLocales option must be an array/
+  );
+});
+
+

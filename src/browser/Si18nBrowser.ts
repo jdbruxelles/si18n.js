@@ -22,16 +22,46 @@ interface BrowserOptions {
 }
 
 const getBrowserLanguage = (): string | null => {
-  return navigator.language || null;
+  return typeof navigator !== "undefined" ? navigator.language || null : null;
+};
+
+// Wrap localStorage access in try/catch so restricted browser contexts
+// (sandboxed iframes, disabled cookies, private browsing quota limits) never crash.
+const createSafeBrowserStorage = (): Si18nCoreDependencies["storage"] => {
+  try {
+    if (typeof localStorage === "undefined") return undefined;
+    return {
+      getItem: (key: string) => {
+        try {
+          return localStorage.getItem(key);
+        } catch {
+          return null;
+        }
+      },
+      setItem: (key: string, value: string) => {
+        try {
+          localStorage.setItem(key, value);
+        } catch {
+          // Ignore storage write errors in restricted/quota-limited environments.
+        }
+      }
+    };
+  } catch {
+    return undefined;
+  }
 };
 
 const createBrowserDependencies = (): Si18nCoreDependencies => {
   return {
     createPathLocaleLoader: (path) => {
+      const normalizedBase = path.replace(/\/+$/, "");
       return async (locale) => {
-        const response = await fetch(`${path}/${locale}.json`);
+        if (!locale || /[/\\0\r\n]|\.\./.test(locale)) {
+          throw new Error(`Invalid locale identifier "${locale}".`);
+        }
+        const response = await fetch(`${normalizedBase}/${encodeURIComponent(locale)}.json`);
         if (!response.ok) {
-          throw new Error(`Locale file for \"${locale}\" could not be loaded from \"${path}\".`);
+          throw new Error(`Locale file for "${locale}" could not be loaded from "${path}".`);
         }
         return (await response.json()) as LocaleMessages;
       };
@@ -43,13 +73,7 @@ const createBrowserDependencies = (): Si18nCoreDependencies => {
       return searchParam.get(saveAs);
     },
     detectLanguage: getBrowserLanguage,
-    storage:
-      typeof localStorage !== "undefined"
-        ? {
-            getItem: (key) => localStorage.getItem(key),
-            setItem: (key, value) => localStorage.setItem(key, value)
-          }
-        : undefined,
+    storage: createSafeBrowserStorage(),
     reload:
       typeof window !== "undefined"
         ? () => {
@@ -94,6 +118,9 @@ export class Si18nBrowser extends Si18nCore {
     callback?: (value: T) => void
   ): Promise<T | void> {
     const response = await fetch(url);
+    if (response.ok === false) {
+      throw new Error(`Failed to load JSON from "${url}".`);
+    }
     const payload = (await response.json()) as T;
 
     if (callback) {

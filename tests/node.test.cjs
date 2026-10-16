@@ -293,3 +293,35 @@ test("Si18nNode detects system locale from LC_ALL and normalises it to a base ta
 
   assert.equal(i18n.getLocale(), "fr");
 });
+
+test("Si18nNode path loader rejects path traversal tokens and prevents reading parent files", async (t) => {
+  const tmpDir = await createLocaleTmpDir("si18n-traversal-");
+  t.after(async () => {
+    await fs.rm(tmpDir, { recursive: true, force: true });
+  });
+
+  // Create a parent-level file that must not be readable via traversal
+  const parentSecretPath = path.resolve(tmpDir, "..", "secret-test.json");
+  await fs.writeFile(parentSecretPath, JSON.stringify({ secret: "leaked" }), "utf8");
+  t.after(async () => {
+    await fs.rm(parentSecretPath, { force: true });
+  });
+
+  const i18n = new Si18nNode();
+  await i18n.init({
+    path: tmpDir,
+    availableLocales: ["en"],
+    lang: "en",
+    saveLang: false
+  });
+
+  const loader = i18n.options.localeLoader;
+  await assert.rejects(
+    () => loader("../secret-test"),
+    /Invalid locale identifier|outside base directory/
+  );
+  await assert.rejects(
+    () => loader("..\\secret-test"),
+    /Invalid locale identifier|outside base directory/
+  );
+});

@@ -50,8 +50,22 @@ const defaultLogError = (message: string, error?: unknown): void => {
   console.error(message);
 };
 
+// Reject arrays so `locales` and loaded locale payloads must be plain key-value records.
 const isObjectRecord = (value: unknown): value is Record<string, unknown> => {
-  return typeof value === "object" && value !== null;
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+};
+
+const hasOwn = (obj: object, key: PropertyKey): boolean => {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+};
+
+// Disallow path separators, traversal segments, and control characters in locale identifiers
+// to prevent path traversal in filesystem/URL locale loaders.
+const isSafeLocaleToken = (locale: unknown): locale is string => {
+  if (typeof locale !== "string") return false;
+  const trimmed = locale.trim();
+  if (!trimmed || trimmed === "." || trimmed === "..") return false;
+  return !/[/\\0\r\n]|\.\./.test(trimmed);
 };
 
 export class Si18nCore implements Si18nLike {
@@ -152,8 +166,8 @@ export class Si18nCore implements Si18nLike {
     path: string,
     replacements?: TranslationReplacements
   ): TranslationValue {
-    const localeObj = this.options.locales[this.options.lang];
-    const fallbackObj = this.options.locales[this.options.fallbackLang];
+    const localeObj = this.getLocaleMessages(this.options.lang);
+    const fallbackObj = this.getLocaleMessages(this.options.fallbackLang);
 
     let value = this.readByPath(localeObj, path);
     if (this.isMissingValue(value)) {
@@ -199,7 +213,9 @@ export class Si18nCore implements Si18nLike {
   }
 
   protected getLocaleMessages(locale: string): LocaleMessages | undefined {
-    return this.options.locales[locale];
+    return hasOwn(this.options.locales, locale)
+      ? this.options.locales[locale]
+      : undefined;
   }
 
   private notifyLocaleListeners(locale: string): void {
@@ -229,15 +245,22 @@ export class Si18nCore implements Si18nLike {
       throw new Error(`The lang option is required when no fallbackLang option is set. See docs ${DOCS_LINK}`);
     }
 
-    if (typeof options.locales !== "undefined" && !isObjectRecord(options.locales)) {
-      throw new Error(`The locales option must be an object. See docs ${DOCS_LINK}`);
+    if (typeof options.locales !== "undefined") {
+      if (
+        !isObjectRecord(options.locales) ||
+        Object.keys(options.locales).some((loc) => !isSafeLocaleToken(loc) || !isObjectRecord(options.locales![loc]))
+      ) {
+        throw new Error(`The locales option must be an object. See docs ${DOCS_LINK}`);
+      }
     }
 
-    if (
-      typeof options.availableLocales !== "undefined" &&
-      !Array.isArray(options.availableLocales)
-    ) {
-      throw new Error(`The availableLocales option must be an array. See docs ${DOCS_LINK}`);
+    if (typeof options.availableLocales !== "undefined") {
+      if (
+        !Array.isArray(options.availableLocales) ||
+        options.availableLocales.some((loc) => !isSafeLocaleToken(loc))
+      ) {
+        throw new Error(`The availableLocales option must be an array. See docs ${DOCS_LINK}`);
+      }
     }
 
     if (typeof options.path !== "undefined" && typeof options.path !== "string") {
@@ -380,7 +403,10 @@ export class Si18nCore implements Si18nLike {
   }
 
   private async ensureLocaleLoaded(locale: string): Promise<void> {
-    if (this.options.locales[locale]) return;
+    if (!isSafeLocaleToken(locale)) {
+      throw new Error(`Invalid locale "${String(locale)}".`);
+    }
+    if (hasOwn(this.options.locales, locale) && this.options.locales[locale]) return;
 
     if (!this.options.localeLoader) {
       throw new Error(
@@ -437,6 +463,10 @@ export class Si18nCore implements Si18nLike {
         value = value[parsedIndex];
         continue;
       }
+
+      // Only read own properties on object records to prevent prototype chain leakage
+      // (e.g. `t("toString")` or `t("__proto__.polluted")`).
+      if (!hasOwn(value, pathItem)) return undefined;
 
       value = value[pathItem] as TranslationValue | undefined;
       if (typeof value === "undefined") return undefined;

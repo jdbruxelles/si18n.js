@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { isAbsolute, relative, resolve } from "node:path";
 
 import Si18nCore, {
   type LocaleMessages,
@@ -44,8 +44,17 @@ const createNodeDependencies = (
 ): Si18nCoreDependencies => {
   return {
     createPathLocaleLoader: (basePath) => {
+      const resolvedBase = resolve(basePath);
       return async (locale) => {
-        const localeFile = resolve(basePath, `${locale}.json`);
+        if (!locale || /[/\\0\r\n]|\.\./.test(locale)) {
+          throw new Error(`Invalid locale identifier "${locale}".`);
+        }
+        const localeFile = resolve(resolvedBase, `${locale}.json`);
+        const rel = relative(resolvedBase, localeFile);
+        // Guard against path traversal escaping the configured base directory.
+        if (!rel || rel.startsWith("..") || isAbsolute(rel)) {
+          throw new Error(`Locale path for "${locale}" resolves outside base directory.`);
+        }
         const localeRaw = await readFile(localeFile, "utf8");
         return JSON.parse(localeRaw) as LocaleMessages;
       };

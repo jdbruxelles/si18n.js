@@ -634,3 +634,81 @@ test("Si18nBrowser handles environments where document is undefined gracefully",
     global.document = originalDoc;
   }
 });
+
+test("Si18nBrowser strips trailing slashes in path option so fetch receives normalized URL", async (t) => {
+  const dom = createMockDOM();
+  setupMockEnvironment(dom);
+  t.after(restoreEnvironment);
+
+  const requestedUrls = [];
+  global.fetch = async (url) => {
+    requestedUrls.push(url);
+    return {
+      ok: true,
+      json: async () => ({ welcome: "Welcome" })
+    };
+  };
+
+  const i18n = new Si18nBrowser();
+  await i18n.init({
+    path: "/locales///",
+    availableLocales: ["en"],
+    lang: "en"
+  });
+
+  assert.equal(requestedUrls.length, 1);
+  assert.equal(requestedUrls[0], "/locales/en.json");
+});
+
+test("Si18nBrowser initializes and switches locales without throwing when localStorage throws errors", async (t) => {
+  const dom = createMockDOM();
+  dom.localStorage = {
+    getItem() {
+      const err = new Error("The operation is insecure.");
+      err.name = "SecurityError";
+      throw err;
+    },
+    setItem() {
+      const err = new Error("Quota exceeded");
+      err.name = "QuotaExceededError";
+      throw err;
+    }
+  };
+  setupMockEnvironment(dom);
+  t.after(restoreEnvironment);
+
+  const i18n = new Si18nBrowser();
+  await i18n.init({
+    locales: {
+      en: { msg: "Hello" },
+      fr: { msg: "Bonjour" }
+    },
+    lang: "en",
+    fallbackLang: "en",
+    saveLang: true
+  });
+
+  assert.equal(i18n.getLocale(), "en");
+  assert.equal(i18n.t("msg"), "Hello");
+
+  await i18n.setLocale("fr");
+  assert.equal(i18n.getLocale(), "fr");
+  assert.equal(i18n.t("msg"), "Bonjour");
+});
+
+test("Si18nBrowser.getJSON rejects when response.ok is false", async (t) => {
+  const dom = createMockDOM();
+  setupMockEnvironment(dom);
+  t.after(restoreEnvironment);
+
+  global.fetch = async () => ({
+    ok: false,
+    json: async () => ({ error: "Not found" })
+  });
+
+  await assert.rejects(
+    () => Si18nBrowser.getJSON("/locales/nonexistent.json"),
+    /Failed to load JSON from "\/locales\/nonexistent\.json"/
+  );
+});
+
