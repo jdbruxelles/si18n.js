@@ -107,6 +107,7 @@
     "test:fast": "node --test tests/*.test.cjs",
     "build": "tsdown --config tsdown.config.mts && node ./scripts/build-browser-artifacts.mjs",
     "watch": "tsdown --config tsdown.config.mts --watch",
+    "pack:check": "npm pack --dry-run",
     "prepublishOnly": "npm test",
     "netlifyServer": "netlify dev --framework=\"#static\""
   },
@@ -123,6 +124,9 @@
   ],
   "author": "José dBruxelles (https://github.com/jdbruxelles)",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "funding": [
     {
       "type": "GitHub",

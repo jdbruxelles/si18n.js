@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+# Least-privilege default token permissions
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Build & Test (Node ${{ matrix.node-version }})
@@ -31,8 +35,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build project
-        run: npm run build
-
       - name: Run tests
         run: npm test
+
+      - name: Verify package tarball
+        run: npm run pack:check

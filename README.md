@@ -180,16 +180,21 @@ npm test
 npm run watch
 ```
 
-<!--
 ### npm Publishing
 
-To publish a new version, simply update the version in `package.json` and run:
-```bash
-npm publish
-```
+Automated publishing is handled via GitHub Actions with SLSA build provenance attestation.
 
-*Note: The `npm publish` command will automatically run `npm run build && npm test` to ensure everything is correct before creating the package.*
--->
+To release a new version:
+1. Update `"version"` in `package.json` and update `CHANGELOG.md`.
+2. Verify tests and tarball contents locally:
+   ```bash
+   npm test
+   npm run pack:check
+   ```
+3. Commit, push to `main`, and create a GitHub Release with a matching tag (e.g. `v2.0.0`).
+4. The release workflow automatically builds, tests, verifies tag parity, and publishes to npm with provenance.
+
+For configuration details and emergency manual publishing, see [.github/workflows/README.md](.github/workflows/README.md).
 
 ### Server
 

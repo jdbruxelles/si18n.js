@@ -16,6 +16,8 @@
 /scripts
 /tests
 /src
+/plans
+/advisor-plans
 /tsconfig.json
 /tsdown.config.mts
 
